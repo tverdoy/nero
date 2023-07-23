@@ -8,7 +8,7 @@ pub struct NeroError {
 }
 
 impl NeroError {
-    pub fn new<E>(kind: ErrorKind, err: E) -> Self
+    pub fn new<E>(kind: NeroErrorKind, err: E) -> Self
     where
         E: Into<Box<dyn error::Error + Send + Sync>>,
     {
@@ -17,7 +17,7 @@ impl NeroError {
         }
     }
 
-    pub fn new_simple(kind: ErrorKind) -> Self {
+    pub fn new_simple(kind: NeroErrorKind) -> Self {
         Self {
             error_type: ErrorType::Simple(kind),
         }
@@ -38,14 +38,15 @@ impl Debug for NeroError {
 }
 
 enum ErrorType {
-    Simple(ErrorKind),
-    Custom(ErrorKind, Box<dyn error::Error + Send + Sync>),
+    Simple(NeroErrorKind),
+    Custom(NeroErrorKind, Box<dyn error::Error + Send + Sync>),
 }
 
 #[derive(Debug)]
-pub enum ErrorKind {
+pub enum NeroErrorKind {
     SetupServer,
     AcceptConnection,
     AcceptHttpHeader,
     ParseHttpHeader,
+    PatternNotFound,
 }

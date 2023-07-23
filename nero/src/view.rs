@@ -1,12 +1,8 @@
-use crate::request::Request;
 use crate::error::*;
+use crate::request::Request;
+use async_trait::async_trait;
 
-pub struct View {
-    callback: Box<dyn Fn(Request) -> Result<()>>
-}
-
-impl View {
-    pub fn new(callback: Box<dyn Fn(Request) -> Result<()>> ) -> Self {
-        Self { callback }
-    }
+#[async_trait]
+pub trait View {
+    async fn callback(&self, request: &mut Request) -> Result<()>;
 }

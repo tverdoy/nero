@@ -9,8 +9,8 @@ pub struct Error {
 
 impl Error {
     pub fn new<E>(kind: ErrorKind, err: E) -> Self
-        where
-            E: Into<Box<dyn error::Error + Send + Sync>>,
+    where
+        E: Into<Box<dyn error::Error + Send + Sync>>,
     {
         Self {
             error_type: ErrorType::Custom(kind, err.into()),
@@ -43,6 +43,4 @@ enum ErrorType {
 }
 
 #[derive(Debug)]
-pub enum ErrorKind {
-
-}
+pub enum ErrorKind {}

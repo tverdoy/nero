@@ -3,19 +3,19 @@ use crate::error::*;
 
 #[derive(Debug)]
 pub struct HttpHeadReq {
-    method: Method,
-    url: String,
-    http_version: String,
-    cookie: Cookie,
-    host: String,
-    user_agent: String,
-    cont_len: Option<usize>,
-    cont_type: Option<ContentType>
+    pub method: Method,
+    pub url: String,
+    pub http_version: String,
+    pub cookie: Cookie,
+    pub host: String,
+    pub user_agent: String,
+    pub cont_len: Option<usize>,
+    pub cont_type: Option<ContentType>,
 }
 
 impl HttpHeadReq {
     pub fn parse_from_utf8(v: &[u8]) -> NeroResult<Self> {
-        let err = || NeroError::new_simple(ErrorKind::ParseHttpHeader);
+        let err = || NeroError::new_simple(NeroErrorKind::ParseHttpHeader);
 
         let mut head = Self::default();
 
@@ -69,7 +69,6 @@ impl HttpHeadReq {
             .and_then(|val| Self::parse_head_line(val).ok())
             .map(ContentType::parse_from_string);
 
-
         Ok(head)
     }
 
@@ -80,7 +79,7 @@ impl HttpHeadReq {
         if split.len() == 2 {
             Ok(split[1].to_string())
         } else {
-            Err(NeroError::new_simple(ErrorKind::ParseHttpHeader))
+            Err(NeroError::new_simple(NeroErrorKind::ParseHttpHeader))
         }
     }
 }
@@ -95,7 +94,7 @@ impl Default for HttpHeadReq {
             host: "".to_string(),
             user_agent: "".to_string(),
             cont_len: Some(0),
-            cont_type: Some(ContentType::Other("".to_string()))
+            cont_type: Some(ContentType::Other("".to_string())),
         }
     }
 }
@@ -112,7 +111,7 @@ impl Method {
             "get" => Ok(Self::Get),
             "post" => Ok(Self::Post),
             _ => Err(NeroError::new(
-                ErrorKind::ParseHttpHeader,
+                NeroErrorKind::ParseHttpHeader,
                 format!("Unknown method"),
             )),
         }
@@ -124,7 +123,7 @@ pub enum ContentType {
     TextHtml,
     FormData,
     FormUrlencoded,
-    Other(String)
+    Other(String),
 }
 
 impl ContentType {
