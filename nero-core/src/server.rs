@@ -11,10 +11,10 @@ pub struct Server {
 }
 
 impl Server {
-    pub async fn setup<T: ToSocketAddrs>(addr: T) -> Result<Self> {
+    pub async fn setup<T: ToSocketAddrs>(addr: T) -> NeroResult<Self> {
         let listener = TcpListener::bind(addr)
             .await
-            .map_err(|e| Error::new_simple(ErrorKind::SetupServer))?;
+            .map_err(|e| NeroError::new_simple(ErrorKind::SetupServer))?;
 
         Ok(Self { listener })
     }
@@ -27,14 +27,14 @@ impl Server {
                     Err(e) => e.print(),
                 },
                 Err(e) => {
-                    Error::new(ErrorKind::AcceptConnection, e).print();
+                    NeroError::new(ErrorKind::AcceptConnection, e).print();
                     continue;
                 }
             };
         }
     }
 
-    pub async fn handle_conn(mut socket: TcpStream) -> Result<()> {
+    pub async fn handle_conn(mut socket: TcpStream) -> NeroResult<()> {
         let head_bin = Self::read_req_head(&mut socket).await?;
 
         let head_string = String::from_utf8_lossy(&head_bin).to_string();
@@ -47,7 +47,7 @@ impl Server {
     }
 
 
-    pub async fn read_req_head(socket: &mut TcpStream) -> Result<Vec<u8>> {
+    pub async fn read_req_head(socket: &mut TcpStream) -> NeroResult<Vec<u8>> {
         let mut buf = Vec::new();
         let mut i = 0;
 
@@ -55,7 +55,7 @@ impl Server {
             let read_byte = socket
                 .read_u8()
                 .await
-                .map_err(|e| Error::new_simple(ErrorKind::AcceptHttpHeader))?;
+                .map_err(|e| NeroError::new_simple(ErrorKind::AcceptHttpHeader))?;
             buf.push(read_byte);
 
             if buf.len() > 3 && buf.ends_with(&[b'\r', b'\n', b'\r', b'\n']) {

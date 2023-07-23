@@ -14,8 +14,8 @@ pub struct HttpHeadReq {
 }
 
 impl HttpHeadReq {
-    pub fn parse_from_utf8(v: &[u8]) -> Result<Self> {
-        let err = || Error::new_simple(ErrorKind::ParseHttpHeader);
+    pub fn parse_from_utf8(v: &[u8]) -> NeroResult<Self> {
+        let err = || NeroError::new_simple(ErrorKind::ParseHttpHeader);
 
         let mut head = Self::default();
 
@@ -74,13 +74,13 @@ impl HttpHeadReq {
     }
 
     /// Return value of head line
-    pub fn parse_head_line<T: ToString>(line: T) -> Result<String> {
+    pub fn parse_head_line<T: ToString>(line: T) -> NeroResult<String> {
         let line = line.to_string();
         let split: Vec<&str> = line.split(": ").collect();
         if split.len() == 2 {
             Ok(split[1].to_string())
         } else {
-            Err(Error::new_simple(ErrorKind::ParseHttpHeader))
+            Err(NeroError::new_simple(ErrorKind::ParseHttpHeader))
         }
     }
 }
@@ -107,11 +107,11 @@ pub enum Method {
 }
 
 impl Method {
-    pub fn parse_from_string<T: ToString>(string: T) -> Result<Self> {
+    pub fn parse_from_string<T: ToString>(string: T) -> NeroResult<Self> {
         match string.to_string().to_lowercase().as_str() {
             "get" => Ok(Self::Get),
             "post" => Ok(Self::Post),
-            _ => Err(Error::new(
+            _ => Err(NeroError::new(
                 ErrorKind::ParseHttpHeader,
                 format!("Unknown method"),
             )),

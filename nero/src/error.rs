@@ -1,16 +1,16 @@
 use std::fmt::{Debug, Formatter};
 use std::{error, result};
 
-pub type NeroResult<T> = result::Result<T, NeroError>;
+pub type Result<T> = result::Result<T, Error>;
 
-pub struct NeroError {
+pub struct Error {
     error_type: ErrorType,
 }
 
-impl NeroError {
+impl Error {
     pub fn new<E>(kind: ErrorKind, err: E) -> Self
-    where
-        E: Into<Box<dyn error::Error + Send + Sync>>,
+        where
+            E: Into<Box<dyn error::Error + Send + Sync>>,
     {
         Self {
             error_type: ErrorType::Custom(kind, err.into()),
@@ -28,7 +28,7 @@ impl NeroError {
     }
 }
 
-impl Debug for NeroError {
+impl Debug for Error {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match &self.error_type {
             ErrorType::Simple(kind) => f.write_fmt(format_args!("{kind:?}")),
@@ -44,8 +44,5 @@ enum ErrorType {
 
 #[derive(Debug)]
 pub enum ErrorKind {
-    SetupServer,
-    AcceptConnection,
-    AcceptHttpHeader,
-    ParseHttpHeader,
+
 }
