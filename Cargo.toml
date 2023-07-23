@@ -2,5 +2,9 @@
 
 members = [
     "nero-core",
-    "nero-util"
+    "nero-util",
+    "nero",
+
+    # Internal
+    "examples/simple",
 ]

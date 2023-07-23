@@ -3,7 +3,8 @@ use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
 use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
 use nero_util::http::HttpHeadReq;
 
-pub const MAX_HTTP_HEADER_SIZE: usize = 4096; // 4 kb
+pub const MAX_HTTP_HEADER_SIZE: usize = 4096;       // 4 KB
+pub const MAX_HTTP_BODY_SIZE: usize = 4_194_304;    // 4 MB
 
 pub struct Server {
     listener: TcpListener,
@@ -44,6 +45,7 @@ impl Server {
 
         Ok(())
     }
+
 
     pub async fn read_req_head(socket: &mut TcpStream) -> Result<Vec<u8>> {
         let mut buf = Vec::new();
