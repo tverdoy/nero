@@ -1,8 +1,9 @@
+use nero_util::error::*;
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, BufReader};
-use crate::error::*;
 use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
+use nero_util::http::HttpHeadReq;
 
-pub const MAX_HTTP_HEADER_SIZE: usize = 4096;   // 4 kb
+pub const MAX_HTTP_HEADER_SIZE: usize = 4096; // 4 kb
 
 pub struct Server {
     listener: TcpListener,
@@ -17,27 +18,29 @@ impl Server {
         Ok(Self { listener })
     }
 
-    pub async fn run(&mut self) -> ! { ;
+    pub async fn run(&mut self) -> ! {
         loop {
             match self.listener.accept().await {
-                Ok((socket, addr)) => {
-                    match Self::handle_conn(socket).await {
-                        Ok(_) => continue,
-                        Err(e) => e.print()
-                    }
+                Ok((socket, addr)) => match Self::handle_conn(socket).await {
+                    Ok(_) => continue,
+                    Err(e) => e.print(),
                 },
                 Err(e) => {
                     Error::new(ErrorKind::AcceptConnection, e).print();
-                    continue
-                },
+                    continue;
+                }
             };
-
-
         }
     }
 
     pub async fn handle_conn(mut socket: TcpStream) -> Result<()> {
-        Self::read_req_head(&mut socket).await?;
+        let head_bin = Self::read_req_head(&mut socket).await?;
+
+        let head_string = String::from_utf8_lossy(&head_bin).to_string();
+        println!("{head_string}");
+
+        let head = HttpHeadReq::parse_from_utf8(&head_bin).unwrap();
+        dbg!(head);
 
         Ok(())
     }
@@ -47,11 +50,14 @@ impl Server {
         let mut i = 0;
 
         while i < MAX_HTTP_HEADER_SIZE {
-            let read_byte = socket.read_u8().await.map_err(|e| Error::new_simple(ErrorKind::AcceptHttpHeader))?;
+            let read_byte = socket
+                .read_u8()
+                .await
+                .map_err(|e| Error::new_simple(ErrorKind::AcceptHttpHeader))?;
             buf.push(read_byte);
 
             if buf.len() > 3 && buf.ends_with(&[b'\r', b'\n', b'\r', b'\n']) {
-                break
+                break;
             }
 
             i += 1;

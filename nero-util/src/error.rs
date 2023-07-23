@@ -46,5 +46,6 @@ enum ErrorType {
 pub enum ErrorKind {
     SetupServer,
     AcceptConnection,
-    AcceptHttpHeader
+    AcceptHttpHeader,
+    ParseHttpHeader,
 }
