@@ -1,5 +1,6 @@
 use crate::cookie::Cookie;
 use crate::error::*;
+use chrono::{DateTime, Utc};
 
 #[derive(Debug)]
 pub struct HttpHeadReq {
@@ -123,6 +124,7 @@ pub enum ContentType {
     TextHtml,
     FormData,
     FormUrlencoded,
+    Json,
     Other(String),
 }
 
@@ -132,7 +134,81 @@ impl ContentType {
             "text/html" => Self::TextHtml,
             "multipart/form-data" => Self::FormData,
             "application/x-www-form-urlencoded" => Self::FormUrlencoded,
+            "application/json" => Self::Json,
             _ => Self::Other(string.to_string()),
+        }
+    }
+
+    pub fn format_to_string(&self) -> String {
+        match self {
+            Self::TextHtml => "text/html",
+            Self::FormData => "multipart/form-data",
+            Self::FormUrlencoded => "application/x-www-form-urlencoded",
+            Self::Json => "application/json",
+            Self::Other(cont) => cont,
+        }
+        .to_string()
+    }
+}
+
+pub struct HttpHeadResp {
+    pub http_version: String,
+    pub status: RespStatus,
+    pub cont_type: ContentType,
+    pub cont_len: usize,
+    pub date: String,
+    pub server: String,
+}
+
+impl HttpHeadResp {
+    pub fn format_to_string(&self) -> String {
+        let mut res = Vec::new();
+
+        let (status_code, status_text) = self.status.status_info();
+        res.push(format!(
+            "{} {} {}",
+            self.http_version, status_code, status_text
+        ));
+        res.push(format!("Server: {}", self.server));
+        res.push(format!("Date: {}", self.date));
+        res.push(format!(
+            "Content-Type: {}",
+            self.cont_type.format_to_string()
+        ));
+        res.push(format!("Content-Length: {}", self.cont_len));
+        res.push(String::new());
+        res.push(String::new());
+
+        res.join("\r\n")
+    }
+}
+
+impl Default for HttpHeadResp {
+    fn default() -> Self {
+        let utc: DateTime<Utc> = Utc::now();
+        let date = format!("{}", utc.format("%a, %d %b %Y %T GMT"));
+
+        Self {
+            http_version: "HTTP/1.0".to_string(),
+            status: RespStatus::Ok,
+            cont_type: ContentType::TextHtml,
+            cont_len: 0,
+            date,
+            server: "Nero".to_string(),
+        }
+    }
+}
+
+pub enum RespStatus {
+    Ok,
+    NotFound,
+}
+
+impl RespStatus {
+    pub fn status_info(&self) -> (u16, &'static str) {
+        match self {
+            Self::Ok => (200, "OK"),
+            Self::NotFound => (404, "Not Found"),
         }
     }
 }

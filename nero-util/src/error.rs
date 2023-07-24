@@ -49,4 +49,5 @@ pub enum NeroErrorKind {
     AcceptHttpHeader,
     ParseHttpHeader,
     PatternNotFound,
+    SendResponse,
 }
