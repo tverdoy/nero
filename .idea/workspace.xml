@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="CargoProjects">
+    <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add component responder">
+      <change afterPath="$PROJECT_DIR$/examples/simple/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/apps/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/request.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/request.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/urlpatterns.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/urlpatterns.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/request.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/request.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+        <option value="CSS File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="s5rm0p2u" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2T4HohapMGGV2Nilh4E1ban559d" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager" selected="Cargo.Run simple">
+    <configuration name="Run simple" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
+      <option name="command" value="run" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$/examples/simple" />
+      <option name="emulateTerminal" value="false" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <envs />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="request" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="nero" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/request.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Cargo.Run simple" />
+      <item itemvalue="Python.request" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.request" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="RustProjectSettings">
+    <option name="toolchainHomeDirectory" value="$USER_HOME$/.cargo/bin" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="" />
+      <created>1690295610177</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1690295610177</updated>
+      <workItem from="1690295612478" duration="7303000" />
+    </task>
+    <task id="LOCAL-00001" summary="Add component responder">
+      <option name="closed" value="true" />
+      <created>1690300264867</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1690300264867</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add component responder" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add component responder" />
+  </component>
+</project>

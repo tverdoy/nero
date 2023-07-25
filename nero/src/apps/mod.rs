@@ -1,1 +1,1 @@
-mod filestatic;
+pub mod filestatic;

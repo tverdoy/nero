@@ -22,6 +22,10 @@ impl UrlPatterns {
         }
     }
 
+    pub fn add_one<T: ToString>(&mut self, url: T, view: Callback) {
+        self.patterns.insert(url.to_string(), Arc::new(view));
+    }
+
     pub fn find_pattern<T: ToString>(&self, url: T) -> Option<&Arc<Callback>> {
         self.patterns.get(&url.to_string())
     }
