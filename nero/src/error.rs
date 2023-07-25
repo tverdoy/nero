@@ -1,4 +1,5 @@
-use std::fmt::{Debug, Formatter};
+use nero_util::error::NeroError;
+use std::fmt::{Debug, Display, Formatter};
 use std::{error, result};
 
 pub type Result<T> = result::Result<T, Error>;
@@ -43,4 +44,23 @@ enum ErrorType {
 }
 
 #[derive(Debug)]
-pub enum ErrorKind {}
+pub enum ErrorKind {
+    Nero,
+}
+
+impl From<NeroError> for Error {
+    fn from(value: NeroError) -> Self {
+        Self::new(ErrorKind::Nero, value)
+    }
+}
+
+impl Display for Error {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match &self.error_type {
+            ErrorType::Simple(kind) => f.write_fmt(format_args!("Error ({kind:?})")),
+            ErrorType::Custom(kind, err) => f.write_fmt(format_args!("Error ({kind:?}): {err}")),
+        }
+    }
+}
+
+impl std::error::Error for Error {}

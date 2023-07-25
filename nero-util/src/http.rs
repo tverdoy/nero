@@ -1,6 +1,18 @@
 use crate::cookie::Cookie;
 use crate::error::*;
 use chrono::{DateTime, Utc};
+use std::collections::HashMap;
+use std::ffi::OsStr;
+use std::path::Path;
+
+pub const CONTENT_TYPE: &[(&str, ContentType); 6] = &[
+    ("text/html", ContentType::TextHtml),
+    ("text/javascript", ContentType::TextJS),
+    ("text/css", ContentType::TextCss),
+    ("multipart/form-data", ContentType::MulForm),
+    ("application/x-www-form-urlencoded", ContentType::AppForm),
+    ("application/json", ContentType::AppJson),
+];
 
 #[derive(Debug)]
 pub struct HttpHeadReq {
@@ -95,7 +107,7 @@ impl Default for HttpHeadReq {
             host: "".to_string(),
             user_agent: "".to_string(),
             cont_len: Some(0),
-            cont_type: Some(ContentType::Other("".to_string())),
+            cont_type: Some(ContentType::AppForm),
         }
     }
 }
@@ -119,41 +131,52 @@ impl Method {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum ContentType {
     TextHtml,
-    FormData,
-    FormUrlencoded,
-    Json,
-    Other(String),
+    TextJS,
+    TextCss,
+    MulForm,
+    AppForm,
+    AppJson,
 }
 
 impl ContentType {
     pub fn parse_from_string<T: ToString>(string: T) -> Self {
-        match string.to_string().to_lowercase().as_str() {
-            "text/html" => Self::TextHtml,
-            "multipart/form-data" => Self::FormData,
-            "application/x-www-form-urlencoded" => Self::FormUrlencoded,
-            "application/json" => Self::Json,
-            _ => Self::Other(string.to_string()),
-        }
+        CONTENT_TYPE
+            .iter()
+            .find(|(s, t)| s == &string.to_string())
+            .map(|(s, t)| t.clone())
+            .unwrap_or(Self::AppForm)
     }
 
     pub fn format_to_string(&self) -> String {
-        match self {
-            Self::TextHtml => "text/html",
-            Self::FormData => "multipart/form-data",
-            Self::FormUrlencoded => "application/x-www-form-urlencoded",
-            Self::Json => "application/json",
-            Self::Other(cont) => cont,
+        CONTENT_TYPE
+            .iter()
+            .find(|(s, t)| t == self)
+            .map(|(s, t)| s.to_string())
+            .unwrap_or("application/x-www-form-urlencoded".to_string())
+
+    }
+
+    pub fn from_file<P: AsRef<Path>>(path: P) -> Self {
+        match path.as_ref().extension() {
+            Some(ext) => {
+                match ext.to_string_lossy().to_string().as_str() {
+                    "js" => Self::TextJS,
+                    "css" => Self::TextCss,
+                    "html" => Self::TextHtml,
+                    _ => Self::AppForm
+                }
+            },
+            None => Self::AppForm
         }
-        .to_string()
     }
 }
 
 pub struct HttpHeadResp {
     pub http_version: String,
-    pub status: RespStatus,
+    pub status: Status,
     pub cont_type: ContentType,
     pub cont_len: usize,
     pub date: String,
@@ -190,7 +213,7 @@ impl Default for HttpHeadResp {
 
         Self {
             http_version: "HTTP/1.0".to_string(),
-            status: RespStatus::Ok,
+            status: Status::Ok,
             cont_type: ContentType::TextHtml,
             cont_len: 0,
             date,
@@ -199,12 +222,12 @@ impl Default for HttpHeadResp {
     }
 }
 
-pub enum RespStatus {
+pub enum Status {
     Ok,
     NotFound,
 }
 
-impl RespStatus {
+impl Status {
     pub fn status_info(&self) -> (u16, &'static str) {
         match self {
             Self::Ok => (200, "OK"),
