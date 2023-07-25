@@ -1,14 +1,14 @@
+use crate::app::App;
+use crate::error::{Error, ErrorKind};
 use crate::request::Request;
+use crate::responder::Responder;
+use crate::urlpatterns::UrlPatterns;
 use crate::view::View;
 use async_trait::async_trait;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
+use nero_util::http::Status;
 use std::path::{Path, PathBuf};
 use walkdir::WalkDir;
-use nero_util::http::Status;
-use crate::app::App;
-use crate::error::{Error, ErrorKind};
-use crate::responder::Responder;
-use crate::urlpatterns::UrlPatterns;
 
 pub struct FileStatic {
     root_url: String,
@@ -32,7 +32,10 @@ impl FileStatic {
         let mut patterns = UrlPatterns::new();
 
         for url in urls {
-            let view = Self { root_url: root_url.clone(), root_fs: root_fs.clone() };
+            let view = Self {
+                root_url: root_url.clone(),
+                root_fs: root_fs.clone(),
+            };
             patterns.add_one(url, Box::new(view));
         }
 
@@ -46,7 +49,11 @@ impl FileStatic {
 
         for entry in WalkDir::new(path).into_iter().filter_map(|e| e.ok()) {
             if entry.path().is_file() {
-                let url_path = entry.path().to_string_lossy().to_string().replace(&path_str, &root_url.to_string());
+                let url_path = entry
+                    .path()
+                    .to_string_lossy()
+                    .to_string()
+                    .replace(&path_str, &root_url.to_string());
                 res.push(url_path)
             }
         }
@@ -59,7 +66,11 @@ impl FileStatic {
 impl View for FileStatic {
     async fn callback(&self, request: &mut Request) -> crate::error::Result<Responder> {
         let without_pref = request.head.url.replace(&self.root_url, "");
-        let path = self.root_fs.join(without_pref).canonicalize().map_err(|_| Error::new_simple(ErrorKind::InvalidData))?;
+        let path = self
+            .root_fs
+            .join(without_pref)
+            .canonicalize()
+            .map_err(|_| Error::new_simple(ErrorKind::InvalidData))?;
 
         Responder::file(Status::Ok, path).await
     }

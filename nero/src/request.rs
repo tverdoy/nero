@@ -14,7 +14,7 @@ impl Request {
     pub fn new(socket: TcpStream, http_head: HttpHeadReq) -> Self {
         Self {
             socket,
-            head: http_head
+            head: http_head,
         }
     }
 }

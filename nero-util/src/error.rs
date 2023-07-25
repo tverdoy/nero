@@ -53,7 +53,7 @@ pub enum NeroErrorKind {
     FileNotFound,
     RequestIsClosed,
     IO,
-    ViewFailed
+    ViewFailed,
 }
 
 impl Display for NeroError {

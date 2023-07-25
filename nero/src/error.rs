@@ -46,7 +46,7 @@ enum ErrorType {
 #[derive(Debug)]
 pub enum ErrorKind {
     Nero,
-    InvalidData
+    InvalidData,
 }
 
 impl From<NeroError> for Error {

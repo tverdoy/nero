@@ -12,17 +12,21 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add component responder">
-      <change afterPath="$PROJECT_DIR$/examples/simple/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add app file static">
+      <change afterPath="$PROJECT_DIR$/examples/simple/static/images/home.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/static/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/http.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/http.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/apps/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/error.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/request.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/request.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/urlpatterns.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/urlpatterns.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/request.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/request.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/responder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/responder.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/server.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,6 +66,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/dimatverdoy/CLionProjects/nero/examples/simple/static/images",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -73,6 +78,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/examples/simple/static/images" />
+    </key>
+  </component>
   <component name="RunManager" selected="Cargo.Run simple">
     <configuration name="Run simple" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run" />
@@ -133,7 +143,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1690295610177</updated>
-      <workItem from="1690295612478" duration="7303000" />
+      <workItem from="1690295612478" duration="12283000" />
     </task>
     <task id="LOCAL-00001" summary="Add component responder">
       <option name="closed" value="true" />
@@ -143,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690300264867</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add app file static">
+      <option name="closed" value="true" />
+      <created>1690303224067</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1690303224067</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,6 +169,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Add component responder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add component responder" />
+    <MESSAGE value="Add app file static" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add app file static" />
   </component>
 </project>

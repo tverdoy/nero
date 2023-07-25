@@ -1,9 +1,12 @@
+use crate::error::*;
+use crate::request::Request;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
-use nero_util::http::{ContentType, HttpHeadResp, Status};
+use nero_util::http::{ContentType, EncodeAlgo, HttpHeadResp, Status};
 use std::path::Path;
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
-use crate::error::*;
+
+const SIZE_ENCODE: usize = 2_097_152; // 2 MB
 
 pub struct Responder {
     pub data: Vec<u8>,
@@ -11,12 +14,22 @@ pub struct Responder {
 }
 
 impl Responder {
-    pub fn complete(&mut self) {
+    pub fn complete(&mut self, request: &Request) {
+        if self.data.len() > SIZE_ENCODE {
+            if let Some(algorithms) = &request.head.accept_encode {
+                if let Some(algo) = algorithms.iter().find(|algo| *algo == &EncodeAlgo::Deflate) {
+                    self.data = algo.encode(&self.data);
+                    self.head.cont_encode = Some(algo.clone())
+                }
+            }
+        }
+
         self.head.cont_len = self.data.len();
     }
 
-    pub fn to_http_bytes(&self) -> Vec<u8> {
+    pub fn to_http_bytes(&mut self) -> Vec<u8> {
         let header = self.head.format_to_string();
+
         [header.as_bytes(), &self.data].concat()
     }
 
@@ -24,12 +37,15 @@ impl Responder {
         let mut head = HttpHeadResp::default();
         head.status = Status::Ok;
 
-        Ok(Self { data: Vec::new(), head })
+        Ok(Self {
+            data: Vec::new(),
+            head,
+        })
     }
 
     pub fn text<T: ToString>(status: Status, data: T) -> Result<Self> {
         let mut head = HttpHeadResp::default();
-        head.cont_type = ContentType::TextHtml;
+        head.cont_type = ContentType::TextPlain;
         head.status = status;
 
         Ok(Self {
@@ -55,9 +71,6 @@ impl Responder {
         head.cont_type = ContentType::from_file(path);
         head.status = status;
 
-        Ok(Self {
-            data: buf,
-            head,
-        })
+        Ok(Self { data: buf, head })
     }
 }

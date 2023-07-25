@@ -1,12 +1,12 @@
 use crate::error::{Error, ErrorKind, Result};
 use crate::request::Request;
+use crate::responder::Responder;
 use crate::urlpatterns::UrlPatterns;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
 use nero_util::http::HttpHeadReq;
 use std::sync::Arc;
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};
 use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
-use crate::responder::Responder;
 
 pub const MAX_HTTP_HEADER_SIZE: usize = 4096; // 4 KB
 pub const MAX_HTTP_BODY_SIZE: usize = 4_194_304; // 4 MB
@@ -52,10 +52,13 @@ impl Server {
         match patterns.find_pattern(&head.url) {
             Some(view) => {
                 let mut request = Request::new(socket, head);
-                let mut responder = view.callback(&mut request).await.map_err(|e| NeroError::new(NeroErrorKind::ViewFailed, e))?;
-                responder.complete();
+                let mut responder = view
+                    .callback(&mut request)
+                    .await
+                    .map_err(|e| NeroError::new(NeroErrorKind::ViewFailed, e))?;
+                responder.complete(&request);
 
-                Self::send_response(&mut request.socket, &responder).await?;
+                Self::send_response(&mut request.socket, &mut responder).await?;
             }
             None => {
                 return Err(NeroError::new(
@@ -68,7 +71,7 @@ impl Server {
         Ok(())
     }
 
-    pub async fn send_response(socket: &mut TcpStream, resp: &Responder) -> NeroResult<()> {
+    pub async fn send_response(socket: &mut TcpStream, resp: &mut Responder) -> NeroResult<()> {
         socket
             .write_all(&resp.to_http_bytes())
             .await
