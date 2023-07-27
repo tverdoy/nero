@@ -1,5 +1,5 @@
+use std::error;
 use std::fmt::{Debug, Display, Formatter};
-use std::{error};
 
 pub type NeroResult<T> = Result<T, NeroError>;
 
@@ -67,4 +67,5 @@ pub enum NeroErrorKind {
     RequestIsClosed,
     IO,
     ViewFailed,
+    ConnectToDB,
 }

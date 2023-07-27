@@ -1,4 +1,4 @@
 pub mod cookie;
+pub mod encode;
 pub mod error;
 pub mod http;
-pub mod encode;

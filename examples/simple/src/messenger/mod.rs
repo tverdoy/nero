@@ -1,3 +1,4 @@
+mod models;
 mod views;
 
 use nero::app::App;

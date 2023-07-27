@@ -1,8 +1,8 @@
 use crate::cookie::Cookie;
+use crate::encode::EncodeAlgo;
 use crate::error::*;
 use chrono::{DateTime, Utc};
 use std::path::Path;
-use crate::encode::EncodeAlgo;
 
 pub const CONTENT_TYPE: &[(&str, ContentType); 10] = &[
     ("text/html", ContentType::TextHtml),
