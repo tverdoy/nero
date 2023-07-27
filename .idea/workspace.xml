@@ -12,24 +12,9 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add json response">
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Review code">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/mod.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-util/src/cookie.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/cookie.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-util/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/error.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-util/src/http.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/http.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/app.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/error.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/lib.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/project.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/project.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/request.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/request.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/responder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/responder.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/server.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/urlpatterns.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/urlpatterns.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/view.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +29,7 @@
       <list>
         <option value="Python Script" />
         <option value="CSS File" />
+        <option value="Rust File" />
       </list>
     </option>
   </component>
@@ -177,7 +163,7 @@
       <option name="presentableId" value="Default" />
       <updated>1690295610177</updated>
       <workItem from="1690295612478" duration="14001000" />
-      <workItem from="1690442112123" duration="9192000" />
+      <workItem from="1690442112123" duration="10956000" />
     </task>
     <task id="LOCAL-00001" summary="Add component responder">
       <option name="closed" value="true" />
@@ -211,7 +197,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690462814102</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Review code">
+      <option name="closed" value="true" />
+      <created>1690477723022</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1690477723022</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,6 +239,7 @@
     <MESSAGE value="Add app file static" />
     <MESSAGE value="Add support encoding with deflate" />
     <MESSAGE value="Add json response" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add json response" />
+    <MESSAGE value="Review code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Review code" />
   </component>
 </project>
