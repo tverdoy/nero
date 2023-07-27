@@ -47,6 +47,7 @@ enum ErrorType {
 pub enum ErrorKind {
     Nero,
     InvalidData,
+    Serialize
 }
 
 impl From<NeroError> for Error {

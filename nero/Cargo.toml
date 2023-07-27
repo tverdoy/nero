@@ -10,3 +10,5 @@ nero-util = { path = "../nero-util" }
 tokio = { version = "1.29.1", features = ["full"] }
 async-trait = "0.1.72"
 walkdir = "2.3.3"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0.104"

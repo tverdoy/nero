@@ -3,6 +3,7 @@ use crate::request::Request;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
 use nero_util::http::{ContentType, EncodeAlgo, HttpHeadResp, Status};
 use std::path::Path;
+use serde::Serialize;
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
 
@@ -27,7 +28,7 @@ impl Responder {
         self.head.cont_len = self.data.len();
     }
 
-    pub fn to_http_bytes(&mut self) -> Vec<u8> {
+    pub fn to_http_bytes(&self) -> Vec<u8> {
         let header = self.head.format_to_string();
 
         [header.as_bytes(), &self.data].concat()
@@ -72,5 +73,16 @@ impl Responder {
         head.status = status;
 
         Ok(Self { data: buf, head })
+    }
+
+    pub async fn json<T>(status: Status, data: T) -> Result<Self> where T: Serialize {
+        let mut head = HttpHeadResp::default();
+
+        let json = serde_json::to_string(&data).map_err(|e| Error::new(ErrorKind::Serialize, e))?;
+
+        head.cont_type = ContentType::AppJson;
+        head.status = status;
+
+        Ok(Self { data: Vec::from(json), head })
     }
 }

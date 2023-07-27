@@ -58,7 +58,7 @@ impl Server {
                     .map_err(|e| NeroError::new(NeroErrorKind::ViewFailed, e))?;
                 responder.complete(&request);
 
-                Self::send_response(&mut request.socket, &mut responder).await?;
+                Self::send_response(&mut request.socket, &responder).await?;
             }
             None => {
                 return Err(NeroError::new(
@@ -71,7 +71,7 @@ impl Server {
         Ok(())
     }
 
-    pub async fn send_response(socket: &mut TcpStream, resp: &mut Responder) -> NeroResult<()> {
+    pub async fn send_response(socket: &mut TcpStream, resp: &Responder) -> NeroResult<()> {
         socket
             .write_all(&resp.to_http_bytes())
             .await
