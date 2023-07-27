@@ -20,7 +20,7 @@ impl FileStatic {
         let root_url = root_url.to_string();
         let mut root_fs = root_fs.as_ref().to_path_buf();
 
-        if root_fs.iter().last().unwrap().to_string_lossy().to_string() != "/" {
+        if root_fs.iter().last().unwrap().to_string_lossy() != "/" {
             root_fs = root_fs.join("")
         }
 
@@ -29,7 +29,7 @@ impl FileStatic {
         }
 
         let urls = Self::urls_by_path(&root_url, &root_fs);
-        let mut patterns = UrlPatterns::new();
+        let mut patterns = UrlPatterns::default();
 
         for url in urls {
             let view = Self {
@@ -64,6 +64,10 @@ impl FileStatic {
 
 #[async_trait]
 impl View for FileStatic {
+    fn name(&self) -> &'static str {
+        "File static"
+    }
+
     async fn callback(&self, request: &mut Request) -> crate::error::Result<Responder> {
         let without_pref = request.head.url.replace(&self.root_url, "");
         let path = self

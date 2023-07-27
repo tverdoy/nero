@@ -1,17 +1,18 @@
 use crate::error::*;
 use crate::request::Request;
-use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
-use nero_util::http::{ContentType, EncodeAlgo, HttpHeadResp, Status};
-use std::path::Path;
+use nero_util::error::*;
+use nero_util::http::{ContentType, HeadResp, Status};
 use serde::Serialize;
+use std::path::Path;
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
+use nero_util::encode::EncodeAlgo;
 
 const SIZE_ENCODE: usize = 2_097_152; // 2 MB
 
 pub struct Responder {
     pub data: Vec<u8>,
-    pub head: HttpHeadResp,
+    pub head: HeadResp,
 }
 
 impl Responder {
@@ -35,8 +36,10 @@ impl Responder {
     }
 
     pub fn ok() -> Result<Self> {
-        let mut head = HttpHeadResp::default();
-        head.status = Status::Ok;
+        let head = HeadResp {
+            status: Status::Ok,
+            ..Default::default()
+        };
 
         Ok(Self {
             data: Vec::new(),
@@ -45,9 +48,11 @@ impl Responder {
     }
 
     pub fn text<T: ToString>(status: Status, data: T) -> Result<Self> {
-        let mut head = HttpHeadResp::default();
-        head.cont_type = ContentType::TextPlain;
-        head.status = status;
+        let head = HeadResp {
+            cont_type: ContentType::TextPlain,
+            status,
+            ..Default::default()
+        };
 
         Ok(Self {
             data: Vec::from(data.to_string()),
@@ -58,7 +63,6 @@ impl Responder {
     pub async fn file<P: AsRef<Path>>(status: Status, path: P) -> Result<Self> {
         let err = |e| NeroError::new(NeroErrorKind::IO, e);
 
-        let mut head = HttpHeadResp::default();
         let path = path.as_ref();
 
         if !path.exists() {
@@ -69,20 +73,29 @@ impl Responder {
         let mut buf = Vec::new();
         file.read_to_end(&mut buf).await.map_err(err)?;
 
-        head.cont_type = ContentType::from_file(path);
-        head.status = status;
+        let head = HeadResp {
+            cont_type: ContentType::from_file(path),
+            status,
+            ..Default::default()
+        };
 
         Ok(Self { data: buf, head })
     }
 
-    pub async fn json<T>(status: Status, data: T) -> Result<Self> where T: Serialize {
-        let mut head = HttpHeadResp::default();
-
+    pub async fn json<T>(status: Status, data: T) -> Result<Self>
+    where
+        T: Serialize,
+    {
+        let head = HeadResp {
+            cont_type: ContentType::AppJson,
+            status,
+            ..Default::default()
+        };
         let json = serde_json::to_string(&data).map_err(|e| Error::new(ErrorKind::Serialize, e))?;
 
-        head.cont_type = ContentType::AppJson;
-        head.status = status;
-
-        Ok(Self { data: Vec::from(json), head })
+        Ok(Self {
+            data: Vec::from(json),
+            head,
+        })
     }
 }

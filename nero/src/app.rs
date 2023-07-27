@@ -1,21 +1,23 @@
 use crate::urlpatterns::UrlPatterns;
-use std::rc::Rc;
-use std::sync::Arc;
 
 pub struct App {
     name: String,
-    url_patterns: UrlPatterns,
+    patterns: UrlPatterns,
 }
 
 impl App {
-    pub fn new<T: ToString>(name: T, url_patterns: UrlPatterns) -> Self {
+    pub fn new<T: ToString>(name: T, patterns: UrlPatterns) -> Self {
         Self {
             name: name.to_string(),
-            url_patterns,
+            patterns,
         }
     }
 
     pub fn url_patters(&self) -> UrlPatterns {
-        self.url_patterns.clone()
+        self.patterns.clone()
+    }
+
+    pub fn name(&self) -> &str {
+        &self.name
     }
 }

@@ -1,19 +1,13 @@
 use std::collections::HashMap;
 
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Cookie {
     data: HashMap<String, String>,
 }
 
 impl Cookie {
-    pub fn new() -> Self {
-        Self {
-            data: HashMap::new(),
-        }
-    }
-
     pub fn from_string<T: ToString>(string: T) -> Self {
-        let mut res = Self::new();
+        let mut res = Self::default();
 
         for cook in string.to_string().split("; ") {
             let split: Vec<&str> = cook.split('=').collect();

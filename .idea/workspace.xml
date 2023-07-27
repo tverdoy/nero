@@ -12,14 +12,24 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add support encoding with deflate">
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add json response">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/simple/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/mod.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/cookie.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/cookie.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/http.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/http.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/app.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/project.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/project.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/request.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/request.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/responder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/responder.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/server.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/urlpatterns.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/urlpatterns.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,10 +86,35 @@
       <recent name="$PROJECT_DIR$/examples/simple/static/images" />
     </key>
   </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="cargo clippy" />
+      <command value="cargo clippy --all" />
+      <command value="cargo clippy -p nero_utils" />
+      <command value="cargo clippy -p nero-utils" />
+    </option>
+  </component>
   <component name="RunManager" selected="Cargo.Run simple">
     <configuration name="Run simple" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/examples/simple" />
+      <option name="emulateTerminal" value="false" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <envs />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="clippy" type="CargoCommandRunConfiguration" factoryName="Cargo Command" temporary="true">
+      <option name="command" value="clippy -p nero-utils" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <option name="emulateTerminal" value="false" />
       <option name="channel" value="DEFAULT" />
       <option name="requiredFeatures" value="true" />
@@ -117,10 +152,15 @@
     </configuration>
     <list>
       <item itemvalue="Cargo.Run simple" />
+      <item itemvalue="Cargo.clippy" />
       <item itemvalue="Python.request" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.clippy" />
+        <item itemvalue="Cargo.clippy" />
+        <item itemvalue="Cargo.clippy" />
+        <item itemvalue="Cargo.clippy" />
         <item itemvalue="Python.request" />
       </list>
     </recent_temporary>
@@ -137,7 +177,7 @@
       <option name="presentableId" value="Default" />
       <updated>1690295610177</updated>
       <workItem from="1690295612478" duration="14001000" />
-      <workItem from="1690442112123" duration="1630000" />
+      <workItem from="1690442112123" duration="9192000" />
     </task>
     <task id="LOCAL-00001" summary="Add component responder">
       <option name="closed" value="true" />
@@ -163,7 +203,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690311635775</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add json response">
+      <option name="closed" value="true" />
+      <created>1690462814102</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1690462814102</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -196,6 +244,7 @@
     <MESSAGE value="Add component responder" />
     <MESSAGE value="Add app file static" />
     <MESSAGE value="Add support encoding with deflate" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add support encoding with deflate" />
+    <MESSAGE value="Add json response" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add json response" />
   </component>
 </project>

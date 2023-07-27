@@ -1,7 +1,7 @@
 use std::fmt::{Debug, Display, Formatter};
-use std::{error, result};
+use std::{error};
 
-pub type NeroResult<T> = result::Result<T, NeroError>;
+pub type NeroResult<T> = Result<T, NeroError>;
 
 pub struct NeroError {
     error_type: ErrorType,
@@ -22,20 +22,31 @@ impl NeroError {
             error_type: ErrorType::Simple(kind),
         }
     }
-
-    pub fn print(&self) {
-        eprintln!("{self:?}")
-    }
 }
 
 impl Debug for NeroError {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match &self.error_type {
-            ErrorType::Simple(kind) => f.write_fmt(format_args!("{kind:?}")),
-            ErrorType::Custom(kind, err) => f.write_fmt(format_args!("{kind:?}: {err:?}")),
+            ErrorType::Simple(kind) => f.write_fmt(format_args!("NeroError({kind:?})")),
+            ErrorType::Custom(kind, err) => {
+                f.write_fmt(format_args!("NeroError({kind:?}): {err:?}"))
+            }
         }
     }
 }
+
+impl Display for NeroError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match &self.error_type {
+            ErrorType::Simple(kind) => f.write_fmt(format_args!("NeroError({kind:?})")),
+            ErrorType::Custom(kind, err) => {
+                f.write_fmt(format_args!("NeroError({kind:?}) -> {err}"))
+            }
+        }
+    }
+}
+
+impl error::Error for NeroError {}
 
 enum ErrorType {
     Simple(NeroErrorKind),
@@ -47,6 +58,8 @@ pub enum NeroErrorKind {
     SetupServer,
     AcceptConnection,
     AcceptHttpHeader,
+    OverflowHttpHeader,
+    OverflowHttpBody,
     ParseHttpHeader,
     PatternNotFound,
     SendResponse,
@@ -55,16 +68,3 @@ pub enum NeroErrorKind {
     IO,
     ViewFailed,
 }
-
-impl Display for NeroError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        match &self.error_type {
-            ErrorType::Simple(kind) => f.write_fmt(format_args!("NeroError ({kind:?})")),
-            ErrorType::Custom(kind, err) => {
-                f.write_fmt(format_args!("NeroError ({kind:?}): {err}"))
-            }
-        }
-    }
-}
-
-impl std::error::Error for NeroError {}

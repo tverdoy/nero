@@ -1,10 +1,8 @@
 use crate::cookie::Cookie;
 use crate::error::*;
 use chrono::{DateTime, Utc};
-use deflate::deflate_bytes;
-use std::collections::HashMap;
-use std::ffi::OsStr;
 use std::path::Path;
+use crate::encode::EncodeAlgo;
 
 pub const CONTENT_TYPE: &[(&str, ContentType); 10] = &[
     ("text/html", ContentType::TextHtml),
@@ -20,7 +18,7 @@ pub const CONTENT_TYPE: &[(&str, ContentType); 10] = &[
 ];
 
 #[derive(Debug)]
-pub struct HttpHeadReq {
+pub struct HeadReq {
     pub method: Method,
     pub url: String,
     pub http_version: String,
@@ -32,14 +30,14 @@ pub struct HttpHeadReq {
     pub accept_encode: Option<Vec<EncodeAlgo>>,
 }
 
-impl HttpHeadReq {
+impl HeadReq {
     pub fn parse_from_utf8(v: &[u8]) -> NeroResult<Self> {
         let err = || NeroError::new_simple(NeroErrorKind::ParseHttpHeader);
 
         let mut head = Self::default();
 
         let string = String::from_utf8_lossy(v);
-        let mut lines: Vec<&str> = string.split("\r\n").collect();
+        let lines: Vec<&str> = string.split("\r\n").collect();
 
         match lines.first() {
             Some(first) => {
@@ -59,15 +57,13 @@ impl HttpHeadReq {
             .iter()
             .find(|line| line.starts_with("Host"))
             .ok_or(err())
-            .and_then(Self::parse_head_line)?
-            .to_string();
+            .and_then(Self::parse_head_line)?;
 
         head.user_agent = lines
             .iter()
             .find(|line| line.starts_with("User-Agent"))
             .ok_or(err())
-            .and_then(Self::parse_head_line)?
-            .to_string();
+            .and_then(Self::parse_head_line)?;
 
         head.cookie = lines
             .iter()
@@ -75,7 +71,7 @@ impl HttpHeadReq {
             .ok_or(err())
             .and_then(Self::parse_head_line)
             .map(Cookie::from_string)
-            .unwrap_or(Cookie::new());
+            .unwrap_or(Cookie::default());
 
         head.cont_len = lines
             .iter()
@@ -110,13 +106,13 @@ impl HttpHeadReq {
     }
 }
 
-impl Default for HttpHeadReq {
+impl Default for HeadReq {
     fn default() -> Self {
         Self {
             method: Method::Get,
             url: "/".to_string(),
             http_version: "HTTP/1.1".to_string(),
-            cookie: Cookie::new(),
+            cookie: Cookie::default(),
             host: "".to_string(),
             user_agent: "".to_string(),
             cont_len: None,
@@ -139,7 +135,7 @@ impl Method {
             "post" => Ok(Self::Post),
             _ => Err(NeroError::new(
                 NeroErrorKind::ParseHttpHeader,
-                format!("Unknown method"),
+                format!("Unknown method {}", string.to_string()),
             )),
         }
     }
@@ -163,16 +159,16 @@ impl ContentType {
     pub fn parse_from_string<T: ToString>(string: T) -> Self {
         CONTENT_TYPE
             .iter()
-            .find(|(s, t)| s == &string.to_string())
-            .map(|(s, t)| t.clone())
+            .find(|(s, _)| s == &string.to_string())
+            .map(|(_, t)| t.clone())
             .unwrap_or(Self::AppForm)
     }
 
     pub fn format_to_string(&self) -> String {
         CONTENT_TYPE
             .iter()
-            .find(|(s, t)| t == self)
-            .map(|(s, t)| s.to_string())
+            .find(|(_, t)| t == self)
+            .map(|(s, _)| s.to_string())
             .unwrap_or("application/x-www-form-urlencoded".to_string())
     }
 
@@ -193,7 +189,7 @@ impl ContentType {
     }
 }
 
-pub struct HttpHeadResp {
+pub struct HeadResp {
     pub http_version: String,
     pub status: Status,
     pub cont_type: ContentType,
@@ -203,7 +199,7 @@ pub struct HttpHeadResp {
     pub cont_encode: Option<EncodeAlgo>,
 }
 
-impl HttpHeadResp {
+impl HeadResp {
     pub fn format_to_string(&self) -> String {
         let mut res = Vec::new();
 
@@ -230,7 +226,7 @@ impl HttpHeadResp {
     }
 }
 
-impl Default for HttpHeadResp {
+impl Default for HeadResp {
     fn default() -> Self {
         let utc: DateTime<Utc> = Utc::now();
         let date = format!("{}", utc.format("%a, %d %b %Y %T GMT"));
@@ -258,39 +254,5 @@ impl Status {
             Self::Ok => (200, "OK"),
             Self::NotFound => (404, "Not Found"),
         }
-    }
-}
-
-#[derive(Debug, PartialEq, Clone)]
-pub enum EncodeAlgo {
-    Gzip,
-    Deflate,
-    Other(String),
-}
-
-impl EncodeAlgo {
-    pub fn encode(&self, data: &[u8]) -> Vec<u8> {
-        match self {
-            EncodeAlgo::Gzip => todo!(),
-            EncodeAlgo::Deflate => deflate_bytes(data),
-            EncodeAlgo::Other(algo) => panic!("Nero dont support {algo}"),
-        }
-    }
-
-    pub fn parse_from_string<T: ToString>(string: T) -> Self {
-        match string.to_string().as_str() {
-            "gzip" => Self::Gzip,
-            "deflate" => Self::Deflate,
-            _ => Self::Other(string.to_string()),
-        }
-    }
-
-    pub fn format_to_string(&self) -> String {
-        match &self {
-            Self::Gzip => "gzip",
-            Self::Deflate => "deflate",
-            Self::Other(algo) => algo,
-        }
-        .to_string()
     }
 }

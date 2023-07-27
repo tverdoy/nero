@@ -8,4 +8,5 @@ pub mod server;
 pub mod urlpatterns;
 pub mod view;
 
+pub use nero_util::error as nero_error;
 pub use nero_util::http;
