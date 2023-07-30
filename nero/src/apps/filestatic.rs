@@ -39,7 +39,7 @@ impl FileStatic {
             patterns.add_one(url, Box::new(view));
         }
 
-        Ok(App::new("file static", patterns))
+        Ok(App::new("file static", patterns, Vec::new()))
     }
 
     pub fn urls_by_path<T: ToString, P: AsRef<Path>>(root_url: T, path: P) -> Vec<String> {

@@ -1,8 +1,10 @@
 use nero::db::fieldargs::{IntArgs, StringArg};
-use nero::db::model::{Field, FieldType, Model, ModelStruct};
-use serde::Serialize;
+use nero::db::model::{Field, FieldType, Object, Scheme};
+use serde::{Deserialize, Serialize};
+use surrealdb::sql::Id;
 
-static STRUCT: &ModelStruct = &ModelStruct {
+static STRUCT: &Scheme = &Scheme {
+    name: "User",
     fields: &[
         Field {
             name: "id",
@@ -18,14 +20,23 @@ static STRUCT: &ModelStruct = &ModelStruct {
     ],
 };
 
-#[derive(Serialize)]
-struct User {
-    id: i32,
-    name: String,
+#[derive(Serialize, Deserialize, Default, Debug)]
+pub struct User {
+    #[serde(skip)]
+    pub id: Option<Id>,
+    pub name: String,
 }
 
-impl Model for User {
-    fn model_struct() -> &'static ModelStruct {
+impl Object for User {
+    fn model_struct() -> &'static Scheme {
         STRUCT
+    }
+
+    fn get_id(&self) -> Option<Id> {
+        self.id.clone()
+    }
+
+    fn set_id(&mut self, id: Id) {
+        self.id = Some(id);
     }
 }

@@ -1,51 +1,42 @@
 use crate::app::App;
 use crate::server::Server;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
-use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 use surrealdb::engine::remote::ws::{Client, Ws};
 use surrealdb::opt::auth::Root;
-use surrealdb::{Connect, Connection, Response, Surreal};
+use surrealdb::Surreal;
+
+pub static DB: Surreal<Client> = Surreal::init();
 
 pub struct Project {
     settings: Settings,
     apps: Vec<App>,
-    db: Surreal<Client>,
-}
-
-use serde::{Deserialize, Serialize};
-use surrealdb::sql::Thing;
-
-#[derive(Serialize)]
-struct User<'a> {
-    name: &'a str
-}
-
-#[derive(Debug, Deserialize)]
-struct Record {
-    #[allow(dead_code)]
-    id: Thing,
 }
 
 impl Project {
     pub async fn new(settings: Settings, apps: Vec<App>) -> NeroResult<Self> {
-        let db = Self::connect_to_db(&settings).await?;
+        Self::connect_to_db(&settings).await?;
 
-        Ok(Self { settings, apps, db })
+        Ok(Self { settings, apps })
     }
 
-    pub async fn connect_to_db(settings: &Settings) -> NeroResult<Surreal<Client>> {
+    pub async fn connect_to_db(settings: &Settings) -> NeroResult<()> {
         let err = |e| NeroError::new(NeroErrorKind::ConnectToDB, e);
-        let db = Surreal::new::<Ws>(settings.db_addr.clone()).await.map_err(err)?;
-        db.signin(Root {
+        DB.connect::<Ws>(settings.db_addr.clone())
+            .await
+            .map_err(err)?;
+        DB.signin(Root {
             username: &settings.db_user,
             password: &settings.db_password,
         })
+        .await
+        .map_err(err)?;
+
+        DB.use_ns(&settings.db_db)
+            .use_db(&settings.db_ns)
             .await
             .map_err(err)?;
 
-        db.use_ns(&settings.db_db).use_db(&settings.db_ns).await.map_err(err)?;
-
-        Ok(db)
+        Ok(())
     }
 
     pub fn add_apps(&mut self, mut apps: Vec<App>) {

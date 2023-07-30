@@ -61,4 +61,11 @@ pub enum ErrorKind {
     Nero,
     InvalidData,
     Serialize,
+    ObjectCreate,
+    ObjectGet,
+    ObjectDelete,
+    ObjectUpdate,
+    ObjectMerge,
+    ObjectNotExists,
+    ObjectIdIsNone,
 }
