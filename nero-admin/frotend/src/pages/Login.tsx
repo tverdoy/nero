@@ -1,9 +1,16 @@
 import React, {FC} from 'react';
 import {Checkbox, Form, Layout, Row, Input, Button, Card} from "antd";
+import {useDispatch} from "react-redux";
+import {AuthActionCreators} from "../store/reducers/auth/action-creators";
+import {AppDispatch, useAppDispatch} from "../store";
+import {useActions} from "../hooks/useAction";
 
 const Login: FC = () => {
+    const {login} = useActions()
+
     const onFinish = (values: any) => {
-        console.log('Success:', values);
+        console.log(values);
+        login(values.username, values.password)
     };
 
     const onFinishFailed = (errorInfo: any) => {
@@ -17,8 +24,7 @@ const Login: FC = () => {
                     <Row justify={"center"} align={"middle"} style={{height: "100%", width: "100%"}}>
                         <Form
                             name="basic"
-                            labelCol={{ span: 7 }}
-                            wrapperCol={{ span: 17 }}
+                            wrapperCol={{ span: 20 }}
                             style={{ maxWidth: 600, width: "100%"}}
                             initialValues={{ remember: true }}
                             onFinish={onFinish}
@@ -41,13 +47,13 @@ const Login: FC = () => {
                                 <Input.Password />
                             </Form.Item>
 
-                            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
+                            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 0, span: 24 }}>
                                 <Checkbox>Remember me</Checkbox>
                             </Form.Item>
 
-                            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                                <Button type="primary" htmlType="submit">
-                                    Submit
+                            <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
+                                <Button type="primary" htmlType="submit"  size={"large"} style={{width: "100%"}}>
+                                    Login
                                 </Button>
                             </Form.Item>
                         </Form>

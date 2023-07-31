@@ -28,6 +28,10 @@ pub struct HeadReq {
     pub cont_len: Option<usize>,
     pub cont_type: Option<ContentType>,
     pub accept_encode: Option<Vec<EncodeAlgo>>,
+    pub acr_headers: Option<Vec<String>>,
+    pub acr_method: Option<String>,
+    pub origin: Option<String>
+
 }
 
 impl HeadReq {
@@ -91,6 +95,22 @@ impl HeadReq {
             .and_then(|val| Self::parse_head_line(val).ok())
             .map(|val| val.split(", ").map(EncodeAlgo::parse_from_string).collect());
 
+        head.acr_method = lines
+            .iter()
+            .find(|line| line.starts_with("Access-Control-Request-Method"))
+            .and_then(|val| Self::parse_head_line(val).ok());
+
+        head.acr_headers = lines
+            .iter()
+            .find(|line| line.starts_with("Access-Control-Request-Headers"))
+            .and_then(|val| Self::parse_head_line(val).ok())
+            .map(|val| val.split(", ").map(|s| s.to_string()).collect());
+
+        head.origin = lines
+            .iter()
+            .find(|line| line.starts_with("Origin"))
+            .and_then(|val| Self::parse_head_line(val).ok());
+
         Ok(head)
     }
 
@@ -103,6 +123,10 @@ impl HeadReq {
         } else {
             Err(NeroError::new_simple(NeroErrorKind::ParseHttpHeader))
         }
+    }
+
+    pub fn is_acr(&self) -> bool {
+        self.origin.is_some() && (self.acr_method.is_some() || self.acr_headers.is_some())
     }
 }
 
@@ -118,6 +142,9 @@ impl Default for HeadReq {
             cont_len: None,
             cont_type: None,
             accept_encode: None,
+            acr_headers: None,
+            acr_method: None,
+            origin: None,
         }
     }
 }
@@ -126,6 +153,7 @@ impl Default for HeadReq {
 pub enum Method {
     Get,
     Post,
+    Options
 }
 
 impl Method {
@@ -133,6 +161,7 @@ impl Method {
         match string.to_string().to_lowercase().as_str() {
             "get" => Ok(Self::Get),
             "post" => Ok(Self::Post),
+            "options" => Ok(Self::Options),
             _ => Err(NeroError::new(
                 NeroErrorKind::ParseHttpHeader,
                 format!("Unknown method {}", string.to_string()),
@@ -189,6 +218,7 @@ impl ContentType {
     }
 }
 
+#[derive(Debug)]
 pub struct HeadResp {
     pub http_version: String,
     pub status: Status,
@@ -197,6 +227,10 @@ pub struct HeadResp {
     pub date: String,
     pub server: String,
     pub cont_encode: Option<EncodeAlgo>,
+    pub aca_origin: Option<String>,
+    pub aca_methods: Option<Vec<String>>,
+    pub aca_headers: Option<Vec<String>>,
+
 }
 
 impl HeadResp {
@@ -210,6 +244,9 @@ impl HeadResp {
         ));
         res.push(format!("Server: {}", self.server));
         res.push(format!("Date: {}", self.date));
+        // res.push(format!("Access-Control-Allow-Origin: *"));
+        res.push(format!("Access-Control-Allow-Methods: PUT, POST, OPTIONS, GET"));
+        res.push(format!("Access-Control-Allow-Headers: content-type"));
         res.push(format!(
             "Content-Type: {}",
             self.cont_type.format_to_string()
@@ -219,6 +256,17 @@ impl HeadResp {
         if let Some(algo) = &self.cont_encode {
             res.push(format!("Content-Encoding: {}", algo.format_to_string()));
         }
+
+        if let Some(origin) = &self.aca_origin {
+            res.push(format!("Access-Control-Allow-Origin: {origin}"));
+
+        } else {
+            res.push(format!("Access-Control-Allow-Origin: *"));
+        }
+
+
+
+
         res.push(String::new());
         res.push(String::new());
 
@@ -239,13 +287,18 @@ impl Default for HeadResp {
             date,
             server: "Nero".to_string(),
             cont_encode: None,
+            aca_origin: None,
+            aca_methods: None,
+            aca_headers: None,
         }
     }
 }
 
+#[derive(Debug)]
 pub enum Status {
     Ok,
     NotFound,
+    NoContent
 }
 
 impl Status {
@@ -253,6 +306,7 @@ impl Status {
         match self {
             Self::Ok => (200, "OK"),
             Self::NotFound => (404, "Not Found"),
+            Status::NoContent => (204, "No Content")
         }
     }
 }

@@ -1,3 +1,4 @@
+use nero::apps::cors::CORS;
 use nero::apps::filestatic::FileStatic;
 use nero::project::{Project, Settings};
 
@@ -14,7 +15,7 @@ async fn main() {
 
     let file_static = FileStatic::app("/static/", "./static").unwrap();
 
-    let apps = vec![messenger::build_app(), file_static];
+    let apps = vec![messenger::build_app(), file_static, nero_admin::build_app()];
     Project::new(settings, apps)
         .await
         .unwrap()

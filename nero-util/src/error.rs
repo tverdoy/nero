@@ -58,6 +58,7 @@ pub enum NeroErrorKind {
     SetupServer,
     AcceptConnection,
     AcceptHttpHeader,
+    AcceptHttpBody,
     OverflowHttpHeader,
     OverflowHttpBody,
     ParseHttpHeader,

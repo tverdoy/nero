@@ -12,21 +12,36 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add redux and react router">
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/components/Header.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/components/Sider.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/hooks/useTypedSelector.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/index.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/types.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/index.ts" afterDir="false" />
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add page login and auth reducer">
+      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/api.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/hooks/useAction.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/models/IUser.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/action-creeates.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/action-creators.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/admin_user.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/mod.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero/src/apps/cors.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/components/AppRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/components/AppRouter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/pages/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/pages/Login.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/http.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/http.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/apps/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/project.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/project.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/request.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/request.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/responder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/responder.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/server.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/urlpatterns.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/urlpatterns.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,9 +56,9 @@
       <list>
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="Rust File" />
         <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="Rust File" />
       </list>
     </option>
   </component>
@@ -95,7 +110,7 @@
       <command value="cargo clippy --all" />
     </option>
   </component>
-  <component name="RunManager" selected="npm.Run admin frotend">
+  <component name="RunManager" selected="Cargo.Run simple">
     <configuration name="Run simple" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/examples/simple" />
@@ -191,7 +206,7 @@
       <workItem from="1690295612478" duration="14001000" />
       <workItem from="1690442112123" duration="16703000" />
       <workItem from="1690743233730" duration="7647000" />
-      <workItem from="1690795465525" duration="10018000" />
+      <workItem from="1690795465525" duration="25468000" />
     </task>
     <task id="LOCAL-00001" summary="Add component responder">
       <option name="closed" value="true" />
@@ -273,7 +288,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690800615753</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Add page login and auth reducer">
+      <option name="closed" value="true" />
+      <created>1690806581362</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1690806581362</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -313,6 +336,7 @@
     <MESSAGE value="Add base orm feature" />
     <MESSAGE value="Add new module nero admin" />
     <MESSAGE value="Add redux and react router" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add redux and react router" />
+    <MESSAGE value="Add page login and auth reducer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add page login and auth reducer" />
   </component>
 </project>

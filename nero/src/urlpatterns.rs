@@ -2,7 +2,7 @@ use crate::view::View;
 use std::collections::HashMap;
 use std::sync::Arc;
 
-type Callback = Box<dyn View + Send + Sync>;
+pub type Callback = Box<dyn View + Send + Sync>;
 
 #[derive(Clone, Default)]
 pub struct UrlPatterns {

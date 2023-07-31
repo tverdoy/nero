@@ -4,6 +4,7 @@ use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
 use surrealdb::engine::remote::ws::{Client, Ws};
 use surrealdb::opt::auth::Root;
 use surrealdb::Surreal;
+use crate::apps::cors::CORS;
 
 pub static DB: Surreal<Client> = Surreal::init();
 
@@ -43,10 +44,14 @@ impl Project {
         self.apps.append(&mut apps)
     }
 
-    pub async fn run(self) -> NeroResult<()> {
-        Server::setup(self.settings.addr)
+    pub async fn run(mut self) -> NeroResult<()> {
+        if self.settings.is_allow_cors {
+            self.apps.push(CORS::app()?)
+        }
+
+        Server::setup(&self.settings.addr)
             .await?
-            .run(self.apps)
+            .run(self.apps, self.settings)
             .await
     }
 }
@@ -63,6 +68,11 @@ pub struct Settings {
 
     pub max_head_size: usize,
     pub max_body_size: usize,
+
+    pub is_allow_cors: bool,
+    pub allow_origin: String,
+    pub allow_headers: Vec<String>,
+    pub allow_methods: Vec<String>
 }
 
 impl Default for Settings {
@@ -78,6 +88,11 @@ impl Default for Settings {
 
             max_head_size: 4096,      // 4 KB
             max_body_size: 4_194_304, // 4 MB
+
+            is_allow_cors: true,
+            allow_origin: "*".to_string(),
+            allow_headers: vec!["*".to_string()],
+            allow_methods: vec!["GET".to_string(), "POST".to_string(), "OPTIONS".to_string()],
         }
     }
 }

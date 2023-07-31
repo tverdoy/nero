@@ -7,6 +7,7 @@ use serde::Serialize;
 use std::path::Path;
 use tokio::fs::File;
 use tokio::io::AsyncReadExt;
+use crate::project::Settings;
 
 const SIZE_ENCODE: usize = 2_097_152; // 2 MB
 
@@ -16,7 +17,7 @@ pub struct Responder {
 }
 
 impl Responder {
-    pub fn complete(&mut self, request: &Request) {
+    pub fn complete(&mut self, request: &Request, settings: &Settings) {
         if self.data.len() > SIZE_ENCODE {
             if let Some(algorithms) = &request.head.accept_encode {
                 if let Some(algo) = algorithms.iter().find(|algo| *algo == &EncodeAlgo::Deflate) {
@@ -24,6 +25,12 @@ impl Responder {
                     self.head.cont_encode = Some(algo.clone())
                 }
             }
+        }
+
+        if settings.is_allow_cors {
+            self.head.aca_origin = Some(settings.allow_origin.clone());
+            self.head.aca_methods = Some(settings.allow_methods.clone());
+            self.head.aca_headers = Some(settings.allow_headers.clone());
         }
 
         self.head.cont_len = self.data.len();
@@ -38,6 +45,18 @@ impl Responder {
     pub fn ok() -> Result<Self> {
         let head = HeadResp {
             status: Status::Ok,
+            ..Default::default()
+        };
+
+        Ok(Self {
+            data: Vec::new(),
+            head,
+        })
+    }
+
+    pub fn no_content() -> Result<Self> {
+        let head = HeadResp {
+            status: Status::NoContent,
             ..Default::default()
         };
 
