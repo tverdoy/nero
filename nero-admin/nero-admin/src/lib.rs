@@ -1,16 +1,26 @@
 pub mod models;
 pub mod views;
 
-use views::*;
 use models::*;
+use views::*;
 
+use crate::models::admin_user::AdminUser;
 use nero::app::App;
 use nero::urlpatterns::UrlPatterns;
 
+pub async fn build_app() -> App {
+    if !AdminUser::exists_root().await {
+        if let Err(e) = AdminUser::create_root().await {
+            eprintln!("Failed create admin user: {e}");
+        }
+    }
 
-pub fn build_app() -> App {
     let mut patterns = UrlPatterns::default();
     patterns.add(vec![("/admin/login", Box::new(login::Login))]);
 
-    App::new("Admin panel", patterns, vec![Box::<admin_user::AdminUser>::default()])
+    App::new(
+        "Admin panel",
+        patterns,
+        vec![Box::<admin_user::AdminUser>::default()],
+    )
 }

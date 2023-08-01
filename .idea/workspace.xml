@@ -12,36 +12,36 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add page login and auth reducer">
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/hooks/useAction.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/models/IUser.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/action-creeates.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/action-creators.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/admin_user.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/mod.rs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/nero/src/apps/cors.rs" afterDir="false" />
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add cors support">
+      <change afterPath="$PROJECT_DIR$/examples/simple/src/settings.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-util/src/auth.rs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero/src/settings.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/simple/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/pages/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/pages/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/store/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frotend/src/store/reducers/auth/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/models/user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/models/user.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/Cargo.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/admin_user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/admin_user.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/cookie.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/cookie.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-util/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/error.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-util/src/http.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/http.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/apps/cors.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/cors.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/apps/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/db/model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/db/model.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/lib.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/project.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/project.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/request.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/request.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/responder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/responder.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/server.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/urlpatterns.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/urlpatterns.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,30 +76,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/dimatverdoy/CLionProjects/nero/examples/simple/static/images",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "ts.external.directory.path": "/Users/dimatverdoy/CLionProjects/nero/nero-admin/frotend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/dimatverdoy/CLionProjects/nero/examples/simple/static/images&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/dimatverdoy/CLionProjects/nero/nero-admin/frotend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/examples/simple/static/images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/nero/src" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -206,7 +209,9 @@
       <workItem from="1690295612478" duration="14001000" />
       <workItem from="1690442112123" duration="16703000" />
       <workItem from="1690743233730" duration="7647000" />
-      <workItem from="1690795465525" duration="25468000" />
+      <workItem from="1690795465525" duration="25946000" />
+      <workItem from="1690836073575" duration="3691000" />
+      <workItem from="1690894260870" duration="10159000" />
     </task>
     <task id="LOCAL-00001" summary="Add component responder">
       <option name="closed" value="true" />
@@ -296,7 +301,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690806581362</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Add cors support">
+      <option name="closed" value="true" />
+      <created>1690828248438</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1690828248438</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -337,6 +350,7 @@
     <MESSAGE value="Add new module nero admin" />
     <MESSAGE value="Add redux and react router" />
     <MESSAGE value="Add page login and auth reducer" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add page login and auth reducer" />
+    <MESSAGE value="Add cors support" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add cors support" />
   </component>
 </project>

@@ -1,7 +1,7 @@
 use nero::db::fieldargs::{IntArgs, StringArg};
 use nero::db::model::{Field, FieldType, Object, Scheme};
 use serde::{Deserialize, Serialize};
-use surrealdb::sql::Id;
+use surrealdb::sql::{Thing};
 
 static STRUCT: &Scheme = &Scheme {
     name: "User",
@@ -23,7 +23,7 @@ static STRUCT: &Scheme = &Scheme {
 #[derive(Serialize, Deserialize, Default, Debug)]
 pub struct User {
     #[serde(skip)]
-    pub id: Option<Id>,
+    pub id: Option<Thing>,
     pub name: String,
 }
 
@@ -32,11 +32,11 @@ impl Object for User {
         STRUCT
     }
 
-    fn get_id(&self) -> Option<Id> {
+    fn get_id(&self) -> Option<Thing> {
         self.id.clone()
     }
 
-    fn set_id(&mut self, id: Id) {
+    fn set_id(&mut self, id: Thing) {
         self.id = Some(id);
     }
 }

@@ -69,4 +69,6 @@ pub enum ErrorKind {
     ObjectMerge,
     ObjectNotExists,
     ObjectIdIsNone,
+    Auth,
+    RequestContentIsInvalid
 }

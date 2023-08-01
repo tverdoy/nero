@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-#[derive(Debug, Default)]
+#[derive(Debug, Default, Clone)]
 pub struct Cookie {
     data: HashMap<String, String>,
 }
@@ -21,7 +21,21 @@ impl Cookie {
         res
     }
 
+    pub fn format_to_string(&self) -> String {
+        let mut res = Vec::new();
+
+        for (key, val) in &self.data {
+            res.push(format!("{key}={val}"));
+        }
+
+        res.join(", ")
+    }
+
     pub fn add<T1: ToString, T2: ToString>(&mut self, key: T1, val: T2) {
         self.data.insert(key.to_string(), val.to_string());
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.data.is_empty()
     }
 }

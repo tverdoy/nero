@@ -1,25 +1,22 @@
-use nero::apps::cors::CORS;
 use nero::apps::filestatic::FileStatic;
 use nero::project::{Project, Settings};
+use nero::settings::{AuthTokenConf};
 
-mod messenger;
+pub mod messenger;
+pub mod settings;
 
 #[tokio::main]
 async fn main() {
-    let settings = Settings {
-        db_addr: "127.0.0.1:8000".to_string(),
-        db_user: "root".to_string(),
-        db_password: "root".to_string(),
-        ..Default::default()
-    };
+    Settings::set_admin_auth(AuthTokenConf { exr: 900, secret_key: Vec::from("SECRETKEYFORADMIN") });
+    Project::connect_to_db().await.unwrap();
 
     let file_static = FileStatic::app("/static/", "./static").unwrap();
 
-    let apps = vec![messenger::build_app(), file_static, nero_admin::build_app()];
-    Project::new(settings, apps)
-        .await
-        .unwrap()
-        .run()
-        .await
-        .unwrap();
+    let apps = vec![
+        messenger::build_app(),
+        file_static,
+        nero_admin::build_app().await,
+    ];
+
+    Project::new(apps).await.unwrap().run().await.unwrap();
 }

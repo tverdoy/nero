@@ -1,2 +1,2 @@
-pub mod filestatic;
 pub mod cors;
+pub mod filestatic;

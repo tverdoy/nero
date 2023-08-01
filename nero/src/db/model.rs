@@ -20,9 +20,9 @@ pub trait Object {
     where
         Self: Sized;
 
-    fn get_id(&self) -> Option<Id>;
+    fn get_id(&self) -> Option<Thing>;
 
-    fn set_id(&mut self, id: Id);
+    fn set_id(&mut self, id: Thing);
 
     async fn create(&mut self) -> Result<()>
     where
@@ -37,7 +37,7 @@ pub trait Object {
         }
         .map_err(err)?;
 
-        self.set_id(record.id.id);
+        self.set_id(record.id);
 
         Ok(())
     }

@@ -1,17 +1,17 @@
 use async_trait::async_trait;
-use serde::Deserialize;
-use nero::error::{Error, ErrorKind};
 use nero::http::Status;
-use nero::request::{Request};
+use nero::request::Request;
 use nero::responder::Responder;
 use nero::view::View;
+use serde::Deserialize;
+use crate::models::admin_user::AdminUser;
 
 pub struct Login;
 
 #[derive(Deserialize)]
 struct Data {
     username: String,
-    password: String
+    password: String,
 }
 
 #[async_trait]
@@ -21,9 +21,15 @@ impl View for Login {
     }
 
     async fn callback(&self, request: &mut Request) -> nero::error::Result<Responder> {
-        let err = || Error::new_simple(ErrorKind::InvalidData);
-
         let data: Data = request.data_to_obj()?;
-        Responder::text(Status::Ok, format!("Hello {}", data.username))
+        let user = AdminUser::get_by_username(&data.username).await?;
+
+        if user.check_login(data.password).await? {
+            user.auth(request).await?;
+            Responder::text(Status::Ok, format!("Hello {}", data.username))
+        } else {
+            Responder::text(Status::Unauthorized, format!("No auth {}", data.username))
+
+        }
     }
 }

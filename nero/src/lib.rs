@@ -6,6 +6,7 @@ pub mod project;
 pub mod request;
 pub mod responder;
 pub mod server;
+pub mod settings;
 pub mod urlpatterns;
 pub mod view;
 

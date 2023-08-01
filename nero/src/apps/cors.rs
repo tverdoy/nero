@@ -1,11 +1,10 @@
-use async_trait::async_trait;
-use nero_util::error::NeroResult;
-use nero_util::http::HeadResp;
 use crate::app::App;
 use crate::request::Request;
 use crate::responder::Responder;
 use crate::urlpatterns::UrlPatterns;
 use crate::view::View;
+use async_trait::async_trait;
+use nero_util::error::NeroResult;
 
 pub struct CORS;
 
@@ -26,7 +25,7 @@ impl View for CORS {
         "cors"
     }
 
-    async fn callback(&self, request: &mut Request) -> crate::error::Result<Responder> {
+    async fn callback(&self, _request: &mut Request) -> crate::error::Result<Responder> {
         Responder::no_content()
     }
 }

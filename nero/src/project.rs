@@ -1,39 +1,43 @@
 use crate::app::App;
+use crate::apps::cors::CORS;
 use crate::server::Server;
+use crate::settings::{AuthTokenConf, CorsConf, DataBaseConf, ServerConf};
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
+use once_cell::sync::OnceCell;
 use surrealdb::engine::remote::ws::{Client, Ws};
 use surrealdb::opt::auth::Root;
 use surrealdb::Surreal;
-use crate::apps::cors::CORS;
 
 pub static DB: Surreal<Client> = Surreal::init();
+static SETTINGS: Settings = Settings::init();
 
 pub struct Project {
-    settings: Settings,
     apps: Vec<App>,
 }
 
 impl Project {
-    pub async fn new(settings: Settings, apps: Vec<App>) -> NeroResult<Self> {
-        Self::connect_to_db(&settings).await?;
+    pub async fn new(apps: Vec<App>) -> NeroResult<Self> {
+        if DB.health().await.is_err() {
+            Self::connect_to_db().await?;
+        }
 
-        Ok(Self { settings, apps })
+        Ok(Self { apps })
     }
 
-    pub async fn connect_to_db(settings: &Settings) -> NeroResult<()> {
+    pub async fn connect_to_db() -> NeroResult<()> {
         let err = |e| NeroError::new(NeroErrorKind::ConnectToDB, e);
-        DB.connect::<Ws>(settings.db_addr.clone())
+        DB.connect::<Ws>(Settings::db().db_addr.clone())
             .await
             .map_err(err)?;
         DB.signin(Root {
-            username: &settings.db_user,
-            password: &settings.db_password,
+            username: &Settings::db().db_user,
+            password: &Settings::db().db_password,
         })
         .await
         .map_err(err)?;
 
-        DB.use_ns(&settings.db_db)
-            .use_db(&settings.db_ns)
+        DB.use_ns(&Settings::db().db_db)
+            .use_db(&Settings::db().db_ns)
             .await
             .map_err(err)?;
 
@@ -45,54 +49,63 @@ impl Project {
     }
 
     pub async fn run(mut self) -> NeroResult<()> {
-        if self.settings.is_allow_cors {
+        if Settings::cors().is_allow_cors {
             self.apps.push(CORS::app()?)
         }
 
-        Server::setup(&self.settings.addr)
+        Server::setup(&Settings::server().addr)
             .await?
-            .run(self.apps, self.settings)
+            .run(self.apps)
             .await
     }
 }
 
-#[derive(Debug)]
 pub struct Settings {
-    pub addr: String,
-
-    pub db_addr: String,
-    pub db_user: String,
-    pub db_password: String,
-    pub db_ns: String,
-    pub db_db: String,
-
-    pub max_head_size: usize,
-    pub max_body_size: usize,
-
-    pub is_allow_cors: bool,
-    pub allow_origin: String,
-    pub allow_headers: Vec<String>,
-    pub allow_methods: Vec<String>
+    pub server: OnceCell<ServerConf>,
+    pub db: OnceCell<DataBaseConf>,
+    pub cors: OnceCell<CorsConf>,
+    pub admin_auth: OnceCell<AuthTokenConf>
 }
 
-impl Default for Settings {
-    fn default() -> Self {
+impl Settings {
+    const fn init() -> Self {
         Self {
-            addr: "127.0.0.1:8080".to_string(),
-
-            db_addr: "127.0.0.1:8000".to_string(),
-            db_user: "root".to_string(),
-            db_password: "root".to_string(),
-            db_ns: "nero".to_string(),
-            db_db: "nero".to_string(),
-
-            max_head_size: 4096,      // 4 KB
-            max_body_size: 4_194_304, // 4 MB
-
-            is_allow_cors: true,
-            allow_origin: "*".to_string(),
-            allow_headers: vec!["*".to_string()],
-            allow_methods: vec!["GET".to_string(), "POST".to_string(), "OPTIONS".to_string()],
+            server: OnceCell::new(),
+            db: OnceCell::new(),
+            cors: OnceCell::new(),
+            admin_auth: OnceCell::new(),
         }
+    }
+
+    pub fn set_server(server: ServerConf) {
+        SETTINGS.server.set(server).unwrap();
+    }
+
+    pub fn set_db(db: DataBaseConf) {
+        SETTINGS.db.set(db).unwrap();
+    }
+
+    pub fn set_cors(cors: CorsConf) {
+        SETTINGS.cors.set(cors).unwrap();
+    }
+
+    pub fn set_admin_auth(auth: AuthTokenConf) {
+        SETTINGS.admin_auth.set(auth).unwrap();
+    }
+
+    pub fn server() -> &'static ServerConf {
+        SETTINGS.server.get_or_init(ServerConf::default)
+    }
+
+    pub fn db() -> &'static DataBaseConf {
+        SETTINGS.db.get_or_init(DataBaseConf::default)
+    }
+
+    pub fn cors() -> &'static CorsConf {
+        SETTINGS.cors.get_or_init(CorsConf::default)
+    }
+
+    pub fn admin_auth() -> &'static AuthTokenConf {
+        SETTINGS.admin_auth.get().expect("Admin auth settings is not set")
     }
 }

@@ -1,15 +1,12 @@
 use crate::app::App;
+use crate::apps::cors::{CORS_URL};
 use crate::request::Request;
 use crate::responder::Responder;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
-use nero_util::http::{HeadReq, HeadResp};
+use nero_util::http::{HeadReq};
 use std::sync::Arc;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
-use crate::apps::cors::{CORS, CORS_URL};
-use crate::project::Settings;
-use crate::urlpatterns::Callback;
-use crate::view::View;
 
 pub const MAX_HTTP_HEADER_SIZE: usize = 4096; // 4 KB
 pub const MAX_HTTP_BODY_SIZE: usize = 4_194_304; // 4 MB
@@ -27,17 +24,15 @@ impl Server {
         Ok(Self { listener })
     }
 
-    pub async fn run(&mut self, apps: Vec<App>, settings: Settings) -> ! {
+    pub async fn run(&mut self, apps: Vec<App>) -> ! {
         let apps = Arc::new(apps);
-        let settings = Arc::new(settings);
 
         loop {
             let apps_view = apps.clone();
-            let settings_view = settings.clone();
 
             match self.listener.accept().await {
                 Ok((socket, _addr)) => tokio::spawn(async move {
-                    if let Err(e) = Self::handle_conn(socket, &apps_view, &settings_view).await {
+                    if let Err(e) = Self::handle_conn(socket, &apps_view).await {
                         eprintln!("{e}")
                     }
                 }),
@@ -50,7 +45,7 @@ impl Server {
         }
     }
 
-    pub async fn handle_conn(mut socket: TcpStream, apps: &Vec<App>, settings: &Settings) -> NeroResult<()> {
+    pub async fn handle_conn(mut socket: TcpStream, apps: &Vec<App>) -> NeroResult<()> {
         let head_bin = Self::read_req_head(&mut socket).await?;
         let head = HeadReq::parse_from_utf8(&head_bin).unwrap();
         let mut pattern = None;
@@ -83,7 +78,7 @@ impl Server {
         let responder = view.callback(&mut request).await;
         match responder {
             Ok(mut responder) => {
-                responder.complete(&request, settings);
+                responder.complete(&request);
 
                 Self::send_response(&mut request.socket, &responder).await
             }
@@ -93,7 +88,6 @@ impl Server {
             )),
         }
     }
-
 
     pub async fn send_response(socket: &mut TcpStream, resp: &Responder) -> NeroResult<()> {
         socket
@@ -129,13 +123,15 @@ impl Server {
 
     pub async fn read_req_body(socket: &mut TcpStream, cont_len: usize) -> NeroResult<Vec<u8>> {
         if cont_len > MAX_HTTP_BODY_SIZE {
-            return Err(NeroError::new_simple(NeroErrorKind::OverflowHttpBody))
+            return Err(NeroError::new_simple(NeroErrorKind::OverflowHttpBody));
         }
 
         let mut buf = vec![0; cont_len];
-        socket.read_exact(&mut buf).await.map_err(|_| NeroError::new_simple(NeroErrorKind::AcceptHttpBody))?;
+        socket
+            .read_exact(&mut buf)
+            .await
+            .map_err(|_| NeroError::new_simple(NeroErrorKind::AcceptHttpBody))?;
 
         Ok(buf)
     }
 }
-

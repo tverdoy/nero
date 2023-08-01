@@ -30,8 +30,7 @@ pub struct HeadReq {
     pub accept_encode: Option<Vec<EncodeAlgo>>,
     pub acr_headers: Option<Vec<String>>,
     pub acr_method: Option<String>,
-    pub origin: Option<String>
-
+    pub origin: Option<String>,
 }
 
 impl HeadReq {
@@ -153,7 +152,7 @@ impl Default for HeadReq {
 pub enum Method {
     Get,
     Post,
-    Options
+    Options,
 }
 
 impl Method {
@@ -226,11 +225,11 @@ pub struct HeadResp {
     pub cont_len: usize,
     pub date: String,
     pub server: String,
+    pub set_cookie: Option<Cookie>,
     pub cont_encode: Option<EncodeAlgo>,
     pub aca_origin: Option<String>,
     pub aca_methods: Option<Vec<String>>,
     pub aca_headers: Option<Vec<String>>,
-
 }
 
 impl HeadResp {
@@ -244,9 +243,6 @@ impl HeadResp {
         ));
         res.push(format!("Server: {}", self.server));
         res.push(format!("Date: {}", self.date));
-        // res.push(format!("Access-Control-Allow-Origin: *"));
-        res.push(format!("Access-Control-Allow-Methods: PUT, POST, OPTIONS, GET"));
-        res.push(format!("Access-Control-Allow-Headers: content-type"));
         res.push(format!(
             "Content-Type: {}",
             self.cont_type.format_to_string()
@@ -259,13 +255,25 @@ impl HeadResp {
 
         if let Some(origin) = &self.aca_origin {
             res.push(format!("Access-Control-Allow-Origin: {origin}"));
-
-        } else {
-            res.push(format!("Access-Control-Allow-Origin: *"));
         }
 
+        if let Some(headers) = &self.aca_headers {
+            res.push(format!(
+                "Access-Control-Allow-Headers: {}",
+                headers.join(", ")
+            ));
+        }
 
+        if let Some(methods) = &self.aca_methods {
+            res.push(format!(
+                "Access-Control-Allow-Methods: {}",
+                methods.join(", ")
+            ));
+        }
 
+        if let Some(cookie) = &self.set_cookie {
+            res.push(format!("Set-Cookie: {}", cookie.format_to_string()));
+        }
 
         res.push(String::new());
         res.push(String::new());
@@ -286,6 +294,7 @@ impl Default for HeadResp {
             cont_len: 0,
             date,
             server: "Nero".to_string(),
+            set_cookie: None,
             cont_encode: None,
             aca_origin: None,
             aca_methods: None,
@@ -298,7 +307,8 @@ impl Default for HeadResp {
 pub enum Status {
     Ok,
     NotFound,
-    NoContent
+    NoContent,
+    Unauthorized
 }
 
 impl Status {
@@ -306,7 +316,8 @@ impl Status {
         match self {
             Self::Ok => (200, "OK"),
             Self::NotFound => (404, "Not Found"),
-            Status::NoContent => (204, "No Content")
+            Status::NoContent => (204, "No Content"),
+            Status::Unauthorized => (401, "Unauthorized")
         }
     }
 }
