@@ -3,7 +3,7 @@ import {Layout} from "antd";
 
 const Header: FC = () => {
     return (
-        <Layout.Header style={{ padding: 0 }} />
+        <Layout.Header style={{padding: 0}}/>
     );
 };
 

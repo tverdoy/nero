@@ -1,4 +1,5 @@
 use nero::apps::filestatic::FileStatic;
+use nero::apps::not_found::NotFound;
 use nero::project::{Project, Settings};
 use nero::settings::AuthTokenConf;
 
@@ -8,8 +9,9 @@ pub mod messenger;
 async fn main() {
     Settings::set_admin_auth(AuthTokenConf {
         exr: 900,
-        secret_key: Vec::from("SECRETKEYFORADMIN"),
+        secret_key: Vec::from("SECRET_KEY_FOR_ADMIN"),
     });
+
     let file_static = FileStatic::app("/static/", "./static").unwrap();
 
     let apps = vec![

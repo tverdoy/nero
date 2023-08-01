@@ -4,6 +4,8 @@ use nero_util::cookie::Cookie;
 use nero_util::http::{ContentType, HeadReq};
 use serde::de;
 use tokio::net::TcpStream;
+use nero_util::error::NeroResult;
+use crate::server::Server;
 
 pub struct Request {
     pub socket: TcpStream,
@@ -13,13 +15,20 @@ pub struct Request {
 }
 
 impl Request {
-    pub fn new(socket: TcpStream, head: HeadReq, data: Option<Vec<u8>>) -> Self {
-        Self {
+    pub async fn init(mut socket: TcpStream, head: HeadReq) -> NeroResult<Self> {
+        let mut data = None;
+        if !head.is_acr() {
+            if let Some(cont_len) = head.cont_len {
+                data = Some(Server::read_req_body(&mut socket, cont_len).await?);
+            }
+        }
+
+        Ok(Self {
             socket,
             head,
             data,
             set_cookie: Cookie::default(),
-        }
+        })
     }
 
     pub fn data_to_obj<'a, T: de::Deserialize<'a>>(&'a self) -> Result<T> {

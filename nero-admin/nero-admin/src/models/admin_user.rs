@@ -1,12 +1,13 @@
 use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
+use surrealdb::sql::Thing;
+
 use nero::db::fieldargs::StringArg;
 use nero::db::model::{Field, FieldType, Object, Scheme};
 use nero::error::*;
-use nero::project::{Settings, DB};
+use nero::project::{DB, Settings};
 use nero::request::Request;
 use nero_util::auth::generate_token;
-use serde::{Deserialize, Serialize};
-use surrealdb::sql::Thing;
 
 static STRUCT: &Scheme = &Scheme {
     name: "AdminUser",
@@ -48,9 +49,9 @@ impl AdminUser {
         DB.query(
             "create $id set username = $username, password = crypto::bcrypt::generate($password)",
         )
-        .bind(admin)
-        .await
-        .map_err(|e| Error::new(ErrorKind::ObjectCreate, e))?;
+            .bind(admin)
+            .await
+            .map_err(|e| Error::new(ErrorKind::ObjectCreate, e))?;
 
         Ok(())
     }

@@ -35,7 +35,6 @@ export interface SetErrorAction {
 }
 
 
-
 export type AuthAction =
     SetAuthAction |
     SetUserAction |

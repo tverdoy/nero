@@ -13,6 +13,6 @@ impl View for HomeView {
     }
 
     async fn callback(&self, _request: &mut Request) -> nero::error::Result<Responder> {
-        Responder::text(Status::Ok, "HEllo")
+        Responder::text(Status::Ok, "Hello")
     }
 }

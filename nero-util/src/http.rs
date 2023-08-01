@@ -1,3 +1,4 @@
+use std::fmt::{Display, Formatter};
 use crate::cookie::Cookie;
 use crate::encode::EncodeAlgo;
 use crate::error::*;
@@ -323,5 +324,13 @@ impl Status {
             Self::ServerError => (500, "Internal Server Error"),
             Self::BadRequest => (400, "Bad Request"),
         }
+    }
+}
+
+impl Display for Status {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let info = self.status_info();
+
+        f.write_fmt(format_args!("{}({})", info.0, info.1))
     }
 }

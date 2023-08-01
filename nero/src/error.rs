@@ -52,7 +52,7 @@ impl Display for Error {
     }
 }
 
-impl std::error::Error for Error {}
+impl error::Error for Error {}
 
 enum ErrorType {
     Simple(ErrorKind),

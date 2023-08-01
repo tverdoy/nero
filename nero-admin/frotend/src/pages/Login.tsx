@@ -1,8 +1,5 @@
 import React, {FC} from 'react';
-import {Checkbox, Form, Layout, Row, Input, Button, Card} from "antd";
-import {useDispatch} from "react-redux";
-import {AuthActionCreators} from "../store/reducers/auth/action-creators";
-import {AppDispatch, useAppDispatch} from "../store";
+import {Button, Card, Checkbox, Form, Input, Layout, Row} from "antd";
 import {useActions} from "../hooks/useAction";
 
 const Login: FC = () => {
@@ -19,14 +16,21 @@ const Login: FC = () => {
 
     return (
         <Layout>
-            <Row justify={"center"} align={"middle"} style={{ width: "100vw", height: "100vh", minHeight: "300px", minWidth: "400px" }}>
-                <Card  bodyStyle={{height: "100%", width: "100%" }} style={{ width: "32vw", height: "70vh", minHeight: "300px", minWidth: "400px", margin: "calc(var(--index) * 3)" }}>
+            <Row justify={"center"} align={"middle"}
+                 style={{width: "100vw", height: "100vh", minHeight: "300px", minWidth: "400px"}}>
+                <Card bodyStyle={{height: "100%", width: "100%"}} style={{
+                    width: "32vw",
+                    height: "70vh",
+                    minHeight: "300px",
+                    minWidth: "400px",
+                    margin: "calc(var(--index) * 3)"
+                }}>
                     <Row justify={"center"} align={"middle"} style={{height: "100%", width: "100%"}}>
                         <Form
                             name="basic"
-                            wrapperCol={{ span: 20 }}
-                            style={{ maxWidth: 600, width: "100%"}}
-                            initialValues={{ remember: true }}
+                            wrapperCol={{span: 20}}
+                            style={{maxWidth: 600, width: "100%"}}
+                            initialValues={{remember: true}}
                             onFinish={onFinish}
                             onFinishFailed={onFinishFailed}
                             autoComplete="off"
@@ -34,25 +38,25 @@ const Login: FC = () => {
                             <Form.Item
                                 label="Username"
                                 name="username"
-                                rules={[{ required: true, message: 'Please input your username!' }]}
+                                rules={[{required: true, message: 'Please input your username!'}]}
                             >
-                                <Input />
+                                <Input/>
                             </Form.Item>
 
                             <Form.Item
                                 label="Password"
                                 name="password"
-                                rules={[{ required: true, message: 'Please input your password!' }]}
+                                rules={[{required: true, message: 'Please input your password!'}]}
                             >
-                                <Input.Password />
+                                <Input.Password/>
                             </Form.Item>
 
-                            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 0, span: 24 }}>
+                            <Form.Item name="remember" valuePropName="checked" wrapperCol={{offset: 0, span: 24}}>
                                 <Checkbox>Remember me</Checkbox>
                             </Form.Item>
 
-                            <Form.Item wrapperCol={{ offset: 0, span: 24 }}>
-                                <Button type="primary" htmlType="submit"  size={"large"} style={{width: "100%"}}>
+                            <Form.Item wrapperCol={{offset: 0, span: 24}}>
+                                <Button type="primary" htmlType="submit" size={"large"} style={{width: "100%"}}>
                                     Login
                                 </Button>
                             </Form.Item>

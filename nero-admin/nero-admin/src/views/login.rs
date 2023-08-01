@@ -1,11 +1,13 @@
-use crate::models::admin_user::AdminUser;
 use async_trait::async_trait;
+use serde::Deserialize;
+
 use nero::error::{Error, ErrorKind};
 use nero::http::Status;
 use nero::request::Request;
 use nero::responder::Responder;
 use nero::view::View;
-use serde::Deserialize;
+
+use crate::models::admin_user::AdminUser;
 
 pub struct Login;
 

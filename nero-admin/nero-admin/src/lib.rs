@@ -1,11 +1,10 @@
-pub mod models;
-pub mod views;
-
 use models::*;
-use views::*;
-
 use nero::app::App;
 use nero::urlpatterns::UrlPatterns;
+use views::*;
+
+pub mod models;
+pub mod views;
 
 pub async fn build_app() -> App {
     let mut patterns = UrlPatterns::default();

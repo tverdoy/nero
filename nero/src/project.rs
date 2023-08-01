@@ -7,12 +7,15 @@ use once_cell::sync::OnceCell;
 use surrealdb::engine::remote::ws::{Client, Ws};
 use surrealdb::opt::auth::Root;
 use surrealdb::Surreal;
+use crate::apps::not_found::NotFound;
+use crate::urlpatterns::Callback;
 
 pub static DB: Surreal<Client> = Surreal::init();
 static SETTINGS: Settings = Settings::init();
 
 pub struct Project {
-    apps: Vec<App>,
+    pub apps: Vec<App>,
+    pub not_found: OnceCell<App>
 }
 
 impl Project {
@@ -21,7 +24,7 @@ impl Project {
             Self::connect_to_db().await?;
         }
 
-        Ok(Self { apps })
+        Ok(Self { apps, not_found: OnceCell::new() })
     }
 
     pub async fn connect_to_db() -> NeroResult<()> {
@@ -61,8 +64,20 @@ impl Project {
 
         Server::setup(&Settings::server().addr)
             .await?
-            .run(self.apps)
+            .run(self)
             .await
+    }
+
+    pub fn set_not_found(mut self, app: App) -> Self {
+        if self.not_found.set(app).is_err() {
+            panic!("Failed set not found")
+        }
+
+        self
+    }
+
+    pub fn get_not_found(&self) -> &App {
+        self.not_found.get_or_init(|| NotFound::app())
     }
 }
 

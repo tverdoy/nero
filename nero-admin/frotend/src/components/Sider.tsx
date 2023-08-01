@@ -11,7 +11,7 @@ const items: MenuProps['items'] = [
     },
     {
         key: "users",
-        icon: <UserOutlined />,
+        icon: <UserOutlined/>,
         label: `Users`,
     }
 ];
@@ -27,9 +27,9 @@ const Sider: FC = () => {
             bottom: 0,
             width: '100px'
         }}>
-           <Space align={"center"} style={{ width: "100%", justifyContent: "center" }}>
-               <Title className={"sider--title"} level={2}>Nero</Title>
-           </Space>
+            <Space align={"center"} style={{width: "100%", justifyContent: "center"}}>
+                <Title className={"sider--title"} level={2}>Nero</Title>
+            </Space>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['home']} items={items}/>
         </Layout.Sider>
 
