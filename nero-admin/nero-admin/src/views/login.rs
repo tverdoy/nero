@@ -1,12 +1,11 @@
+use crate::models::admin_user::AdminUser;
 use async_trait::async_trait;
+use nero::error::{Error, ErrorKind};
 use nero::http::Status;
 use nero::request::Request;
 use nero::responder::Responder;
 use nero::view::View;
 use serde::Deserialize;
-use nero::error::{Error, ErrorKind};
-use nero_util::http::ContentType;
-use crate::models::admin_user::AdminUser;
 
 pub struct Login;
 
@@ -27,7 +26,7 @@ impl View for Login {
         let user = AdminUser::get_by_username(&data.username).await?;
 
         if !user.check_login(data.password).await? {
-            return Err(Error::new(ErrorKind::Auth, "Invalid credentials"))
+            return Err(Error::new(ErrorKind::Auth, "Invalid credentials"));
         }
 
         user.auth(request).await?;

@@ -24,7 +24,7 @@ impl Request {
 
     pub fn data_to_obj<'a, T: de::Deserialize<'a>>(&'a self) -> Result<T> {
         if self.head.cont_type != Some(ContentType::AppJson) {
-            return Err(Error::new_simple(ErrorKind::RequestContentIsInvalid))
+            return Err(Error::new_simple(ErrorKind::RequestContentIsInvalid));
         };
 
         let data = self

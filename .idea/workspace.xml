@@ -12,22 +12,9 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add auth by jwt">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add handler error">
       <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/views/home.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/simple/src/settings.rs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/admin_user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/admin_user.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-util/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/error.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-util/src/http.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/http.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/db/model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/db/model.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/error.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/project.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/project.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/responder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/responder.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/server.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero/src/view.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/view.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +86,7 @@
       <command value="cargo clippy --all" />
     </option>
   </component>
-  <component name="RunManager" selected="Cargo.Run simple">
+  <component name="RunManager" selected="Cargo.clippy">
     <configuration name="Run simple" type="CargoCommandRunConfiguration" factoryName="Cargo Command">
       <option name="command" value="run" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$/examples/simple" />
@@ -197,7 +184,7 @@
       <workItem from="1690743233730" duration="7647000" />
       <workItem from="1690795465525" duration="25946000" />
       <workItem from="1690836073575" duration="3691000" />
-      <workItem from="1690894260870" duration="14058000" />
+      <workItem from="1690894260870" duration="14417000" />
     </task>
     <task id="LOCAL-00001" summary="Add component responder">
       <option name="closed" value="true" />
@@ -303,7 +290,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690905460876</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Add handler error">
+      <option name="closed" value="true" />
+      <created>1690912547842</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1690912547842</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -346,6 +341,7 @@
     <MESSAGE value="Add page login and auth reducer" />
     <MESSAGE value="Add cors support" />
     <MESSAGE value="Add auth by jwt" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add auth by jwt" />
+    <MESSAGE value="Add handler error" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add handler error" />
   </component>
 </project>

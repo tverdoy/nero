@@ -1,9 +1,9 @@
 use crate::app::App;
-use crate::apps::cors::{CORS_URL};
+use crate::apps::cors::CORS_URL;
 use crate::request::Request;
 use crate::responder::Responder;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
-use nero_util::http::{HeadReq};
+use nero_util::http::HeadReq;
 use std::sync::Arc;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
@@ -79,7 +79,9 @@ impl Server {
             Ok(resp) => resp,
             Err(e) => {
                 eprintln!("{}::{} -> {}", app.name(), view.name(), e);
-                view.handler_error(&mut request, e).await.map_err(|e| NeroError::new(NeroErrorKind::HandleErrorFailed, e))?
+                view.handler_error(&mut request, e)
+                    .await
+                    .map_err(|e| NeroError::new(NeroErrorKind::HandleErrorFailed, e))?
             }
         };
 

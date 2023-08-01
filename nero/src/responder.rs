@@ -1,5 +1,5 @@
 use crate::error::*;
-use crate::project::{Settings};
+use crate::project::Settings;
 use crate::request::Request;
 use nero_util::encode::EncodeAlgo;
 use nero_util::error::*;

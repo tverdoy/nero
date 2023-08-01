@@ -1,12 +1,12 @@
 use async_trait::async_trait;
-use nero::db::fieldargs::{StringArg};
+use nero::db::fieldargs::StringArg;
 use nero::db::model::{Field, FieldType, Object, Scheme};
 use nero::error::*;
-use nero::project::{DB, Settings};
+use nero::project::{Settings, DB};
 use nero::request::Request;
 use nero_util::auth::generate_token;
 use serde::{Deserialize, Serialize};
-use surrealdb::sql::{Thing};
+use surrealdb::sql::Thing;
 
 static STRUCT: &Scheme = &Scheme {
     name: "AdminUser",
@@ -58,17 +58,24 @@ impl AdminUser {
     pub async fn check_login<T: ToString>(&self, password: T) -> Result<bool> {
         let err = |e| Error::new(ErrorKind::Auth, e);
 
-        let res: Option<bool> = DB.query("select value crypto::bcrypt::compare(password, $password) as login from $id")
+        let res: Option<bool> = DB
+            .query("select value crypto::bcrypt::compare(password, $password) as login from $id")
             .bind(("id", &self.id))
             .bind(("password", password.to_string()))
             .await
-            .map_err(err)?.take(0).map_err(err)?;
+            .map_err(err)?
+            .take(0)
+            .map_err(err)?;
 
         res.ok_or(Error::new_simple(ErrorKind::ObjectGet))
     }
 
     pub async fn auth(&self, request: &mut Request) -> Result<()> {
-        let token = generate_token(Settings::admin_auth().exr, self.username.clone(), &Settings::admin_auth().secret_key)?;
+        let token = generate_token(
+            Settings::admin_auth().exr,
+            self.username.clone(),
+            &Settings::admin_auth().secret_key,
+        )?;
         request
             .set_cookie
             .add("NERO-ADMIN-TOKEN".to_string(), token);
@@ -80,10 +87,13 @@ impl AdminUser {
         let name = Self::model_struct().name.to_lowercase();
         let err = |e| Error::new(ErrorKind::Auth, e);
 
-        let res: Option<Self> = DB.query(format!("select * from {name} where username = $username"))
+        let res: Option<Self> = DB
+            .query(format!("select * from {name} where username = $username"))
             .bind(("username", username.to_string()))
             .await
-            .map_err(err)?.take(0).map_err(err)?;
+            .map_err(err)?
+            .take(0)
+            .map_err(err)?;
 
         res.ok_or(Error::new_simple(ErrorKind::ObjectGet))
     }

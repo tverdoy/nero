@@ -1,9 +1,9 @@
-use nero_util::error::{NeroError, NeroResult};
+use crate::responder::Responder;
+use nero_util::error::NeroError;
+use nero_util::http::Status;
+use serde::Serialize;
 use std::fmt::{Debug, Display, Formatter};
 use std::{error, result};
-use serde::Serialize;
-use nero_util::http::Status;
-use crate::responder::Responder;
 
 pub type Result<T> = result::Result<T, Error>;
 
@@ -73,16 +73,24 @@ pub enum ErrorKind {
     ObjectMerge,
     ObjectNotExists,
     ObjectIdIsNone,
-    Auth
+    Auth,
 }
 
 impl ErrorKind {
     pub fn to_status(&self) -> Status {
         match &self {
             Self::Nero | Self::ObjectCreate => Status::ServerError,
-            Self::InvalidData | Self::Serialize | Self::RequestDataIsNone | Self::RequestContentIsInvalid | Self::ObjectIdIsNone => Status::BadRequest,
-            Self::ObjectGet | Self::ObjectDelete | Self::ObjectUpdate | Self::ObjectMerge | Self::ObjectNotExists => Status::NotFound,
-            Self::Auth => Status::Unauthorized
+            Self::InvalidData
+            | Self::Serialize
+            | Self::RequestDataIsNone
+            | Self::RequestContentIsInvalid
+            | Self::ObjectIdIsNone => Status::BadRequest,
+            Self::ObjectGet
+            | Self::ObjectDelete
+            | Self::ObjectUpdate
+            | Self::ObjectMerge
+            | Self::ObjectNotExists => Status::NotFound,
+            Self::Auth => Status::Unauthorized,
         }
     }
 }
@@ -90,47 +98,36 @@ impl ErrorKind {
 #[derive(Serialize)]
 struct ErrorResp {
     kind: ErrorKind,
-    error: String
+    error: String,
 }
 
 impl Error {
     pub fn to_response(&self) -> Result<Responder> {
-        let mut status = Status::ServerError;
-        let mut text = String::new();
-
-        match &self.error_type {
+        let (status, text) = match &self.error_type {
             ErrorType::Simple(kind) => {
-                status = kind.to_status();
-                text = status.status_info().1.to_owned()
+                let status = kind.to_status();
+                (status.clone(), status.status_info().1.to_owned())
             }
-            ErrorType::Custom(kind, err) => {
-                status = kind.to_status();
-                text = format!("{err}")
-            }
-        }
+            ErrorType::Custom(kind, err) => (kind.to_status(), format!("{err}")),
+        };
 
         Responder::text(status, text)
     }
 
     pub fn to_json_response(&self) -> Result<Responder> {
-        let mut status = Status::ServerError;
-        let mut kind = ErrorKind::Nero;
-        let mut text = String::new();
-
-        match &self.error_type {
-            ErrorType::Simple(_kind) => {
-                status = _kind.to_status();
-                text = status.status_info().1.to_owned();
-                kind = _kind.clone();
+        let (status, text, kind) = match &self.error_type {
+            ErrorType::Simple(kind) => {
+                let status = kind.to_status();
+                (
+                    status.clone(),
+                    status.status_info().1.to_string(),
+                    kind.clone(),
+                )
             }
-            ErrorType::Custom(_kind, err) => {
-                status = _kind.to_status();
-                text = format!("{err}");
-                kind = _kind.clone();
-            }
-        }
+            ErrorType::Custom(kind, err) => (kind.to_status(), format!("{err}"), kind.clone()),
+        };
 
-        let err = ErrorResp { kind: kind, error: text };
+        let err = ErrorResp { kind, error: text };
 
         Responder::json(status, err)
     }

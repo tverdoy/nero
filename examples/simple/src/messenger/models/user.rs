@@ -1,7 +1,7 @@
 use nero::db::fieldargs::{IntArgs, StringArg};
 use nero::db::model::{Field, FieldType, Object, Scheme};
 use serde::{Deserialize, Serialize};
-use surrealdb::sql::{Thing};
+use surrealdb::sql::Thing;
 
 static STRUCT: &Scheme = &Scheme {
     name: "User",

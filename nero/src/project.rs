@@ -70,7 +70,7 @@ pub struct Settings {
     pub server: OnceCell<ServerConf>,
     pub db: OnceCell<DataBaseConf>,
     pub cors: OnceCell<CorsConf>,
-    pub admin_auth: OnceCell<AuthTokenConf>
+    pub admin_auth: OnceCell<AuthTokenConf>,
 }
 
 impl Settings {
@@ -112,6 +112,9 @@ impl Settings {
     }
 
     pub fn admin_auth() -> &'static AuthTokenConf {
-        SETTINGS.admin_auth.get().expect("Admin auth settings is not set")
+        SETTINGS
+            .admin_auth
+            .get()
+            .expect("Admin auth settings is not set")
     }
 }
