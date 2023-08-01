@@ -308,7 +308,9 @@ pub enum Status {
     Ok,
     NotFound,
     NoContent,
-    Unauthorized
+    Unauthorized,
+    ServerError,
+    BadRequest
 }
 
 impl Status {
@@ -316,8 +318,10 @@ impl Status {
         match self {
             Self::Ok => (200, "OK"),
             Self::NotFound => (404, "Not Found"),
-            Status::NoContent => (204, "No Content"),
-            Status::Unauthorized => (401, "Unauthorized")
+            Self::NoContent => (204, "No Content"),
+            Self::Unauthorized => (401, "Unauthorized"),
+            Self::ServerError => (500, "Internal Server Error"),
+            Self::BadRequest => (400, "Bad Request")
         }
     }
 }

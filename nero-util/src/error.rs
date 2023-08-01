@@ -68,6 +68,7 @@ pub enum NeroErrorKind {
     RequestIsClosed,
     IO,
     ViewFailed,
+    HandleErrorFailed,
     ConnectToDB,
     GenerateToken,
 }

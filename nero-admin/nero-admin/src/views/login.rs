@@ -4,6 +4,8 @@ use nero::request::Request;
 use nero::responder::Responder;
 use nero::view::View;
 use serde::Deserialize;
+use nero::error::{Error, ErrorKind};
+use nero_util::http::ContentType;
 use crate::models::admin_user::AdminUser;
 
 pub struct Login;
@@ -24,12 +26,11 @@ impl View for Login {
         let data: Data = request.data_to_obj()?;
         let user = AdminUser::get_by_username(&data.username).await?;
 
-        if user.check_login(data.password).await? {
-            user.auth(request).await?;
-            Responder::text(Status::Ok, format!("Hello {}", data.username))
-        } else {
-            Responder::text(Status::Unauthorized, format!("No auth {}", data.username))
-
+        if !user.check_login(data.password).await? {
+            return Err(Error::new(ErrorKind::Auth, "Invalid credentials"))
         }
+
+        user.auth(request).await?;
+        Responder::text(Status::Ok, format!("Hello {}", data.username))
     }
 }

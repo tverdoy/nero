@@ -1,3 +1,4 @@
+use async_trait::async_trait;
 use nero::db::fieldargs::{StringArg};
 use nero::db::model::{Field, FieldType, Object, Scheme};
 use nero::error::*;
@@ -34,22 +35,19 @@ impl AdminUser {
     }
 
     pub async fn create_root() -> Result<()> {
+        let name = Self::model_struct().name.to_lowercase();
         let admin = AdminUser {
-            id: None,
+            id: Some(Thing {
+                tb: name,
+                id: "root".into(),
+            }),
             username: "root".to_string(),
             password: "root".to_string(),
-        };
-
-        let name = Self::model_struct().name.to_lowercase();
-        let id = Thing {
-            tb: name,
-            id: "root".into(),
         };
 
         DB.query(
             "create $id set username = $username, password = crypto::bcrypt::generate($password)",
         )
-        .bind(("id", id))
         .bind(admin)
         .await
         .map_err(|e| Error::new(ErrorKind::ObjectCreate, e))?;
@@ -91,9 +89,18 @@ impl AdminUser {
     }
 }
 
+#[async_trait]
 impl Object for AdminUser {
     fn model_struct() -> &'static Scheme {
         STRUCT
+    }
+
+    async fn init(&self) {
+        if !AdminUser::exists_root().await {
+            if let Err(e) = AdminUser::create_root().await {
+                eprintln!("Failed create admin user: {e}");
+            }
+        }
     }
 
     fn get_id(&self) -> Option<Thing> {

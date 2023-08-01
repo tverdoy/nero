@@ -3,13 +3,10 @@ use nero::project::{Project, Settings};
 use nero::settings::{AuthTokenConf};
 
 pub mod messenger;
-pub mod settings;
 
 #[tokio::main]
 async fn main() {
     Settings::set_admin_auth(AuthTokenConf { exr: 900, secret_key: Vec::from("SECRETKEYFORADMIN") });
-    Project::connect_to_db().await.unwrap();
-
     let file_static = FileStatic::app("/static/", "./static").unwrap();
 
     let apps = vec![

@@ -75,18 +75,16 @@ impl Server {
         }
 
         let mut request = Request::new(socket, head, data);
-        let responder = view.callback(&mut request).await;
-        match responder {
-            Ok(mut responder) => {
-                responder.complete(&request);
-
-                Self::send_response(&mut request.socket, &responder).await
+        let mut responder = match view.callback(&mut request).await {
+            Ok(resp) => resp,
+            Err(e) => {
+                eprintln!("{}::{} -> {}", app.name(), view.name(), e);
+                view.handler_error(&mut request, e).await.map_err(|e| NeroError::new(NeroErrorKind::HandleErrorFailed, e))?
             }
-            Err(e) => Err(NeroError::new(
-                NeroErrorKind::ViewFailed,
-                format!("{}::{} -> {}", app.name(), view.name(), e),
-            )),
-        }
+        };
+
+        responder.complete(&request);
+        Self::send_response(&mut request.socket, &responder).await
     }
 
     pub async fn send_response(socket: &mut TcpStream, resp: &Responder) -> NeroResult<()> {

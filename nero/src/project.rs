@@ -53,6 +53,12 @@ impl Project {
             self.apps.push(CORS::app()?)
         }
 
+        for app in &self.apps {
+            for model in app.models() {
+                model.init().await;
+            }
+        }
+
         Server::setup(&Settings::server().addr)
             .await?
             .run(self.apps)

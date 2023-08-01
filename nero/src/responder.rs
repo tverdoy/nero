@@ -105,7 +105,7 @@ impl Responder {
         Ok(Self { data: buf, head })
     }
 
-    pub async fn json<T>(status: Status, data: T) -> Result<Self>
+    pub fn json<T>(status: Status, data: T) -> Result<Self>
     where
         T: Serialize,
     {

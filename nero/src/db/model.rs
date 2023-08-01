@@ -20,6 +20,8 @@ pub trait Object {
     where
         Self: Sized;
 
+    async fn init(&self) {}
+
     fn get_id(&self) -> Option<Thing>;
 
     fn set_id(&mut self, id: Thing);
