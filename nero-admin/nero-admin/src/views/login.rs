@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use nero::error::{Error, ErrorKind};
 use nero::http::Status;
@@ -17,6 +17,11 @@ struct Data {
     password: String,
 }
 
+#[derive(Serialize)]
+struct RespData {
+    token: String,
+}
+
 #[async_trait]
 impl View for Login {
     fn name(&self) -> &'static str {
@@ -31,7 +36,7 @@ impl View for Login {
             return Err(Error::new(ErrorKind::Auth, "Invalid credentials"));
         }
 
-        user.auth(request).await?;
-        Responder::text(Status::Ok, format!("Hello {}", data.username))
+        let token = user.auth().await?;
+        Responder::json(Status::Ok, RespData { token })
     }
 }

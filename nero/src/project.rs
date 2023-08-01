@@ -1,5 +1,6 @@
 use crate::app::App;
 use crate::apps::cors::CORS;
+use crate::apps::not_found::NotFound;
 use crate::server::Server;
 use crate::settings::{AuthTokenConf, CorsConf, DataBaseConf, ServerConf};
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
@@ -7,15 +8,13 @@ use once_cell::sync::OnceCell;
 use surrealdb::engine::remote::ws::{Client, Ws};
 use surrealdb::opt::auth::Root;
 use surrealdb::Surreal;
-use crate::apps::not_found::NotFound;
-use crate::urlpatterns::Callback;
 
 pub static DB: Surreal<Client> = Surreal::init();
 static SETTINGS: Settings = Settings::init();
 
 pub struct Project {
     pub apps: Vec<App>,
-    pub not_found: OnceCell<App>
+    pub not_found: OnceCell<App>,
 }
 
 impl Project {
@@ -24,7 +23,10 @@ impl Project {
             Self::connect_to_db().await?;
         }
 
-        Ok(Self { apps, not_found: OnceCell::new() })
+        Ok(Self {
+            apps,
+            not_found: OnceCell::new(),
+        })
     }
 
     pub async fn connect_to_db() -> NeroResult<()> {
@@ -68,7 +70,7 @@ impl Project {
             .await
     }
 
-    pub fn set_not_found(mut self, app: App) -> Self {
+    pub fn set_not_found(self, app: App) -> Self {
         if self.not_found.set(app).is_err() {
             panic!("Failed set not found")
         }
@@ -77,7 +79,7 @@ impl Project {
     }
 
     pub fn get_not_found(&self) -> &App {
-        self.not_found.get_or_init(|| NotFound::app())
+        self.not_found.get_or_init(NotFound::app)
     }
 }
 

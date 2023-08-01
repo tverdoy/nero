@@ -5,8 +5,7 @@ use surrealdb::sql::Thing;
 use nero::db::fieldargs::StringArg;
 use nero::db::model::{Field, FieldType, Object, Scheme};
 use nero::error::*;
-use nero::project::{DB, Settings};
-use nero::request::Request;
+use nero::project::{Settings, DB};
 use nero_util::auth::generate_token;
 
 static STRUCT: &Scheme = &Scheme {
@@ -49,9 +48,9 @@ impl AdminUser {
         DB.query(
             "create $id set username = $username, password = crypto::bcrypt::generate($password)",
         )
-            .bind(admin)
-            .await
-            .map_err(|e| Error::new(ErrorKind::ObjectCreate, e))?;
+        .bind(admin)
+        .await
+        .map_err(|e| Error::new(ErrorKind::ObjectCreate, e))?;
 
         Ok(())
     }
@@ -71,17 +70,13 @@ impl AdminUser {
         res.ok_or(Error::new_simple(ErrorKind::ObjectGet))
     }
 
-    pub async fn auth(&self, request: &mut Request) -> Result<()> {
-        let token = generate_token(
+    pub async fn auth(&self) -> Result<String> {
+        generate_token(
             Settings::admin_auth().exr,
             self.username.clone(),
             &Settings::admin_auth().secret_key,
-        )?;
-        request
-            .set_cookie
-            .add("NERO-ADMIN-TOKEN".to_string(), token);
-
-        Ok(())
+        )
+        .map_err(|e| e.into())
     }
 
     pub async fn get_by_username<T: ToString>(username: T) -> Result<Self> {

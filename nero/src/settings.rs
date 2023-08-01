@@ -38,7 +38,7 @@ pub struct CorsConf {
 impl Default for CorsConf {
     fn default() -> Self {
         Self {
-            is_allow_cors: false,
+            is_allow_cors: true,
             allow_origin: "*".to_string(),
             allow_headers: vec!["*".to_string()],
             allow_methods: vec!["GET".to_string(), "POST".to_string(), "OPTIONS".to_string()],

@@ -1,7 +1,7 @@
 use nero::apps::filestatic::FileStatic;
-use nero::apps::not_found::NotFound;
 use nero::project::{Project, Settings};
 use nero::settings::AuthTokenConf;
+use nero::urlpatterns::UrlPatterns;
 
 pub mod messenger;
 
@@ -19,6 +19,8 @@ async fn main() {
         file_static,
         nero_admin::build_app().await,
     ];
+
+    UrlPatterns::print_all_pattern(&apps);
 
     Project::new(apps).await.unwrap().run().await.unwrap();
 }

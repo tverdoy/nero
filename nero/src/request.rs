@@ -1,11 +1,11 @@
 use crate::error::*;
 use crate::error::{Error, ErrorKind};
+use crate::server::Server;
 use nero_util::cookie::Cookie;
+use nero_util::error::NeroResult;
 use nero_util::http::{ContentType, HeadReq};
 use serde::de;
 use tokio::net::TcpStream;
-use nero_util::error::NeroResult;
-use crate::server::Server;
 
 pub struct Request {
     pub socket: TcpStream,

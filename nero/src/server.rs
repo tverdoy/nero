@@ -1,15 +1,15 @@
 use crate::app::App;
 use crate::apps::cors::CORS_URL;
+use crate::apps::not_found::NOT_FOUND_URL;
+use crate::project::Project;
 use crate::request::Request;
 use crate::responder::Responder;
+use crate::urlpatterns::Callback;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
 use nero_util::http::HeadReq;
 use std::sync::Arc;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
-use crate::apps::not_found::NOT_FOUND_URL;
-use crate::project::Project;
-use crate::urlpatterns::Callback;
 
 pub const MAX_HTTP_HEADER_SIZE: usize = 4096; // 4 KB
 pub const MAX_HTTP_BODY_SIZE: usize = 4_194_304; // 4 MB
@@ -53,12 +53,11 @@ impl Server {
         let head = HeadReq::parse_from_utf8(&head_bin).unwrap();
         let mut request = Request::init(socket, head).await?;
 
-
         let (app, view) = match Self::find_pattern(&project.apps, &request.head) {
             Some(pattern) => pattern,
             None => {
                 eprintln!("Not found patter for: {}", request.head.url);
-                return Self::not_found_patter(project, &mut request).await
+                return Self::not_found_patter(project, &mut request).await;
             }
         };
 
@@ -66,18 +65,23 @@ impl Server {
             Ok(resp) => {
                 println!("{} -> {}", request.head.url, resp.head.status);
                 resp
-            },
+            }
             Err(e) => {
                 let error_info = e.to_string();
 
-                let resp = view.handler_error(&mut request, e)
+                let resp = view
+                    .handler_error(&mut request, e)
                     .await
                     .map_err(|e| NeroError::new(NeroErrorKind::HandleErrorFailed, e))?;
-                eprintln!("{}::{} -> {error_info} :: {}", app.name(), view.name(), resp.head.status);
+                eprintln!(
+                    "{}::{} -> {error_info} :: {}",
+                    app.name(),
+                    view.name(),
+                    resp.head.status
+                );
                 resp
             }
         };
-
 
         responder.complete(&request);
         Self::send_response(&mut request.socket, &responder).await
@@ -85,17 +89,21 @@ impl Server {
 
     pub async fn not_found_patter(project: &Project, request: &mut Request) -> NeroResult<()> {
         let app = project.get_not_found();
-        let view = app.url_patters().find_pattern(NOT_FOUND_URL).unwrap().clone();
+        let view = app
+            .url_patters()
+            .find_pattern(NOT_FOUND_URL)
+            .unwrap()
+            .clone();
 
         let mut responder = match view.callback(request).await {
             Ok(resp) => resp,
             Err(err) => {
                 eprintln!("View not found failed");
-                return Err(NeroError::new(NeroErrorKind::ViewFailed, err))
+                return Err(NeroError::new(NeroErrorKind::ViewFailed, err));
             }
         };
 
-        responder.complete(&request);
+        responder.complete(request);
         Self::send_response(&mut request.socket, &responder).await
     }
 
@@ -103,7 +111,6 @@ impl Server {
         let mut pattern = None;
 
         let mut search_url = head.url.as_str();
-
         if head.is_acr() {
             search_url = CORS_URL
         }

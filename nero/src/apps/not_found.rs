@@ -1,11 +1,10 @@
-use async_trait::async_trait;
-use nero_util::error::NeroResult;
-use nero_util::http::Status;
 use crate::app::App;
 use crate::request::Request;
 use crate::responder::Responder;
 use crate::urlpatterns::UrlPatterns;
 use crate::view::View;
+use async_trait::async_trait;
+use nero_util::http::Status;
 
 pub const NOT_FOUND_URL: &str = "/not-found";
 

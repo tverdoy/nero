@@ -1,8 +1,8 @@
-use std::fmt::{Display, Formatter};
 use crate::cookie::Cookie;
 use crate::encode::EncodeAlgo;
 use crate::error::*;
 use chrono::{DateTime, Utc};
+use std::fmt::{Display, Formatter};
 use std::path::Path;
 
 pub const CONTENT_TYPE: &[(&str, ContentType); 10] = &[
@@ -126,7 +126,9 @@ impl HeadReq {
     }
 
     pub fn is_acr(&self) -> bool {
-        self.origin.is_some() && (self.acr_method.is_some() || self.acr_headers.is_some())
+        self.method == Method::Options
+            && self.origin.is_some()
+            && (self.acr_method.is_some() || self.acr_headers.is_some())
     }
 }
 
@@ -149,7 +151,7 @@ impl Default for HeadReq {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Method {
     Get,
     Post,
