@@ -10,18 +10,18 @@ import {Content} from "antd/es/layout/layout";
 const AppRouter: FC = () => {
     const {isAuth} = useTypedSelector(state => state.authReducer);
 
-    return (
-        isAuth
-            ?
+    if (isAuth) {
+        return (
             <Layout hasSider className={"h-screen"}>
                 <Sider/>
                 <Layout style={{width: "80vw"}} className={"p-3"}>
                     <Header/>
-                    <Content className={"overflow-auto py-14"}>
+                    <Content className={"overflow-auto py-14 px-6"}>
                         <Routes>
                             {privateRoutes.map(route =>
                                 <Route path={route.path} element={<route.element/>} key={route.path}/>
                             )}
+
                             <Route
                                 path="*"
                                 element={<Navigate to={RouteNames.HOME} replace/>}
@@ -30,7 +30,9 @@ const AppRouter: FC = () => {
                     </Content>
                 </Layout>
             </Layout>
-            :
+        );
+    } else {
+        return (
             <Routes>
                 {publicRoutes.map(route =>
                     <Route path={route.path} element={<route.element/>} key={route.path}/>
@@ -40,7 +42,8 @@ const AppRouter: FC = () => {
                     element={<Navigate to={RouteNames.LOGIN} replace/>}
                 />
             </Routes>
-    );
+        );
+    }
 };
 
 export default AppRouter;

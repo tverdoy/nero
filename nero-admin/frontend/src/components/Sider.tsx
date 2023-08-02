@@ -23,8 +23,17 @@ const Sider: FC = () => {
     let location = useLocation();
 
     const onClick: MenuProps['onClick'] = (item) => {
-        console.log(item.key)
         navigate(item.key)
+    }
+
+    const selected = () => {
+        let path = location.pathname;
+
+        if (items.find((item) => item ? item.key === path : false)) {
+            return [location.pathname];
+        } else {
+            return [RouteNames.HOME]
+        }
     }
 
     return (
@@ -33,7 +42,7 @@ const Sider: FC = () => {
             width={"20vw"}
         >
             <h2 className={"text-center text-white w-full text-2xl"}>Nero</h2>
-            <Menu theme="dark" mode="inline" defaultSelectedKeys={[location.pathname]} items={items} onClick={onClick}/>
+            <Menu theme="dark" mode="inline" defaultSelectedKeys={selected()} items={items} onClick={onClick}/>
 
 
         </Layout.Sider>

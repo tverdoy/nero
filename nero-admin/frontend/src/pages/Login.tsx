@@ -9,8 +9,6 @@ const Login: FC = () => {
     const [password, setPassword] = useState('')
     const {login} = useActions()
 
-
-
     const submit = () => {
         console.log(username)
         login(username, password)
