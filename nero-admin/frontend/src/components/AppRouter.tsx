@@ -1,9 +1,11 @@
-import React, {FC} from 'react';
+import {FC} from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
 import {privateRoutes, publicRoutes, RouteNames} from "../router";
 import {Layout} from "antd";
 import Sider from "./Sider";
 import {useTypedSelector} from "../hooks/useTypedSelector";
+import Header from "./Header.tsx";
+import {Content} from "antd/es/layout/layout";
 
 const AppRouter: FC = () => {
     const {isAuth} = useTypedSelector(state => state.authReducer);
@@ -11,10 +13,11 @@ const AppRouter: FC = () => {
     return (
         isAuth
             ?
-            <Layout hasSider>
+            <Layout hasSider className={"h-screen"}>
                 <Sider/>
-                <Layout className="Main">
-                    <Layout.Content style={{overflow: 'initial'}}>
+                <Layout style={{width: "80vw"}} className={"p-3"}>
+                    <Header/>
+                    <Content className={"overflow-auto"}>
                         <Routes>
                             {privateRoutes.map(route =>
                                 <Route path={route.path} element={<route.element/>} key={route.path}/>
@@ -24,7 +27,7 @@ const AppRouter: FC = () => {
                                 element={<Navigate to={RouteNames.HOME} replace/>}
                             />
                         </Routes>
-                    </Layout.Content>
+                    </Content>
                 </Layout>
             </Layout>
             :

@@ -24,12 +24,18 @@ static STRUCT: &Scheme = &Scheme {
 
 #[derive(Serialize, Deserialize, Default, Debug)]
 pub struct AdminUser {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub id: Option<Thing>,
     pub username: String,
-    pub password: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub password: Option<String>,
 }
 
 impl AdminUser {
+    pub fn x(&self) {
+
+    }
+
     pub async fn exists_root() -> bool {
         Self::get("root".into()).await.is_ok()
     }
@@ -42,7 +48,7 @@ impl AdminUser {
                 id: "root".into(),
             }),
             username: "root".to_string(),
-            password: "root".to_string(),
+            password: Some("root".to_string()),
         };
 
         DB.query(

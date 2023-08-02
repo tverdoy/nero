@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 body {
-    background-color: rgb(243 244 246);;
+    background-color: rgb(243 244 246);
+    margin: 0;
+    padding: 0;
+    cursor: default;
+    overflow: hidden;
 }
