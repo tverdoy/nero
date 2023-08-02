@@ -14,11 +14,10 @@ async fn main() {
 
     let file_static = FileStatic::app("/static/", "./static").unwrap();
 
-    let apps = vec![
-        messenger::build_app(),
-        file_static,
-        nero_admin::build_app().await,
-    ];
+    let mut apps = vec![messenger::build_app(), file_static];
+
+    let admin_panel = nero_admin::build_app(&apps).await;
+    apps.push(admin_panel);
 
     UrlPatterns::print_all_pattern(&apps);
 

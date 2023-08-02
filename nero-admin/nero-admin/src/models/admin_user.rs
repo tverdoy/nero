@@ -6,7 +6,10 @@ use nero::db::fieldargs::StringArg;
 use nero::db::model::{Field, FieldType, Object, Scheme};
 use nero::error::*;
 use nero::project::{Settings, DB};
-use nero_util::auth::generate_token;
+use nero::request::Request;
+use nero_util::auth::{generate_token, verify_token};
+use nero_util::error::NeroErrorKind;
+use nero_util::http::AuthType;
 
 static STRUCT: &Scheme = &Scheme {
     name: "AdminUser",
@@ -32,8 +35,15 @@ pub struct AdminUser {
 }
 
 impl AdminUser {
-    pub fn x(&self) {
+    pub async fn check_auth(request: &Request) -> Result<Self> {
+        if let Some(AuthType::Bearer(token)) = &request.head.auth {
+            let sub = verify_token(token, &Settings::admin_auth().secret_key)
+                .map_err(|e| Error::new(ErrorKind::Auth, e))?;
 
+            Self::get(sub.into()).await
+        } else {
+            Err(Error::new_simple(ErrorKind::TokenIsNone))
+        }
     }
 
     pub async fn exists_root() -> bool {

@@ -32,6 +32,7 @@ pub struct HeadReq {
     pub acr_headers: Option<Vec<String>>,
     pub acr_method: Option<String>,
     pub origin: Option<String>,
+    pub auth: Option<AuthType>,
 }
 
 impl HeadReq {
@@ -111,6 +112,12 @@ impl HeadReq {
             .find(|line| line.starts_with("Origin"))
             .and_then(|val| Self::parse_head_line(val).ok());
 
+        head.auth = lines
+            .iter()
+            .find(|line| line.starts_with("Authorization"))
+            .and_then(|val| Self::parse_head_line(val).ok())
+            .map(AuthType::parse_from_string);
+
         Ok(head)
     }
 
@@ -147,6 +154,7 @@ impl Default for HeadReq {
             acr_headers: None,
             acr_method: None,
             origin: None,
+            auth: None,
         }
     }
 }
@@ -334,5 +342,27 @@ impl Display for Status {
         let info = self.status_info();
 
         f.write_fmt(format_args!("{}({})", info.0, info.1))
+    }
+}
+
+#[derive(Debug)]
+pub enum AuthType {
+    Bearer(String),
+    Other(String),
+}
+
+impl AuthType {
+    fn parse_from_string<T: ToString>(string: T) -> Self {
+        let string = string.to_string();
+        let parse: Vec<&str> = string.split_ascii_whitespace().collect();
+
+        if parse.len() == 2 {
+            match *parse.get(0).unwrap() {
+                "Bearer" => Self::Bearer(parse.get(1).unwrap().to_string()),
+                _ => Self::Other(string),
+            }
+        } else {
+            Self::Other(string)
+        }
     }
 }

@@ -31,6 +31,7 @@ export const AuthActionCreators = {
                 localStorage.setItem("nero-admin-token", auth.token)
                 localStorage.setItem("nero-admin-id", auth.user.id)
                 localStorage.setItem("nero-admin-username", auth.user.username)
+                localStorage.setItem('nero-admin-last-username', auth.user.username)
 
                 dispatch(AuthActionCreators.setIsAuth(true))
                 dispatch(AuthActionCreators.setToken(auth.token))

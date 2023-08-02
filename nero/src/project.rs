@@ -19,7 +19,7 @@ pub struct Project {
 
 impl Project {
     pub async fn new(apps: Vec<App>) -> NeroResult<Self> {
-        if DB.health().await.is_err() {
+        if Settings::db().connect && DB.health().await.is_err() {
             Self::connect_to_db().await?;
         }
 

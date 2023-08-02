@@ -5,11 +5,14 @@ import {useActions} from "../hooks/useAction.ts";
 
 const Login: FC = () => {
     const {isLoading, error} = useTypedSelector(state => state.authReducer);
-    const [username, setUsername] = useState('')
+    const [username, setUsername] = useState( localStorage.getItem('nero-admin-last-username') || '')
     const [password, setPassword] = useState('')
     const {login} = useActions()
 
+
+
     const submit = () => {
+        console.log(username)
         login(username, password)
     }
 
@@ -18,7 +21,7 @@ const Login: FC = () => {
             <div className={"px-11 py-24 bg-white shadow-2xl rounded-lg w-auto sm:w-4/5 md:w-96"}>
                 <Form
                     name="basic"
-                    initialValues={{remember: true}}
+                    initialValues={{username: localStorage.getItem('nero-admin-last-username') || '', remember: true}}
                     autoComplete="off"
                     layout={"vertical"}
                     onFinish={submit}

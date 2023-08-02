@@ -74,6 +74,7 @@ pub enum ErrorKind {
     ObjectNotExists,
     ObjectIdIsNone,
     Auth,
+    TokenIsNone,
 }
 
 impl ErrorKind {
@@ -90,7 +91,7 @@ impl ErrorKind {
             | Self::ObjectUpdate
             | Self::ObjectMerge
             | Self::ObjectNotExists => Status::NotFound,
-            Self::Auth => Status::Unauthorized,
+            Self::Auth | Self::TokenIsNone => Status::Unauthorized,
         }
     }
 }

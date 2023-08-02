@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 
 const Home: FC = () => {
     return (
-        <div style={{ padding: 24, textAlign: 'center' }}>
+        <div style={{ padding: 24, textAlign: 'center' }} className={"fade-in"}>
             <p>long content</p>
             {
                 // indicates very long content

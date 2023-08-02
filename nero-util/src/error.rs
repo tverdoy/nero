@@ -71,4 +71,5 @@ pub enum NeroErrorKind {
     HandleErrorFailed,
     ConnectToDB,
     GenerateToken,
+    VerifyToken,
 }

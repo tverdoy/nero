@@ -1,6 +1,6 @@
 use crate::error::{NeroError, NeroErrorKind, NeroResult};
 use chrono::Utc;
-use jsonwebtoken::{encode, EncodingKey, Header};
+use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -26,4 +26,16 @@ pub fn generate_token<T: ToString>(exp: u32, sub: T, secret_key: &[u8]) -> NeroR
         &EncodingKey::from_secret(secret_key),
     )
     .map_err(|e| NeroError::new(NeroErrorKind::GenerateToken, e))
+}
+
+pub fn verify_token<T: ToString>(token: T, secret_key: &[u8]) -> NeroResult<String> {
+    let claims: Claims = decode(
+        &token.to_string(),
+        &DecodingKey::from_secret(secret_key),
+        &Validation::default(),
+    )
+    .map_err(|e| NeroError::new(NeroErrorKind::VerifyToken, e))?
+    .claims;
+
+    Ok(claims.sub)
 }

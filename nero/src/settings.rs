@@ -1,10 +1,12 @@
+use serde::Serialize;
+
 #[derive(Debug)]
 pub struct AuthTokenConf {
     pub exr: u32,
     pub secret_key: Vec<u8>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct DataBaseConf {
     pub connect: bool,
     pub db_addr: String,
@@ -17,7 +19,7 @@ pub struct DataBaseConf {
 impl Default for DataBaseConf {
     fn default() -> Self {
         Self {
-            connect: false,
+            connect: true,
             db_addr: "127.0.0.1:8000".to_string(),
             db_user: "root".to_string(),
             db_password: "root".to_string(),
@@ -27,7 +29,7 @@ impl Default for DataBaseConf {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct CorsConf {
     pub is_allow_cors: bool,
     pub allow_origin: String,
@@ -46,7 +48,7 @@ impl Default for CorsConf {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct ServerConf {
     pub addr: String,
     pub max_head_size: usize,

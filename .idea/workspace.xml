@@ -12,22 +12,28 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Rewrite admin panel to vite">
-      <change afterPath="$PROJECT_DIR$/nero-admin/frontend/src/api/IAuthApi.ts" afterDir="false" />
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add logout in admin panel">
+      <change afterPath="$PROJECT_DIR$/nero-admin/frontend/src/pages/Settings.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/getsettings.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/api/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/components/AppRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/components/AppRouter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/components/Header.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/components/Sider.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/components/Sider.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/pages/Home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/pages/Home.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/pages/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/pages/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/router/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/router/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/auth/action-creators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/auth/action-creators.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/auth/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/auth/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/tailwind.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/admin_user.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/admin_user.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/auth.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/auth.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-util/src/http.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-util/src/http.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/error.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/project.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/project.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/settings.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/settings.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,10 +47,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
-        <option value="Rust File" />
         <option value="CSS File" />
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="Rust File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -207,7 +213,7 @@
       <workItem from="1690836073575" duration="3691000" />
       <workItem from="1690894260870" duration="15715000" />
       <workItem from="1690914908525" duration="9511000" />
-      <workItem from="1690971520767" duration="9127000" />
+      <workItem from="1690971520767" duration="15931000" />
     </task>
     <task id="LOCAL-00001" summary="Add component responder">
       <option name="closed" value="true" />
@@ -361,7 +367,15 @@
       <option name="project" value="LOCAL" />
       <updated>1690971591627</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Add logout in admin panel">
+      <option name="closed" value="true" />
+      <created>1690982035534</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1690982035534</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -407,6 +421,7 @@
     <MESSAGE value="Add not found handler" />
     <MESSAGE value="Review code" />
     <MESSAGE value="Rewrite admin panel to vite" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rewrite admin panel to vite" />
+    <MESSAGE value="Add logout in admin panel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add logout in admin panel" />
   </component>
 </project>
