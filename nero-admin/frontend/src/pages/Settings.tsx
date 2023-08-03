@@ -1,11 +1,15 @@
-import {FC, useState} from 'react';
-import {Col, Layout, Menu, MenuProps, Row} from "antd";
+import React, {FC, useEffect, useRef, useState} from 'react';
+import {Col, Layout, Menu, MenuProps, message, Row, Spin} from "antd";
 import {DatabaseOutlined, SafetyCertificateOutlined, SettingOutlined} from "@ant-design/icons";
 import IDataBaseConf from "../models/IDataBaseConf.ts";
 import DataBase from "../components/settings-sections/DataBase.tsx";
 import ICorsConf from "../models/ICorsConf.ts";
 import Cors from "../components/settings-sections/Cors.tsx";
 import Server from "../components/settings-sections/Server.tsx";
+import {useActionsAuth, useActionsSettings} from "../hooks/useAction.ts";
+import {useTypedSelector} from "../hooks/useTypedSelector.ts";
+import ServerError from "../components/ServerError.tsx";
+
 
 enum SettingsSection {
     SERVER = "SERVER",
@@ -32,25 +36,37 @@ const items: MenuProps['items'] = [
 ];
 
 
-const testServer = {addr: "127.0.0.1:8080", max_body_size: 10903, max_head_size: 4096};
-const testDataBase: IDataBaseConf = {
-    connect: false,
-    db_addr: "127.0.0.1:8000",
-    db_user: "root",
-    db_password: "root",
-    db_db: "nero",
-    db_ns: "nero"
-}
-
-const testCors: ICorsConf = {
-    is_allow_cors: true,
-    allow_origin: "127.0.0.1:3000",
-    allow_headers: ["Content-Length"],
-    allow_methods: ["GET", "POST"]
-}
 
 const Settings: FC = () => {
     const [section, setSection] = useState(SettingsSection.SERVER);
+    const {settings, isLoading, isUnAuth, error} = useTypedSelector(state => state.settingsReducer)
+    const {token} = useTypedSelector(state => state.authReducer)
+    const {request} = useActionsSettings()
+    const {logout} = useActionsAuth()
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const shoulLog = useRef(true)
+
+    useEffect(() => {
+        request(token)
+    }, [])
+
+    useEffect(() => {
+        if (error && shoulLog.current) {
+            shoulLog.current = false
+
+            messageApi.open({
+                type: 'error',
+                content: error.neroError ? error.neroError.error : "Frontend error",
+            });
+        }
+    }, [error])
+
+    useEffect(() => {
+        if (isUnAuth) {
+            logout()
+        }
+    }, [isUnAuth])
 
     const onClick: MenuProps['onClick'] = (item) => {
         if (item.key === "SERVER") {
@@ -65,32 +81,42 @@ const Settings: FC = () => {
     const sectionComponent = () => {
         switch (section) {
             case SettingsSection.SERVER:
-                return <Server server={testServer}/>
+                return <Server isLoading={isLoading} server={settings.server}/>
             case SettingsSection.DATABASE:
-                return <DataBase database={testDataBase}/>
+                return <DataBase isLoading={isLoading} database={settings.db}/>
             case SettingsSection.CORS:
-                return <Cors cors={testCors}/>
+                return <Cors isLoading={isLoading} cors={settings.cors}/>
         }
     }
 
-    return (
-        <div className={"fade-in bg-white shadow-2xl rounded-lg p-6"}>
-            <Row>
-                <Col span={16}>{sectionComponent()}</Col>
-                <Col span={8} className={"p-3"} style={{borderInlineStart: "1px solid rgba(5, 5, 5, 0.06)"}}>
-                    <Layout>
-                        <Menu
-                            onClick={onClick}
-                            defaultSelectedKeys={[SettingsSection.SERVER]}
-                            mode="inline"
-                            items={items}
-                            className={"w-full"}
-                            style={{borderInlineEnd: 0}}
-                        />
-                    </Layout>
-                </Col>
-            </Row>
+    if (!error) {
+        return (
+            <div className={"fade-in bg-white shadow-2xl rounded-lg p-6 h-4/6 pt-12"}>
+                {contextHolder}
+                <Row>
+                    <Col span={16}>
+                        { sectionComponent()}
+                    </Col>
+                    <Col span={8} className={"p-3"} style={{borderInlineStart: "1px solid rgba(5, 5, 5, 0.06)"}}>
+                        <Layout>
+                            <Menu
+                                onClick={onClick}
+                                defaultSelectedKeys={[SettingsSection.SERVER]}
+                                mode="inline"
+                                items={items}
+                                className={"w-full"}
+                                style={{borderInlineEnd: 0}}
+                            />
+                        </Layout>
+                    </Col>
+                </Row>
+            </div>
+        )
+    } else {
+        return <div>
+            {contextHolder}
+            <ServerError/>
         </div>
-    );
+    }
 };
 export default Settings;

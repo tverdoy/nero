@@ -1,11 +1,11 @@
 import {FC} from 'react';
 import {Button, Layout} from "antd";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
-import {useActions} from "../hooks/useAction.ts";
+import {useActionsAuth} from "../hooks/useAction.ts";
 
 const Header: FC = () => {
     const {user} = useTypedSelector(state => state.authReducer);
-    const {logout} = useActions()
+    const {logout} = useActionsAuth()
 
     return (
         <Layout.Header className={"rounded-2xl"}>

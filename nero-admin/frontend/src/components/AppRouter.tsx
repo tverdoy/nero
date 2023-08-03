@@ -10,6 +10,7 @@ import {Content} from "antd/es/layout/layout";
 const AppRouter: FC = () => {
     const {isAuth} = useTypedSelector(state => state.authReducer);
 
+    console.log("Start render: ", isAuth);
     if (isAuth) {
         return (
             <Layout hasSider className={"h-screen"}>

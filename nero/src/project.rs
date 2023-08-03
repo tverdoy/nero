@@ -60,7 +60,7 @@ impl Project {
 
         for app in &self.apps {
             for model in app.models() {
-                model.init().await;
+                model.object.init().await;
             }
         }
 

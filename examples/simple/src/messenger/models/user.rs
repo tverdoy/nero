@@ -3,7 +3,7 @@ use nero::db::model::{Field, FieldType, Object, Scheme};
 use serde::{Deserialize, Serialize};
 use surrealdb::sql::Thing;
 
-static STRUCT: &Scheme = &Scheme {
+pub static USER_SCHEME: &Scheme = &Scheme {
     name: "User",
     fields: &[
         Field {
@@ -28,8 +28,11 @@ pub struct User {
 }
 
 impl Object for User {
-    fn model_struct() -> &'static Scheme {
-        STRUCT
+    fn name() -> &'static str
+    where
+        Self: Sized,
+    {
+        "user"
     }
 
     fn get_id(&self) -> Option<Thing> {

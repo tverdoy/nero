@@ -75,12 +75,13 @@ pub enum ErrorKind {
     ObjectIdIsNone,
     Auth,
     TokenIsNone,
+    Other,
 }
 
 impl ErrorKind {
     pub fn to_status(&self) -> Status {
         match &self {
-            Self::Nero | Self::ObjectCreate => Status::ServerError,
+            Self::Nero | Self::ObjectCreate | Self::Other => Status::ServerError,
             Self::InvalidData
             | Self::Serialize
             | Self::RequestDataIsNone

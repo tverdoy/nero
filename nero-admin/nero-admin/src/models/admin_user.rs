@@ -11,7 +11,7 @@ use nero_util::auth::{generate_token, verify_token};
 use nero_util::error::NeroErrorKind;
 use nero_util::http::AuthType;
 
-static STRUCT: &Scheme = &Scheme {
+pub static ADMIN_USER_SCHEME: &Scheme = &Scheme {
     name: "AdminUser",
     fields: &[
         Field {
@@ -51,7 +51,7 @@ impl AdminUser {
     }
 
     pub async fn create_root() -> Result<()> {
-        let name = Self::model_struct().name.to_lowercase();
+        let name = Self::name().to_lowercase();
         let admin = AdminUser {
             id: Some(Thing {
                 tb: name,
@@ -96,7 +96,7 @@ impl AdminUser {
     }
 
     pub async fn get_by_username<T: ToString>(username: T) -> Result<Self> {
-        let name = Self::model_struct().name.to_lowercase();
+        let name = Self::name().to_lowercase();
         let err = |e| Error::new(ErrorKind::Auth, e);
 
         let res: Option<Self> = DB
@@ -113,8 +113,11 @@ impl AdminUser {
 
 #[async_trait]
 impl Object for AdminUser {
-    fn model_struct() -> &'static Scheme {
-        STRUCT
+    fn name() -> &'static str
+    where
+        Self: Sized,
+    {
+        "adminuser"
     }
 
     async fn init(&self) {

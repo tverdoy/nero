@@ -6,7 +6,18 @@ use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
 use surrealdb::sql::{Id, Thing};
 
-pub type Model = Box<dyn Object + Send + Sync>;
+pub type BoxObject = Box<dyn Object + Send + Sync>;
+
+pub struct Model {
+    pub object: BoxObject,
+    pub scheme: &'static Scheme,
+}
+
+impl Model {
+    pub fn new(object: BoxObject, scheme: &'static Scheme) -> Self {
+        Self { object, scheme }
+    }
+}
 
 #[derive(Debug, Deserialize)]
 pub struct Record {
@@ -16,7 +27,7 @@ pub struct Record {
 
 #[async_trait]
 pub trait Object {
-    fn model_struct() -> &'static Scheme
+    fn name() -> &'static str
     where
         Self: Sized;
 
@@ -30,7 +41,7 @@ pub trait Object {
     where
         Self: Serialize + Sized + Sync,
     {
-        let name = Self::model_struct().name.to_lowercase();
+        let name = Self::name().to_lowercase();
         let err = |e| Error::new(ErrorKind::ObjectCreate, e);
 
         let record: Record = match self.get_id() {
@@ -48,7 +59,7 @@ pub trait Object {
     where
         Self: DeserializeOwned + Sync,
     {
-        let name = Self::model_struct().name.to_lowercase();
+        let name = Self::name().to_lowercase();
 
         let obj: Option<Self> = DB
             .select((name, id))
@@ -62,7 +73,7 @@ pub trait Object {
     where
         Self: DeserializeOwned + Sync,
     {
-        let name = Self::model_struct().name.to_lowercase();
+        let name = Self::name().to_lowercase();
 
         let obj: Option<Self> = DB
             .delete((name, id))
@@ -74,9 +85,9 @@ pub trait Object {
 
     async fn update(&self) -> Result<Thing>
     where
-        Self: Serialize + Sized + Sync,
+        Self: Serialize + Sync + Sized,
     {
-        let name = Self::model_struct().name.to_lowercase();
+        let name = Self::name().to_lowercase();
 
         let id = self
             .get_id()
@@ -96,7 +107,7 @@ pub trait Object {
         Self: Serialize + Sized + Sync,
         M: Serialize + Send,
     {
-        let name = Self::model_struct().name.to_lowercase();
+        let name = Self::name().to_lowercase();
         let id = self
             .get_id()
             .ok_or(Error::new_simple(ErrorKind::ObjectIdIsNone))?;
@@ -111,16 +122,19 @@ pub trait Object {
     }
 }
 
+#[derive(Serialize)]
 pub struct Scheme {
     pub name: &'static str,
     pub fields: &'static [Field],
 }
 
+#[derive(Serialize)]
 pub struct Field {
     pub name: &'static str,
     pub field_type: FieldType,
 }
 
+#[derive(Serialize)]
 pub enum FieldType {
     Int(IntArgs),
     String(StringArg),

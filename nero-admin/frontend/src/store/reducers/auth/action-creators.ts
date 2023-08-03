@@ -11,6 +11,7 @@ import {AppDispatch} from "../../index";
 import axios, {AxiosError} from "axios";
 import {ApiUrls, BASE_ADDRESS} from "../../../api";
 import {IAuth} from "../../../api/IAuthApi.ts";
+import {RouteNames} from "../../../router";
 
 export const AuthActionCreators = {
     setUser: (user: IUser): SetUserAction => ({type: AuthActionEnum.SET_USER, payload: user}),
@@ -55,13 +56,11 @@ export const AuthActionCreators = {
 
         dispatch(AuthActionCreators.setIsLoading(false));
     },
-    logout: () => async (dispatch: AppDispatch) => {
+    logout: () => async (_: AppDispatch) => {
         localStorage.removeItem('nero-admin-token')
         localStorage.removeItem('nero-admin-id')
         localStorage.removeItem('nero-admin-username')
 
-        dispatch(AuthActionCreators.setUser({} as IUser));
-        dispatch(AuthActionCreators.setIsAuth(false))
-        dispatch(AuthActionCreators.setToken(''))
+        window.location.pathname = RouteNames.LOGIN
     }
 }
