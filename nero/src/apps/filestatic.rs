@@ -1,14 +1,17 @@
+use std::path::{Path, PathBuf};
+
+use async_trait::async_trait;
+use walkdir::WalkDir;
+
+use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
+use nero_util::http::Status;
+
 use crate::app::App;
 use crate::error::{Error, ErrorKind};
 use crate::request::Request;
 use crate::responder::Responder;
 use crate::urlpatterns::UrlPatterns;
 use crate::view::View;
-use async_trait::async_trait;
-use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
-use nero_util::http::Status;
-use std::path::{Path, PathBuf};
-use walkdir::WalkDir;
 
 pub struct FileStatic {
     root_url: String,
@@ -16,7 +19,7 @@ pub struct FileStatic {
 }
 
 impl FileStatic {
-    pub fn app<T: ToString, P: AsRef<Path>>(root_url: T, root_fs: P) -> NeroResult<App> {
+    pub fn build_app<T: ToString, P: AsRef<Path>>(root_url: T, root_fs: P) -> NeroResult<App> {
         let root_url = root_url.to_string();
         let mut root_fs = root_fs.as_ref().to_path_buf();
 
@@ -39,7 +42,7 @@ impl FileStatic {
             patterns.add_one(url, Box::new(view));
         }
 
-        Ok(App::new("file static", patterns, Vec::new()))
+        Ok(App::new("File static", patterns, Vec::new()))
     }
 
     pub fn urls_by_path<T: ToString, P: AsRef<Path>>(root_url: T, path: P) -> Vec<String> {

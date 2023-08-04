@@ -1,5 +1,5 @@
 import {FC, useEffect, useRef, useState} from 'react';
-import {Col, Layout, Menu, MenuProps, message, Row, Spin} from "antd";
+import {Col, Layout, Menu, MenuProps, message, Row} from "antd";
 import {DatabaseOutlined, SafetyCertificateOutlined, SettingOutlined} from "@ant-design/icons";
 import DataBase from "../components/settings-sections/DataBase.tsx";
 import Cors from "../components/settings-sections/Cors.tsx";
@@ -7,7 +7,7 @@ import Server from "../components/settings-sections/Server.tsx";
 import {useActionsAuth, useActionsSettings} from "../hooks/useAction.ts";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import ServerError from "../components/ServerError.tsx";
-import {ErrorKindEnum} from "../utils/Error.ts";
+import {ErrorKindEnum} from "../utils/error.ts";
 
 
 enum SettingsSection {
@@ -35,10 +35,9 @@ const items: MenuProps['items'] = [
 ];
 
 
-
 const Settings: FC = () => {
     const [section, setSection] = useState(SettingsSection.SERVER);
-    const {settings, isLoading, isUnAuth, error} = useTypedSelector(state => state.settingsReducer)
+    const {settings, isLoading, error} = useTypedSelector(state => state.settingsReducer)
     const {token} = useTypedSelector(state => state.authReducer)
     const {request} = useActionsSettings()
     const {logout} = useActionsAuth()
@@ -59,6 +58,7 @@ const Settings: FC = () => {
             if (shoulLog) {
                 shoulLog.current = false
 
+                // noinspection JSIgnoredPromiseFromCall
                 messageApi.open({
                     type: 'error',
                     content: error.message,
@@ -67,11 +67,6 @@ const Settings: FC = () => {
         }
     }, [error])
 
-    useEffect(() => {
-        if (isUnAuth) {
-            logout()
-        }
-    }, [isUnAuth])
 
     const onClick: MenuProps['onClick'] = (item) => {
         if (item.key === "SERVER") {
@@ -100,7 +95,7 @@ const Settings: FC = () => {
                 {contextHolder}
                 <Row>
                     <Col span={16}>
-                        { sectionComponent()}
+                        {sectionComponent()}
                     </Col>
                     <Col span={8} className={"p-3"} style={{borderInlineStart: "1px solid rgba(5, 5, 5, 0.06)"}}>
                         <Layout>

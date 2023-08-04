@@ -9,9 +9,9 @@ import {
 import IUser from "../../../models/IUser";
 import {AppDispatch} from "../../index";
 import axios, {AxiosError} from "axios";
-import {ApiUrls, BASE_ADDRESS} from "../../../api";
-import {IAuth} from "../../../api/IAuthApi.ts";
-import {RouteNames} from "../../../router";
+import {ApiUrls, BASE_ADDRESS} from "../../../utils/api.ts";
+import {IAuth} from "../../../models/IAuthApi.ts";
+import {RouteNames} from "../../../route.ts";
 
 export const AuthActionCreators = {
     setUser: (user: IUser): SetUserAction => ({type: AuthActionEnum.SET_USER, payload: user}),
@@ -26,7 +26,10 @@ export const AuthActionCreators = {
         dispatch(AuthActionCreators.setIsLoading(true));
 
         try {
-            const response = await axios.post<IAuth>(BASE_ADDRESS + ApiUrls.LOGIN, {username: username, password: password});
+            const response = await axios.post<IAuth>(BASE_ADDRESS + ApiUrls.LOGIN, {
+                username: username,
+                password: password
+            });
             const auth = response.data;
             if (auth.token) {
                 localStorage.setItem("nero-admin-token", auth.token)

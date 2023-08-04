@@ -1,7 +1,7 @@
 import React from "react";
-import Login from "../pages/Login";
-import Home from "../pages/Home";
-import Settings from "../pages/Settings.tsx";
+import Login from "./pages/Login.tsx";
+import Home from "./pages/Home.tsx";
+import Settings from "./pages/Settings.tsx";
 
 export interface IRoute {
     path: string,

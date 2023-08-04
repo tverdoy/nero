@@ -1,8 +1,10 @@
+use async_trait::async_trait;
+
+use nero_util::http::ContentType;
+
 use crate::error::*;
 use crate::request::Request;
 use crate::responder::Responder;
-use async_trait::async_trait;
-use nero_util::http::ContentType;
 
 #[async_trait]
 pub trait View {

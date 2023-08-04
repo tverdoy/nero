@@ -2,7 +2,7 @@ import {FC, useEffect, useState} from 'react';
 import {Layout, Menu, MenuProps} from "antd";
 import {HomeOutlined, SettingOutlined} from "@ant-design/icons";
 import {useLocation, useNavigate} from 'react-router-dom';
-import {RouteNames} from "../router";
+import {RouteNames} from "../route.ts";
 
 
 const items: MenuProps['items'] = [
@@ -39,7 +39,7 @@ const Sider: FC = () => {
             width={"20vw"}
         >
             <h2 className={"text-center text-white w-full text-2xl"}>Nero</h2>
-            <Menu theme="dark" mode="inline"  selectedKeys={currentItem} items={items} onClick={onClick}/>
+            <Menu theme="dark" mode="inline" selectedKeys={currentItem} items={items} onClick={onClick}/>
 
 
         </Layout.Sider>

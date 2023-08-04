@@ -1,7 +1,8 @@
-use crate::app::App;
-use crate::view::View;
 use std::collections::HashMap;
 use std::sync::Arc;
+
+use crate::app::App;
+use crate::view::View;
 
 pub type Callback = Box<dyn View + Send + Sync>;
 

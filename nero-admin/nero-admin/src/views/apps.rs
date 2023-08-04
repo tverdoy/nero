@@ -1,19 +1,22 @@
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
 
-use crate::ADMIN_VIEW;
-use nero::error::{Error, ErrorKind};
 use nero::http::Status;
 use nero::request::Request;
 use nero::responder::Responder;
 use nero::view::View;
 
+use crate::interfaces::InterfaceApp;
 use crate::models::admin_user::AdminUser;
 
-pub struct GetAppsView;
+pub struct GetAppsView {
+    apps: Vec<InterfaceApp>,
+}
 
-#[derive(Serialize)]
-struct RespData {}
+impl GetAppsView {
+    pub fn new(apps: Vec<InterfaceApp>) -> GetAppsView {
+        Self { apps }
+    }
+}
 
 #[async_trait]
 impl View for GetAppsView {
@@ -23,10 +26,7 @@ impl View for GetAppsView {
 
     async fn callback(&self, request: &mut Request) -> nero::error::Result<Responder> {
         AdminUser::check_auth(request).await?;
-        let data = ADMIN_VIEW
-            .get()
-            .ok_or(Error::new(ErrorKind::Other, "Admin view not set"))?;
 
-        Responder::json(Status::Ok, data)
+        Responder::json(Status::Ok, &self.apps)
     }
 }

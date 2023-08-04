@@ -1,18 +1,16 @@
 import ISettings from "../../../models/ISettings.ts";
-import IError from "../../../utils/Error.ts";
+import IError from "../../../utils/error.ts";
 
 export interface SettingsState {
     settings: ISettings,
     isLoading: boolean,
     error?: IError,
-    isUnAuth: boolean
 }
 
 export enum SettingsActionEnum {
     SET_SETTINGS = "SET_SETTINGS",
     SET_IS_LOADING = "SET_IS_LOADING",
     SET_ERROR = "SET_ERROR",
-    SET_IS_UN_AUTH = "SET_IS_UN_AUTH"
 }
 
 export interface SetSettingsAction {
@@ -30,14 +28,8 @@ export interface SetErrorAction {
     payload: IError | undefined
 }
 
-export interface SetIsUnAuthAction {
-    type: SettingsActionEnum.SET_IS_UN_AUTH;
-    payload: boolean
-}
-
 
 export type SettingsAction =
     SetSettingsAction |
     SetErrorAction |
-    SetIsLoadingAction |
-    SetIsUnAuthAction
+    SetIsLoadingAction

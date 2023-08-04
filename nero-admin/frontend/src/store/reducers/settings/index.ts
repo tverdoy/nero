@@ -6,7 +6,6 @@ const initialState: SettingsState = {
     settings: {} as ISettings,
     isLoading: true,
     error: undefined,
-    isUnAuth: false
 }
 
 export default function settingsReducer(state = initialState, action: SettingsAction): SettingsState {
@@ -17,8 +16,6 @@ export default function settingsReducer(state = initialState, action: SettingsAc
             return {...state, error: action.payload}
         case SettingsActionEnum.SET_IS_LOADING:
             return {...state, isLoading: action.payload}
-        case SettingsActionEnum.SET_IS_UN_AUTH:
-            return {...state, isUnAuth: action.payload}
         default:
             return state;
     }

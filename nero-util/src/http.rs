@@ -1,9 +1,11 @@
+use std::fmt::{Display, Formatter};
+use std::path::Path;
+
+use chrono::{DateTime, Utc};
+
 use crate::cookie::Cookie;
 use crate::encode::EncodeAlgo;
 use crate::error::*;
-use chrono::{DateTime, Utc};
-use std::fmt::{Display, Formatter};
-use std::path::Path;
 
 pub const CONTENT_TYPE: &[(&str, ContentType); 10] = &[
     ("text/html", ContentType::TextHtml),
@@ -357,7 +359,7 @@ impl AuthType {
         let parse: Vec<&str> = string.split_ascii_whitespace().collect();
 
         if parse.len() == 2 {
-            match *parse.get(0).unwrap() {
+            match *parse.first().unwrap() {
                 "Bearer" => Self::Bearer(parse.get(1).unwrap().to_string()),
                 _ => Self::Other(string),
             }

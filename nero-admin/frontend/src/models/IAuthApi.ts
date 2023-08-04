@@ -1,4 +1,4 @@
-import IUser from "../models/IUser.ts";
+import IUser from "./IUser.ts";
 
 export interface IAuth {
     token: string,

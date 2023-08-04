@@ -1,5 +1,5 @@
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 use nero::error::{Error, ErrorKind};
 use nero::http::Status;
@@ -7,9 +7,10 @@ use nero::request::Request;
 use nero::responder::Responder;
 use nero::view::View;
 
+use crate::interfaces::InterfaceLogin;
 use crate::models::admin_user::AdminUser;
 
-pub struct Login;
+pub struct LoginView;
 
 #[derive(Deserialize)]
 struct Data {
@@ -17,14 +18,9 @@ struct Data {
     password: String,
 }
 
-#[derive(Serialize)]
-struct RespData {
-    token: String,
-    user: AdminUser,
-}
 
 #[async_trait]
-impl View for Login {
+impl View for LoginView {
     fn name(&self) -> &'static str {
         "login"
     }
@@ -42,6 +38,6 @@ impl View for Login {
 
         let token = user.auth().await?;
         user.password = None;
-        Responder::json(Status::Ok, RespData { token, user })
+        Responder::json(Status::Ok, InterfaceLogin { token, user })
     }
 }

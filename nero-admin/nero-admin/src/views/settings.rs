@@ -1,29 +1,28 @@
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 
-use nero::error::{Error, ErrorKind};
 use nero::http::Status;
-use nero::project::Settings;
 use nero::request::Request;
 use nero::responder::Responder;
 use nero::settings::{CorsConf, DataBaseConf, ServerConf};
+use nero::settings::Settings;
 use nero::view::View;
 
 use crate::models::admin_user::AdminUser;
 
-pub struct GetSettings;
+pub struct ViewGetSettings;
 
 #[derive(Serialize)]
-struct RespData {
+struct RespDataGet {
     server: &'static ServerConf,
     db: &'static DataBaseConf,
     cors: &'static CorsConf,
 }
 
 #[async_trait]
-impl View for GetSettings {
+impl View for ViewGetSettings {
     fn name(&self) -> &'static str {
-        "get settings"
+        "Get settings"
     }
 
     async fn callback(&self, request: &mut Request) -> nero::error::Result<Responder> {
@@ -31,7 +30,7 @@ impl View for GetSettings {
 
         Responder::json(
             Status::Ok,
-            RespData {
+            RespDataGet {
                 server: Settings::server(),
                 db: Settings::db(),
                 cors: Settings::cors(),

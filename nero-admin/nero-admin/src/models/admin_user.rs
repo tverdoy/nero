@@ -2,28 +2,16 @@ use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use surrealdb::sql::Thing;
 
-use nero::db::fieldargs::StringArg;
-use nero::db::model::{Field, FieldType, Object, Scheme};
+use nero::db::model::{format_db_name, Object};
+use nero::db::scheme::{Field, FieldArg, FieldType, Scheme};
 use nero::error::*;
-use nero::project::{Settings, DB};
+use nero::project::DB;
 use nero::request::Request;
+use nero::settings::Settings;
 use nero_util::auth::{generate_token, verify_token};
-use nero_util::error::NeroErrorKind;
 use nero_util::http::AuthType;
 
-pub static ADMIN_USER_SCHEME: &Scheme = &Scheme {
-    name: "AdminUser",
-    fields: &[
-        Field {
-            name: "id",
-            field_type: FieldType::String(StringArg { max_len: Some(255) }),
-        },
-        Field {
-            name: "username",
-            field_type: FieldType::String(StringArg { max_len: Some(255) }),
-        },
-    ],
-};
+const MODEL_NAME: &str = "Admin user";
 
 #[derive(Serialize, Deserialize, Default, Debug)]
 pub struct AdminUser {
@@ -64,9 +52,9 @@ impl AdminUser {
         DB.query(
             "create $id set username = $username, password = crypto::bcrypt::generate($password)",
         )
-        .bind(admin)
-        .await
-        .map_err(|e| Error::new(ErrorKind::ObjectCreate, e))?;
+            .bind(admin)
+            .await
+            .map_err(|e| Error::new(ErrorKind::ObjectCreate, e))?;
 
         Ok(())
     }
@@ -92,11 +80,11 @@ impl AdminUser {
             self.username.clone(),
             &Settings::admin_auth().secret_key,
         )
-        .map_err(|e| e.into())
+            .map_err(|e| e.into())
     }
 
     pub async fn get_by_username<T: ToString>(username: T) -> Result<Self> {
-        let name = Self::name().to_lowercase();
+        let name = format_db_name(Self::name());
         let err = |e| Error::new(ErrorKind::Auth, e);
 
         let res: Option<Self> = DB
@@ -114,10 +102,29 @@ impl AdminUser {
 #[async_trait]
 impl Object for AdminUser {
     fn name() -> &'static str
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
-        "adminuser"
+        MODEL_NAME
+    }
+
+    fn scheme() -> Scheme {
+        Scheme::new(
+            MODEL_NAME,
+            vec![
+                Field::new("id", FieldType::String, vec![]),
+                Field::new(
+                    "username",
+                    FieldType::String,
+                    vec![FieldArg::MaxLength(255)],
+                ),
+                Field::new(
+                    "password",
+                    FieldType::String,
+                    vec![FieldArg::MaxLength(255)],
+                ),
+            ],
+        )
     }
 
     async fn init(&self) {

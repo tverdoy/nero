@@ -1,6 +1,6 @@
 import {Button, Result} from "antd";
 import {useNavigate} from "react-router-dom";
-import {RouteNames} from "../router";
+import {RouteNames} from "../route.ts";
 
 const ServerError = () => {
     const navigate = useNavigate();

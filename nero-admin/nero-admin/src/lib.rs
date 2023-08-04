@@ -1,71 +1,53 @@
-use models::*;
 use nero::app::App;
+use nero::db::model::{Model, Object};
 use nero::urlpatterns::UrlPatterns;
-use once_cell::sync::OnceCell;
-use serde::Serialize;
 use views::*;
 
+use crate::interfaces::InterfaceApp;
+use crate::models::admin_user::AdminUser;
+use crate::views::settings::ViewGetSettings;
+
+mod interfaces;
 pub mod models;
 pub mod views;
 
-use crate::models::admin_user::{AdminUser, ADMIN_USER_SCHEME};
-use nero::db::model::{Model, Scheme};
+const APP_NAME: &str = "Admin panel";
 
-static ADMIN_VIEW: OnceCell<AdminView> = OnceCell::new();
-
-#[derive(Serialize)]
-pub struct AdminView {
-    apps: Vec<AdminAppView>,
+pub struct AdminPanel {
+    apps: Vec<InterfaceApp>,
 }
 
-impl AdminView {
-    pub fn from_apps(apps: &[App]) -> Self {
-        Self {
-            apps: apps.iter().map(AdminAppView::from_app).collect(),
+impl AdminPanel {
+    pub fn new(apps: &[App]) -> Self {
+        let mut self_apps = Vec::new();
+
+        for app in apps {
+            self_apps.push(InterfaceApp::from(app))
         }
+        Self { apps: self_apps }
     }
-}
 
-#[derive(Serialize)]
-pub struct AdminAppView {
-    pub name: String,
-    pub models: Vec<&'static Scheme>,
-}
+    pub fn build_app(&mut self) -> App {
+        let admin_models = vec![Model::new(Box::<AdminUser>::default(), AdminUser::scheme())];
 
-impl AdminAppView {
-    pub fn from_app(app: &App) -> Self {
-        let mut _self = Self {
-            name: app.name().to_string(),
-            models: Vec::new(),
-        };
-        for model in app.models() {
-            _self.models.push(model.scheme)
-        }
+        self.apps.push(InterfaceApp {
+            name: APP_NAME.to_string(),
+            schemes: admin_models
+                .iter()
+                .map(|model| model.scheme.clone())
+                .collect(),
+        });
 
-        _self
+        let mut patterns = UrlPatterns::default();
+        patterns.add(vec![
+            ("/admin/login", Box::new(login::LoginView)),
+            ("/admin/settings", Box::new(ViewGetSettings)),
+            (
+                "/admin/admin-view",
+                Box::new(apps::GetAppsView::new(self.apps.clone())),
+            ),
+        ]);
+
+        App::new(APP_NAME, patterns, admin_models)
     }
-}
-
-pub async fn build_app(apps: &[App]) -> App {
-    let admin_model = Model::new(
-        Box::<AdminUser>::default(),
-        ADMIN_USER_SCHEME,
-    );
-
-    let mut patterns = UrlPatterns::default();
-    patterns.add(vec![
-        ("/admin/login", Box::new(login::Login)),
-        ("/admin/settings", Box::new(getsettings::GetSettings)),
-        ("/admin/admin-view", Box::new(apps::GetAppsView))
-    ]);
-
-    // if let Err(e) = ADMIN_VIEW.set(AdminView::from_apps(vec![apps, admin_model])) {
-    //     panic!("Failed set admin view")
-    // }
-
-    App::new(
-        "Admin panel",
-        patterns,
-        vec![admin_model],
-    )
 }

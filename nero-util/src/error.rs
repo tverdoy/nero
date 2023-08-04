@@ -9,8 +9,8 @@ pub struct NeroError {
 
 impl NeroError {
     pub fn new<E>(kind: NeroErrorKind, err: E) -> Self
-    where
-        E: Into<Box<dyn error::Error + Send + Sync>>,
+        where
+            E: Into<Box<dyn error::Error + Send + Sync>>,
     {
         Self {
             error_type: ErrorType::Custom(kind, err.into()),

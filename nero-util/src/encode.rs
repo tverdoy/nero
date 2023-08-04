@@ -8,6 +8,7 @@ pub enum EncodeAlgo {
 }
 
 impl EncodeAlgo {
+    //noinspection RsLiveness
     pub fn encode(&self, data: &[u8]) -> Vec<u8> {
         match self {
             EncodeAlgo::Gzip => todo!(),
@@ -30,6 +31,6 @@ impl EncodeAlgo {
             Self::Deflate => "deflate",
             Self::Other(algo) => algo,
         }
-        .to_string()
+            .to_string()
     }
 }

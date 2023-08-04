@@ -1,7 +1,8 @@
-use crate::error::{NeroError, NeroErrorKind, NeroResult};
 use chrono::Utc;
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use jsonwebtoken::{decode, DecodingKey, encode, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
+
+use crate::error::{NeroError, NeroErrorKind, NeroResult};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Claims {
@@ -25,7 +26,7 @@ pub fn generate_token<T: ToString>(exp: u32, sub: T, secret_key: &[u8]) -> NeroR
         &claims,
         &EncodingKey::from_secret(secret_key),
     )
-    .map_err(|e| NeroError::new(NeroErrorKind::GenerateToken, e))
+        .map_err(|e| NeroError::new(NeroErrorKind::GenerateToken, e))
 }
 
 pub fn verify_token<T: ToString>(token: T, secret_key: &[u8]) -> NeroResult<String> {
@@ -34,8 +35,8 @@ pub fn verify_token<T: ToString>(token: T, secret_key: &[u8]) -> NeroResult<Stri
         &DecodingKey::from_secret(secret_key),
         &Validation::default(),
     )
-    .map_err(|e| NeroError::new(NeroErrorKind::VerifyToken, e))?
-    .claims;
+        .map_err(|e| NeroError::new(NeroErrorKind::VerifyToken, e))?
+        .claims;
 
     Ok(claims.sub)
 }

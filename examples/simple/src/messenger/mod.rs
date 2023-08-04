@@ -1,8 +1,8 @@
-mod models;
-mod views;
-
 use nero::app::App;
 use nero::urlpatterns::UrlPatterns;
+
+mod models;
+mod views;
 
 pub fn build_app() -> App {
     let mut patterns = UrlPatterns::default();

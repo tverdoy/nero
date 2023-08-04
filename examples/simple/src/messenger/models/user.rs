@@ -1,24 +1,10 @@
-use nero::db::fieldargs::{IntArgs, StringArg};
-use nero::db::model::{Field, FieldType, Object, Scheme};
 use serde::{Deserialize, Serialize};
 use surrealdb::sql::Thing;
 
-pub static USER_SCHEME: &Scheme = &Scheme {
-    name: "User",
-    fields: &[
-        Field {
-            name: "id",
-            field_type: FieldType::Int(IntArgs {
-                min: Some(10),
-                ..IntArgs::default()
-            }),
-        },
-        Field {
-            name: "name",
-            field_type: FieldType::String(StringArg { max_len: Some(255) }),
-        },
-    ],
-};
+use nero::db::model::Object;
+use nero::db::scheme::{Field, FieldArg, FieldType, Scheme};
+
+const MODEL_NAME: &str = "User";
 
 #[derive(Serialize, Deserialize, Default, Debug)]
 pub struct User {
@@ -29,10 +15,20 @@ pub struct User {
 
 impl Object for User {
     fn name() -> &'static str
-    where
-        Self: Sized,
+        where
+            Self: Sized,
     {
-        "user"
+        MODEL_NAME
+    }
+
+    fn scheme() -> Scheme {
+        Scheme::new(
+            MODEL_NAME,
+            vec![
+                Field::new("id", FieldType::String, vec![]),
+                Field::new("name", FieldType::String, vec![FieldArg::MaxLength(255)]),
+            ],
+        )
     }
 
     fn get_id(&self) -> Option<Thing> {

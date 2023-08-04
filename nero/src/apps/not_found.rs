@@ -1,10 +1,12 @@
+use async_trait::async_trait;
+
+use nero_util::http::Status;
+
 use crate::app::App;
 use crate::request::Request;
 use crate::responder::Responder;
 use crate::urlpatterns::UrlPatterns;
 use crate::view::View;
-use async_trait::async_trait;
-use nero_util::http::Status;
 
 pub const NOT_FOUND_URL: &str = "/not-found";
 
@@ -22,7 +24,7 @@ impl NotFound {
 #[async_trait]
 impl View for NotFound {
     fn name(&self) -> &'static str {
-        "not found"
+        "Not found"
     }
 
     async fn callback(&self, _request: &mut Request) -> crate::error::Result<Responder> {

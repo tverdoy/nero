@@ -1,9 +1,12 @@
-use crate::responder::Responder;
+use std::{error, result};
+use std::fmt::{Debug, Display, Formatter};
+
+use serde::Serialize;
+
 use nero_util::error::NeroError;
 use nero_util::http::Status;
-use serde::Serialize;
-use std::fmt::{Debug, Display, Formatter};
-use std::{error, result};
+
+use crate::responder::Responder;
 
 pub type Result<T> = result::Result<T, Error>;
 
@@ -13,8 +16,8 @@ pub struct Error {
 
 impl Error {
     pub fn new<E>(kind: ErrorKind, err: E) -> Self
-    where
-        E: Into<Box<dyn error::Error + Send + Sync>>,
+        where
+            E: Into<Box<dyn error::Error + Send + Sync>>,
     {
         Self {
             error_type: ErrorType::Custom(kind, err.into()),

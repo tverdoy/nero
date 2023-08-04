@@ -15,7 +15,8 @@ const DataBase = ({database, isLoading}: DataBaseProps) => {
             {
                 key: '1',
                 label: 'Connect',
-                children: database.connect ? <CheckCircleOutlined className={"text-green-500 text-xl"}/> : <StopOutlined className={"text-red-500 text-xl"}/>,
+                children: database.connect ? <CheckCircleOutlined className={"text-green-500 text-xl"}/> :
+                    <StopOutlined className={"text-red-500 text-xl"}/>,
             },
             {
                 key: '2',

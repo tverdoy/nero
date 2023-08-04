@@ -1,3 +1,6 @@
+pub use nero_util::error as nero_error;
+pub use nero_util::http;
+
 pub mod app;
 pub mod apps;
 pub mod db;
@@ -10,5 +13,3 @@ pub mod settings;
 pub mod urlpatterns;
 pub mod view;
 
-pub use nero_util::error as nero_error;
-pub use nero_util::http;

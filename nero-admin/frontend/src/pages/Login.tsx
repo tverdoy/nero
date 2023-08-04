@@ -1,11 +1,11 @@
 import {FC, useState} from 'react';
-import {Button, Checkbox, Form, Layout, Input} from "antd";
+import {Button, Checkbox, Form, Input, Layout} from "antd";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import {useActionsAuth} from "../hooks/useAction.ts";
 
 const Login: FC = () => {
     const {isLoading, error} = useTypedSelector(state => state.authReducer);
-    const [username, setUsername] = useState( localStorage.getItem('nero-admin-last-username') || '')
+    const [username, setUsername] = useState(localStorage.getItem('nero-admin-last-username') || '')
     const [password, setPassword] = useState('')
     const {login} = useActionsAuth()
 
@@ -24,7 +24,7 @@ const Login: FC = () => {
                     onFinish={submit}
                 >
                     {error &&
-                    <div className={"text-red-600 text-center mb-10 text-base"}>{error}</div>
+                        <div className={"text-red-600 text-center mb-10 text-base"}>{error}</div>
                     }
                     <Form.Item
                         label="Username"

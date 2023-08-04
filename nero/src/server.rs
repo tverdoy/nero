@@ -1,18 +1,19 @@
+use std::sync::Arc;
+
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
+use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
+
+use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
+use nero_util::http::HeadReq;
+
 use crate::app::App;
 use crate::apps::cors::CORS_URL;
 use crate::apps::not_found::NOT_FOUND_URL;
 use crate::project::Project;
 use crate::request::Request;
 use crate::responder::Responder;
+use crate::settings::Settings;
 use crate::urlpatterns::Callback;
-use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
-use nero_util::http::HeadReq;
-use std::sync::Arc;
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::net::{TcpListener, TcpStream, ToSocketAddrs};
-
-pub const MAX_HTTP_HEADER_SIZE: usize = 4096; // 4 KB
-pub const MAX_HTTP_BODY_SIZE: usize = 4_194_304; // 4 MB
 
 pub struct Server {
     listener: TcpListener,
@@ -135,7 +136,7 @@ impl Server {
         let mut buf = Vec::new();
         let mut i = 0;
 
-        while i < MAX_HTTP_HEADER_SIZE {
+        while i < Settings::server().max_head_size {
             let read_byte = socket
                 .read_u8()
                 .await
@@ -149,7 +150,7 @@ impl Server {
             i += 1;
         }
 
-        if i == MAX_HTTP_HEADER_SIZE {
+        if i == Settings::server().max_head_size {
             Err(NeroError::new_simple(NeroErrorKind::OverflowHttpHeader))
         } else {
             Ok(buf)
@@ -157,7 +158,7 @@ impl Server {
     }
 
     pub async fn read_req_body(socket: &mut TcpStream, cont_len: usize) -> NeroResult<Vec<u8>> {
-        if cont_len > MAX_HTTP_BODY_SIZE {
+        if cont_len > Settings::server().max_body_size {
             return Err(NeroError::new_simple(NeroErrorKind::OverflowHttpBody));
         }
 

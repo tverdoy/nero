@@ -7,15 +7,18 @@ import IUser from "./models/IUser.ts";
 const App: FC = () => {
     const {setUser, setIsAuth, setToken} = useActionsAuth();
 
-    if(localStorage.getItem('nero-admin-token')) {
-        setUser({ id: localStorage.getItem('nero-admin-id'), username: localStorage.getItem('nero-admin-username')} as IUser)
+    if (localStorage.getItem('nero-admin-token')) {
+        setUser({
+            id: localStorage.getItem('nero-admin-id'),
+            username: localStorage.getItem('nero-admin-username')
+        } as IUser)
         setIsAuth(true);
         setToken(localStorage.getItem('nero-admin-token') || '')
     }
 
     return (
         <Layout>
-            <AppRouter />
+            <AppRouter/>
         </Layout>
     );
 };

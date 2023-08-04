@@ -10,7 +10,9 @@
 See directory `examples`
 
 ## How to use
+
 1. Project creation, customization and connection of applications
+
 ```rust
 #[tokio::main]
 async fn main() {
@@ -20,6 +22,7 @@ async fn main() {
     Project::new(Settings::default(), apps).run().await.unwrap();
 }
 ```
+
 2. Create app
 
 ```rust
