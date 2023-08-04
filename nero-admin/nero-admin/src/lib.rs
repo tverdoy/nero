@@ -59,9 +59,9 @@ pub async fn build_app(apps: &[App]) -> App {
         ("/admin/admin-view", Box::new(apps::GetAppsView))
     ]);
 
-    if let Err(e) = ADMIN_VIEW.set(AdminView::from_apps(vec![apps, admin_model].)) {
-        panic!("Failed set admin view")
-    }
+    // if let Err(e) = ADMIN_VIEW.set(AdminView::from_apps(vec![apps, admin_model])) {
+    //     panic!("Failed set admin view")
+    // }
 
     App::new(
         "Admin panel",

@@ -1,14 +1,13 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import {FC, useEffect, useRef, useState} from 'react';
 import {Col, Layout, Menu, MenuProps, message, Row, Spin} from "antd";
 import {DatabaseOutlined, SafetyCertificateOutlined, SettingOutlined} from "@ant-design/icons";
-import IDataBaseConf from "../models/IDataBaseConf.ts";
 import DataBase from "../components/settings-sections/DataBase.tsx";
-import ICorsConf from "../models/ICorsConf.ts";
 import Cors from "../components/settings-sections/Cors.tsx";
 import Server from "../components/settings-sections/Server.tsx";
 import {useActionsAuth, useActionsSettings} from "../hooks/useAction.ts";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import ServerError from "../components/ServerError.tsx";
+import {ErrorKindEnum} from "../utils/Error.ts";
 
 
 enum SettingsSection {
@@ -52,13 +51,19 @@ const Settings: FC = () => {
     }, [])
 
     useEffect(() => {
-        if (error && shoulLog.current) {
-            shoulLog.current = false
+        if (error) {
+            if (error.kind == ErrorKindEnum.AUTH) {
+                logout()
+            }
 
-            messageApi.open({
-                type: 'error',
-                content: error.neroError ? error.neroError.error : "Frontend error",
-            });
+            if (shoulLog) {
+                shoulLog.current = false
+
+                messageApi.open({
+                    type: 'error',
+                    content: error.message,
+                });
+            }
         }
     }, [error])
 
