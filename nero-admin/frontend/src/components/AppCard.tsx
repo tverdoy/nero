@@ -1,21 +1,25 @@
 import IApp from "../models/IApp.ts";
 import {Card, Menu, MenuProps} from "antd";
+import {useNavigate} from "react-router-dom";
+import {RouteNames} from "../route.ts";
 
 type AppCardProps = {
     app: IApp
 }
 
 const AppCard = ({app}: AppCardProps) => {
+    const navigate = useNavigate()
+
     const items: MenuProps['items'] = app.schemes.map(scheme => {
         return {
-            key: scheme.name,
+            key: `${app.name}/${scheme.name}`,
             label: scheme.name
         }
     });
 
 
     const onClick: MenuProps['onClick'] = (item) => {
-
+        navigate(RouteNames.MODEL.replace(":appName/:modelName", item.key))
     }
 
     return (
@@ -31,4 +35,4 @@ const AppCard = ({app}: AppCardProps) => {
     );
 };
 
-export default AppCard;
+export default AppCard

@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {Navigate, Route, Routes} from "react-router-dom";
-import {Layout} from "antd";
+import {App, Layout} from "antd";
 import Sider from "./Sider";
 import {useTypedSelector} from "../hooks/useTypedSelector";
 import Header from "./Header.tsx";
@@ -12,24 +12,26 @@ const AppRouter: FC = () => {
 
     if (isAuth) {
         return (
-            <Layout hasSider className={"h-screen"}>
-                <Sider/>
-                <Layout style={{width: "80vw"}} className={"p-3"}>
-                    <Header/>
-                    <Content className={"overflow-auto py-14 px-6"}>
-                        <Routes>
-                            {privateRoutes.map(route =>
-                                <Route path={route.path} element={<route.element/>} key={route.path}/>
-                            )}
+            <App message={{maxCount: 1}}>
+                <Layout hasSider className={"h-screen"}>
+                    <Sider/>
+                    <Layout style={{width: "80vw"}} className={"p-3"}>
+                        <Header/>
+                        <Content className={"overflow-auto py-14 px-6"}>
+                            <Routes>
+                                {privateRoutes.map(route =>
+                                    <Route path={route.path} element={<route.element/>} key={route.path}/>
+                                )}
 
-                            <Route
-                                path="*"
-                                element={<Navigate to={RouteNames.HOME} replace/>}
-                            />
-                        </Routes>
-                    </Content>
+                                <Route
+                                    path="*"
+                                    element={<Navigate to={RouteNames.HOME} replace/>}
+                                />
+                            </Routes>
+                        </Content>
+                    </Layout>
                 </Layout>
-            </Layout>
+            </App>
         );
     } else {
         return (

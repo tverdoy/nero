@@ -2,6 +2,7 @@ export default interface IApp {
     name: string,
     schemes: IScheme[]
 }
+
 export interface IScheme {
     name: string,
     fields: IField[]

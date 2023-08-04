@@ -2,7 +2,12 @@ import {Button, Result} from "antd";
 import {useNavigate} from "react-router-dom";
 import {RouteNames} from "../route.ts";
 
-const ServerError = () => {
+type ServerErrorProps = {
+    title?: string,
+    subTitle?: string
+}
+
+const ServerError = ({title, subTitle}: ServerErrorProps) => {
     const navigate = useNavigate();
 
     const onClick = () => {
@@ -12,8 +17,8 @@ const ServerError = () => {
     return (
         <Result
             status="500"
-            title="500"
-            subTitle="Sorry, something went wrong."
+            title={title ? title : "500"}
+            subTitle={subTitle ? subTitle : "Sorry, something went wrong."}
             extra={<Button type="primary" onClick={onClick}>Back Home</Button>}
         />
     );

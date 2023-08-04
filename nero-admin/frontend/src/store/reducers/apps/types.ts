@@ -2,7 +2,7 @@ import IError from "../../../utils/error.ts";
 import IApp from "../../../models/IApp.ts";
 
 export interface AppsState {
-    apps: IApp[],
+    apps?: IApp[],
     isLoading: boolean,
     error?: IError,
 }
@@ -15,7 +15,7 @@ export enum AppsActionEnum {
 
 export interface SetAppsAction {
     type: AppsActionEnum.SET_APPS;
-    payload: IApp[]
+    payload: IApp[] | undefined
 }
 
 export interface SetIsLoadingAction {

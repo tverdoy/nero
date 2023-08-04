@@ -3,6 +3,7 @@ import Login from "./pages/Login.tsx";
 import Home from "./pages/Home.tsx";
 import Settings from "./pages/Settings.tsx";
 import Apps from "./pages/Apps.tsx";
+import Model from "./pages/Model.tsx";
 
 export interface IRoute {
     path: string,
@@ -13,7 +14,8 @@ export enum RouteNames {
     LOGIN = '/login',
     HOME = '/home',
     SETTINGS = '/settings',
-    APPS = '/apps'
+    APPS = '/apps',
+    MODEL = '/model/:appName/:modelName'
 }
 
 export const publicRoutes: IRoute[] = [
@@ -23,5 +25,6 @@ export const publicRoutes: IRoute[] = [
 export const privateRoutes: IRoute[] = [
     {path: RouteNames.HOME, element: Home},
     {path: RouteNames.SETTINGS, element: Settings},
-    {path: RouteNames.APPS, element: Apps}
+    {path: RouteNames.APPS, element: Apps},
+    {path: RouteNames.MODEL, element: Model}
 ]

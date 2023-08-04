@@ -1,64 +1,43 @@
-import {FC, useEffect, useRef} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
-import {useActionsApps, useActionsAuth, useActionsSettings} from "../hooks/useAction.ts";
-import {Col, message, Row} from "antd";
-import {ErrorKindEnum} from "../utils/error.ts";
+import {useActionsApps} from "../hooks/useAction.ts";
+import {Col, Row} from "antd";
 import AppCard from "../components/AppCard.tsx";
+import RequestWrap from "../components/RequestWrap.tsx";
 
 const Apps: FC = () => {
     const {apps, isLoading, error} = useTypedSelector(state => state.appsReducer)
     const {token} = useTypedSelector(state => state.authReducer)
     const {request} = useActionsApps()
-    const {logout} = useActionsAuth()
-    const [messageApi, contextHolder] = message.useMessage();
 
-    const shouldLog = useRef(true)
+    const findValidApps = () => apps ? apps.filter(app => app.schemes.length) : undefined
 
-    const validApps = apps.filter(app => app.schemes.length );
+    const [validApps, validAppsSet] = useState(findValidApps());
+
 
     useEffect(() => {
         request(token)
     }, [])
 
     useEffect(() => {
-        if (error) {
-            if (error.kind == ErrorKindEnum.AUTH) {
-                logout()
-            }
+        validAppsSet(findValidApps())
+    }, [apps])
 
-            if (shouldLog) {
-                shouldLog.current = false
-
-                // noinspection JSIgnoredPromiseFromCall
-                messageApi.open({
-                    type: 'error',
-                    content: error.message,
-                });
-            }
-        }
-    }, [error])
 
     return (
-        <div>
-            {contextHolder}
-            { isLoading
-                ?
-                <div>LOADDING</div>
-                :
-                <Row gutter={[16, 16]}>
-                    {validApps.map(app =>
-                        {
-                            let span = 8;
-                            if (validApps.length < 3) {
-                                span = validApps.length % 2 ? 24 : 12
+        <RequestWrap isLoading={isLoading} error={error} object={apps}>
+            <Row className={"fade-in"} gutter={[16, 16]}>
+                {validApps && validApps.map(app => {
+                        let span = 8;
+                        if (validApps.length < 3) {
+                            span = validApps.length % 2 ? 24 : 12
 
-                            }
-                            return <Col span={span}><AppCard app={app}/></Col>
                         }
-                    )}
-                </Row>
-            }
-        </div>
+                        return <Col key={app.name} span={span}><AppCard app={app}/></Col>
+                    }
+                )}
+            </Row>
+        </RequestWrap>
     );
 };
 

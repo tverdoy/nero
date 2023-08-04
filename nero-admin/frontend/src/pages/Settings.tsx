@@ -1,13 +1,12 @@
-import {FC, useEffect, useRef, useState} from 'react';
-import {Col, Layout, Menu, MenuProps, message, Row} from "antd";
+import {FC, useEffect, useState} from 'react';
+import {Col, Layout, Menu, MenuProps, Row} from "antd";
 import {DatabaseOutlined, SafetyCertificateOutlined, SettingOutlined} from "@ant-design/icons";
 import DataBase from "../components/settings-sections/DataBase.tsx";
 import Cors from "../components/settings-sections/Cors.tsx";
 import Server from "../components/settings-sections/Server.tsx";
-import {useActionsAuth, useActionsSettings} from "../hooks/useAction.ts";
+import {useActionsSettings} from "../hooks/useAction.ts";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
-import ServerError from "../components/ServerError.tsx";
-import {ErrorKindEnum} from "../utils/error.ts";
+import RequestWrap from "../components/RequestWrap.tsx";
 
 
 enum SettingsSection {
@@ -40,32 +39,10 @@ const Settings: FC = () => {
     const {settings, isLoading, error} = useTypedSelector(state => state.settingsReducer)
     const {token} = useTypedSelector(state => state.authReducer)
     const {request} = useActionsSettings()
-    const {logout} = useActionsAuth()
-    const [messageApi, contextHolder] = message.useMessage();
-
-    const shouldLog = useRef(true)
 
     useEffect(() => {
         request(token)
     }, [])
-
-    useEffect(() => {
-        if (error) {
-            if (error.kind == ErrorKindEnum.AUTH) {
-                logout()
-            }
-
-            if (shouldLog) {
-                shouldLog.current = false
-
-                // noinspection JSIgnoredPromiseFromCall
-                messageApi.open({
-                    type: 'error',
-                    content: error.message,
-                });
-            }
-        }
-    }, [error])
 
 
     const onClick: MenuProps['onClick'] = (item) => {
@@ -89,10 +66,9 @@ const Settings: FC = () => {
         }
     }
 
-    if (!error) {
-        return (
+    return (
+        <RequestWrap isLoading={isLoading} error={error} object={settings}>
             <div className={"fade-in bg-white shadow-2xl rounded-lg p-6 h-4/6 pt-12"}>
-                {contextHolder}
                 <Row>
                     <Col span={16}>
                         {sectionComponent()}
@@ -111,12 +87,7 @@ const Settings: FC = () => {
                     </Col>
                 </Row>
             </div>
-        )
-    } else {
-        return <div>
-            {contextHolder}
-            <ServerError/>
-        </div>
-    }
+        </RequestWrap>
+    )
 };
 export default Settings;

@@ -2,8 +2,8 @@ import {AppsAction, AppsActionEnum, AppsState} from "./types.ts";
 
 
 const initialState: AppsState = {
-    apps: [],
-    isLoading: true,
+    apps: undefined,
+    isLoading: false,
     error: undefined,
 }
 

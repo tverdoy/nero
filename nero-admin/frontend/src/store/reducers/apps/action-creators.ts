@@ -1,9 +1,4 @@
-import {
-    AppsActionEnum,
-    SetAppsAction,
-    SetErrorAction,
-    SetIsLoadingAction,
-} from "./types";
+import {AppsActionEnum, SetAppsAction, SetErrorAction, SetIsLoadingAction,} from "./types";
 import {AppDispatch} from "../../index";
 import axios, {AxiosError} from "axios";
 import {ApiUrls, BASE_ADDRESS} from "../../../utils/api.ts";
@@ -12,7 +7,7 @@ import IError, {ErrorKindEnum} from "../../../utils/error.ts";
 import IApp from "../../../models/IApp.ts";
 
 export const AppsActionCreators = {
-    setApps: (apps: IApp[]): SetAppsAction => ({
+    setApps: (apps?: IApp[]): SetAppsAction => ({
         type: AppsActionEnum.SET_APPS,
         payload: apps
     }),

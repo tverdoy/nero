@@ -1,4 +1,4 @@
-import  {FC, useEffect, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import {Layout, Menu, MenuProps} from "antd";
 import {DeploymentUnitOutlined, HomeOutlined, SettingOutlined} from "@ant-design/icons";
 import {useLocation, useNavigate} from 'react-router-dom';

@@ -4,7 +4,7 @@ import ISettings from "../../../models/ISettings.ts";
 
 const initialState: SettingsState = {
     settings: {} as ISettings,
-    isLoading: true,
+    isLoading: false,
     error: undefined,
 }
 
