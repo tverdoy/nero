@@ -1,6 +1,6 @@
-import {FC, useEffect, useState} from 'react';
+import  {FC, useEffect, useState} from 'react';
 import {Layout, Menu, MenuProps} from "antd";
-import {HomeOutlined, SettingOutlined} from "@ant-design/icons";
+import {DeploymentUnitOutlined, HomeOutlined, SettingOutlined} from "@ant-design/icons";
 import {useLocation, useNavigate} from 'react-router-dom';
 import {RouteNames} from "../route.ts";
 
@@ -12,10 +12,15 @@ const items: MenuProps['items'] = [
         label: `Home`,
     },
     {
+        key: RouteNames.APPS,
+        icon: <DeploymentUnitOutlined/>,
+        label: `Apps`,
+    },
+    {
         key: RouteNames.SETTINGS,
         icon: <SettingOutlined/>,
         label: `Settings`,
-    }
+    },
 ];
 
 const Sider: FC = () => {

@@ -43,7 +43,7 @@ impl AdminPanel {
             ("/admin/login", Box::new(login::LoginView)),
             ("/admin/settings", Box::new(ViewGetSettings)),
             (
-                "/admin/admin-view",
+                "/admin/apps",
                 Box::new(apps::GetAppsView::new(self.apps.clone())),
             ),
         ]);

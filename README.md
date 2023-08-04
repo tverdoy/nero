@@ -26,11 +26,11 @@ async fn main() {
 2. Create app
 
 ```rust
-pub fn build_app() -> App {
+pub fn build_app() -> AppCard {
     let mut patterns = UrlPatterns::default();
     patterns.add(vec![("/home", Box::new(views::home::HomeView))]);
 
-    App::new("Messenger", patterns)
+    AppCard::new("Messenger", patterns)
 }
 ```
 

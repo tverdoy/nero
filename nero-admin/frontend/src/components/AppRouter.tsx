@@ -10,7 +10,6 @@ import {privateRoutes, publicRoutes, RouteNames} from "../route.ts";
 const AppRouter: FC = () => {
     const {isAuth} = useTypedSelector(state => state.authReducer);
 
-    console.log("Start render: ", isAuth);
     if (isAuth) {
         return (
             <Layout hasSider className={"h-screen"}>

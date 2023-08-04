@@ -43,7 +43,7 @@ const Settings: FC = () => {
     const {logout} = useActionsAuth()
     const [messageApi, contextHolder] = message.useMessage();
 
-    const shoulLog = useRef(true)
+    const shouldLog = useRef(true)
 
     useEffect(() => {
         request(token)
@@ -55,8 +55,8 @@ const Settings: FC = () => {
                 logout()
             }
 
-            if (shoulLog) {
-                shoulLog.current = false
+            if (shouldLog) {
+                shouldLog.current = false
 
                 // noinspection JSIgnoredPromiseFromCall
                 messageApi.open({
