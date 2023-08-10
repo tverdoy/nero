@@ -1,4 +1,5 @@
-use nero::db::model::{Model, Object};
+use crate::nero::db::model::Manager;
+use nero::db::model::Model;
 
 pub mod user;
 

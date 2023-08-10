@@ -4,8 +4,8 @@ use serde::Serialize;
 use nero::http::Status;
 use nero::request::Request;
 use nero::responder::Responder;
-use nero::settings::{CorsConf, DataBaseConf, ServerConf};
 use nero::settings::Settings;
+use nero::settings::{CorsConf, DataBaseConf, ServerConf};
 use nero::view::View;
 
 use crate::models::admin_user::AdminUser;

@@ -1,3 +1,6 @@
+#[macro_use]
+extern crate nero;
+
 use nero::apps::filestatic::FileStatic;
 use nero::project::Project;
 use nero::settings::{AuthTokenConf, Settings};

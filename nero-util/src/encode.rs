@@ -31,6 +31,6 @@ impl EncodeAlgo {
             Self::Deflate => "deflate",
             Self::Other(algo) => algo,
         }
-            .to_string()
+        .to_string()
     }
 }

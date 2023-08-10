@@ -1,22 +1,23 @@
 use async_trait::async_trait;
-use serde::{Deserialize, Serialize};
 use serde::de::DeserializeOwned;
-use surrealdb::sql::{Id, Thing};
+use serde::{Deserialize, Serialize};
+use std::marker::PhantomData;
+pub use surrealdb::sql::{Id, Thing};
 
 use crate::db::scheme::Scheme;
-use crate::error::*;
+
 use crate::project::DB;
 
-pub type BoxObject = Box<dyn Object + Send + Sync>;
+pub type BoxManager = Box<dyn Manager + Send + Sync>;
 
 pub struct Model {
-    pub object: BoxObject,
+    pub manager: BoxManager,
     pub scheme: Scheme,
 }
 
 impl Model {
-    pub fn new(object: BoxObject, scheme: Scheme) -> Self {
-        Self { object, scheme }
+    pub fn new(manager: BoxManager, scheme: Scheme) -> Self {
+        Self { manager, scheme }
     }
 }
 
@@ -27,108 +28,80 @@ pub struct Record {
 }
 
 #[async_trait]
-pub trait Object {
-    fn name() -> &'static str
-        where
-            Self: Sized;
+pub trait Manager {
+    fn table_name() -> String
+    where
+        Self: Sized;
+
+    fn thing_from_id(id: Id) -> Thing
+    where
+        Self: Sized,
+    {
+        Thing {
+            tb: Self::table_name(),
+            id,
+        }
+    }
 
     fn scheme() -> Scheme
-        where
-            Self: Sized;
+    where
+        Self: Sized;
 
-    async fn init(&self) {}
+    async fn get(id: Id) -> Self
+    where
+        Self: Sized;
 
-    fn get_id(&self) -> Option<Thing>;
+    async fn create(&mut self);
 
-    fn set_id(&mut self, id: Thing);
+    async fn delete(self) -> Self
+    where
+        Self: Sized;
 
-    async fn create(&mut self) -> Result<()>
-        where
-            Self: Serialize + Sized + Sync,
-    {
-        let name = format_db_name(Self::name());
-        let err = |e| Error::new(ErrorKind::ObjectCreate, e);
+    async fn delete_with_id(id: Id) -> Self
+    where
+        Self: Sized;
 
-        let record: Record = match self.get_id() {
-            Some(id) => DB.create((name, id)).content(&self).await,
-            None => DB.create(name).await,
-        }
-            .map_err(err)?;
+    async fn update(&self);
+}
 
-        self.set_id(record.id);
+pub struct SurrealDriver<Target>
+where
+    Target: Serialize + DeserializeOwned + Send + Sync,
+{
+    marker: PhantomData<Target>,
+}
 
-        Ok(())
+impl<Target> SurrealDriver<Target>
+where
+    Target: Serialize + DeserializeOwned + Send + Sync,
+{
+    pub async fn get(id: Thing) -> Target {
+        let obj: Option<Target> = DB.select(id).await.unwrap();
+
+        obj.unwrap()
     }
 
-    async fn get(id: Id) -> Result<Self>
-        where
-            Self: DeserializeOwned + Sync,
-    {
-        let name = format_db_name(Self::name());
+    pub async fn create(thing: Option<Thing>, table_name: String, obj: &Target) -> Id {
+        let record: Record = match thing {
+            Some(thing) => DB.create(thing).content(obj).await.unwrap(),
+            None => DB.create(table_name).content(obj).await.unwrap(),
+        };
 
-        let obj: Option<Self> = DB
-            .select((name, id))
-            .await
-            .map_err(|e| Error::new(ErrorKind::ObjectGet, e))?;
-
-        obj.ok_or(Error::new_simple(ErrorKind::ObjectNotExists))
+        record.id.id
     }
 
-    async fn delete(id: Id) -> Result<Self>
-        where
-            Self: DeserializeOwned + Sync,
-    {
-        let name = format_db_name(Self::name());
+    pub async fn delete(thing: Thing) -> Target {
+        let target: Option<Target> = DB.delete(thing).await.unwrap();
 
-        let obj: Option<Self> = DB
-            .delete((name, id))
-            .await
-            .map_err(|e| Error::new(ErrorKind::ObjectDelete, e))?;
-
-        obj.ok_or(Error::new_simple(ErrorKind::ObjectNotExists))
+        target.unwrap()
     }
 
     //noinspection RsTypeCheck
-    async fn update(&self) -> Result<Thing>
-        where
-            Self: Serialize + Sync + Sized,
-    {
-        let name = format_db_name(Self::name());
-
-        let id = self
-            .get_id()
-            .ok_or(Error::new_simple(ErrorKind::ObjectIdIsNone))?;
-
-        let record: Record = DB
-            .update((name, id))
-            .content(&self)
-            .await
-            .map_err(|e| Error::new(ErrorKind::ObjectUpdate, e))?;
-
-        Ok(record.id)
-    }
-
-    //noinspection RsTypeCheck
-    async fn merge<M>(&self, merge: M) -> Result<Thing>
-        where
-            Self: Serialize + Sized + Sync,
-            M: Serialize + Send,
-    {
-        let name = format_db_name(Self::name());
-        let id = self
-            .get_id()
-            .ok_or(Error::new_simple(ErrorKind::ObjectIdIsNone))?;
-
-        let record: Record = DB
-            .update((name, id))
-            .merge(merge)
-            .await
-            .map_err(|e| Error::new(ErrorKind::ObjectMerge, e))?;
-
-        Ok(record.id)
+    pub async fn update(thing: Thing, obj: &Target) {
+        let _: Record = DB.update(thing).content(obj).await.unwrap();
     }
 }
 
-pub fn format_db_name<T: ToString>(name: T) -> String {
+pub fn format_table_name<T: ToString>(name: T) -> String {
     name.to_string().replace(' ', "").to_lowercase()
 }

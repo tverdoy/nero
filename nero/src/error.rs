@@ -1,5 +1,5 @@
-use std::{error, result};
 use std::fmt::{Debug, Display, Formatter};
+use std::{error, result};
 
 use serde::Serialize;
 
@@ -16,8 +16,8 @@ pub struct Error {
 
 impl Error {
     pub fn new<E>(kind: ErrorKind, err: E) -> Self
-        where
-            E: Into<Box<dyn error::Error + Send + Sync>>,
+    where
+        E: Into<Box<dyn error::Error + Send + Sync>>,
     {
         Self {
             error_type: ErrorType::Custom(kind, err.into()),

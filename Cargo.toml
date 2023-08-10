@@ -3,6 +3,7 @@
 members = [
     "nero-util",
     "nero",
+    "nero-derive",
     "nero-admin/nero-admin",
     # Internal
     "examples/simple",

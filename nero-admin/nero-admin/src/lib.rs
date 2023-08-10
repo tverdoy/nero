@@ -1,11 +1,12 @@
 use nero::app::App;
-use nero::db::model::{Model, Object};
+use nero::db::model::Model;
 use nero::urlpatterns::UrlPatterns;
 use views::*;
 
 use crate::interfaces::InterfaceApp;
 use crate::models::admin_user::AdminUser;
 use crate::views::settings::ViewGetSettings;
+use nero::db::model::Manager;
 
 mod interfaces;
 pub mod models;

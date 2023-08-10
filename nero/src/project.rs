@@ -46,8 +46,8 @@ impl Project {
             username: &Settings::db().db_user,
             password: &Settings::db().db_password,
         })
-            .await
-            .map_err(err)?;
+        .await
+        .map_err(err)?;
 
         DB.use_ns(&Settings::db().db_db)
             .use_db(&Settings::db().db_ns)
@@ -66,12 +66,6 @@ impl Project {
     }
 
     pub async fn run(self) -> NeroResult<()> {
-        for app in &self.apps {
-            for model in app.models() {
-                model.object.init().await;
-            }
-        }
-
         Server::setup(&Settings::server().addr)
             .await?
             .run(self)

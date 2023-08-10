@@ -14,7 +14,6 @@ type RequestWrapProps = {
 const RequestWrap = ({isLoading, error, object, children}: RequestWrapProps) => {
     const {logout} = useActionsAuth()
 
-    console.log(isLoading)
     if (isLoading) {
         return <div className={"grid place-items-center h-full"}>
             <Spin/>

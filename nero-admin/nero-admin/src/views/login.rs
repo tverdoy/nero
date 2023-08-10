@@ -18,7 +18,6 @@ struct Data {
     password: String,
 }
 
-
 #[async_trait]
 impl View for LoginView {
     fn name(&self) -> &'static str {

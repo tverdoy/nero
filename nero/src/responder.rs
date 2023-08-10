@@ -109,8 +109,8 @@ impl Responder {
     }
 
     pub fn json<T>(status: Status, data: T) -> Result<Self>
-        where
-            T: Serialize,
+    where
+        T: Serialize,
     {
         let head = HeadResp {
             cont_type: ContentType::AppJson,
