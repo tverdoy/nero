@@ -54,7 +54,7 @@ impl Server {
         let head = HeadReq::parse_from_utf8(&head_bin).unwrap();
         let mut request = Request::init(socket, head).await?;
 
-        let (app, view) = match Self::find_pattern(&project.apps, &request.head) {
+        let (app, view) = match Self::find_pattern(&project.apps, &request) {
             Some(pattern) => pattern,
             None => {
                 eprintln!("Not found patter for: {}", request.head.url);
@@ -108,11 +108,13 @@ impl Server {
         Self::send_response(&mut request.socket, &responder).await
     }
 
-    pub fn find_pattern<'a>(apps: &'a [App], head: &HeadReq) -> Option<(&'a App, Arc<Callback>)> {
+    pub fn find_pattern<'a>(apps: &'a [App], request: &Request) -> Option<(&'a App, Arc<Callback>)> {
         let mut pattern = None;
 
-        let mut search_url = head.url.as_str();
-        if head.is_acr() {
+        let search_url = request.clean_url().clone();
+        let mut search_url = search_url.as_str();
+
+        if request.head.is_acr() {
             search_url = CORS_URL
         }
 

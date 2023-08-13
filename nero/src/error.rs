@@ -68,6 +68,7 @@ pub enum ErrorKind {
     InvalidData,
     Serialize,
     RequestDataIsNone,
+    RequestParamsIsNone,
     RequestContentIsInvalid,
     ObjectCreate,
     ObjectGet,
@@ -88,6 +89,7 @@ impl ErrorKind {
             Self::InvalidData
             | Self::Serialize
             | Self::RequestDataIsNone
+            | Self::RequestParamsIsNone
             | Self::RequestContentIsInvalid
             | Self::ObjectIdIsNone => Status::BadRequest,
             Self::ObjectGet
