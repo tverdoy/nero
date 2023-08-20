@@ -15,16 +15,16 @@ use crate::settings::Settings;
 const SIZE_ENCODE: usize = 2_097_152; // 2 MB
 
 pub struct Responder {
-    pub data: Vec<u8>,
+    pub body: Vec<u8>,
     pub head: HeadResp,
 }
 
 impl Responder {
     pub fn complete(&mut self, request: &Request) {
-        if self.data.len() > SIZE_ENCODE {
+        if self.body.len() > SIZE_ENCODE {
             if let Some(algorithms) = &request.head.accept_encode {
                 if let Some(algo) = algorithms.iter().find(|algo| *algo == &EncodeAlgo::Deflate) {
-                    self.data = algo.encode(&self.data);
+                    self.body = algo.encode(&self.body);
                     self.head.cont_encode = Some(algo.clone())
                 }
             }
@@ -40,13 +40,13 @@ impl Responder {
             self.head.set_cookie = Some(request.set_cookie.clone())
         }
 
-        self.head.cont_len = self.data.len();
+        self.head.cont_len = self.body.len();
     }
 
     pub fn to_http_bytes(&self) -> Vec<u8> {
         let header = self.head.format_to_string();
 
-        [header.as_bytes(), &self.data].concat()
+        [header.as_bytes(), &self.body].concat()
     }
 
     pub fn ok() -> Result<Self> {
@@ -56,7 +56,7 @@ impl Responder {
         };
 
         Ok(Self {
-            data: Vec::new(),
+            body: Vec::new(),
             head,
         })
     }
@@ -68,7 +68,7 @@ impl Responder {
         };
 
         Ok(Self {
-            data: Vec::new(),
+            body: Vec::new(),
             head,
         })
     }
@@ -81,7 +81,7 @@ impl Responder {
         };
 
         Ok(Self {
-            data: Vec::from(data.to_string()),
+            body: Vec::from(data.to_string()),
             head,
         })
     }
@@ -105,7 +105,7 @@ impl Responder {
             ..Default::default()
         };
 
-        Ok(Self { data: buf, head })
+        Ok(Self { body: buf, head })
     }
 
     pub fn json<T>(status: Status, data: T) -> Result<Self>
@@ -120,7 +120,7 @@ impl Responder {
         let json = serde_json::to_string(&data).map_err(|e| Error::new(ErrorKind::Serialize, e))?;
 
         Ok(Self {
-            data: Vec::from(json),
+            body: Vec::from(json),
             head,
         })
     }

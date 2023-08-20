@@ -12,9 +12,44 @@
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add component request wrapper">
+    <list default="true" id="a0a34853-48a0-46bf-94cf-a17531894c0b" name="Changes" comment="Add parse url params">
+      <change afterPath="$PROJECT_DIR$/nero-admin/frontend/src/components/ModelTable.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/frontend/src/pages/Record.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/record/action-creators.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/record/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/record/types.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/record.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/nero.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/nero.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/components/RequestWrap.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/components/RequestWrap.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/main.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/main.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/simple/src/messenger/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/simple/src/messenger/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/components/AppRouter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/components/AppRouter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/hooks/useAction.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/hooks/useAction.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/models/IApp.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/models/IApp.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/pages/Model.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/pages/Model.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/apps/action-creators.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/apps/action-creators.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/frontend/src/utils/api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/frontend/src/utils/api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/interfaces.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/interfaces.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/models/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/apps.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/apps.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/login.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/mod.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/mod.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/settings.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero-admin/nero-admin/src/views/settings.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/nero/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/app.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/app.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/apps/cors.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/cors.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/filestatic.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/apps/not_found.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/apps/not_found.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/db/model.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/db/model.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/project.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/project.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/request.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/request.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/responder.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/responder.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/server.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/server.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nero/src/urlpatterns.rs" beforeDir="false" afterPath="$PROJECT_DIR$/nero/src/urlpatterns.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,9 +64,9 @@
       <list>
         <option value="Python Script" />
         <option value="CSS File" />
-        <option value="Rust File" />
         <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="Rust File" />
       </list>
     </option>
   </component>
@@ -50,10 +85,10 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 6
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
+}</component>
   <component name="ProjectId" id="2T4HohapMGGV2Nilh4E1ban559d" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -61,6 +96,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "WebServerToolWindowFactoryState": "false",
@@ -84,6 +120,7 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/nero-admin/frontend/src/store/reducers" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/nero-admin/frontend/src" />
       <recent name="$PROJECT_DIR$/examples/simple/static/images" />
     </key>
@@ -209,6 +246,12 @@
       <workItem from="1691187168071" duration="612000" />
       <workItem from="1691234793655" duration="17000" />
       <workItem from="1691703794901" duration="29000" />
+      <workItem from="1691703831391" duration="3160000" />
+      <workItem from="1691742891465" duration="5373000" />
+      <workItem from="1691868078294" duration="870000" />
+      <workItem from="1691935183885" duration="5762000" />
+      <workItem from="1692428662862" duration="5714000" />
+      <workItem from="1692523174256" duration="2550000" />
     </task>
     <task id="LOCAL-00001" summary="Add component responder">
       <option name="closed" value="true" />
@@ -426,7 +469,23 @@
       <option name="project" value="LOCAL" />
       <updated>1691180631800</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Rewrite orm working to macros">
+      <option name="closed" value="true" />
+      <created>1691706937011</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1691706937011</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Add parse url params">
+      <option name="closed" value="true" />
+      <created>1691939595884</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1691939595884</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -479,6 +538,8 @@
     <MESSAGE value="Review code" />
     <MESSAGE value="Add page apps" />
     <MESSAGE value="Add component request wrapper" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add component request wrapper" />
+    <MESSAGE value="Rewrite orm working to macros" />
+    <MESSAGE value="Add parse url params" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add parse url params" />
   </component>
 </project>

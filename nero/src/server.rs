@@ -7,8 +7,6 @@ use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
 use nero_util::http::HeadReq;
 
 use crate::app::App;
-use crate::apps::cors::CORS_URL;
-use crate::apps::not_found::NOT_FOUND_URL;
 use crate::project::Project;
 use crate::request::Request;
 use crate::responder::Responder;
@@ -28,15 +26,11 @@ impl Server {
         Ok(Self { listener })
     }
 
-    pub async fn run(&mut self, project: Project) -> ! {
-        let project = Arc::new(project);
-
+    pub async fn run(&mut self) -> ! {
         loop {
-            let project_view = project.clone();
-
             match self.listener.accept().await {
                 Ok((socket, _addr)) => tokio::spawn(async move {
-                    if let Err(e) = Self::handle_conn(socket, &project_view).await {
+                    if let Err(e) = Self::handle_conn(socket).await {
                         eprintln!("{e}")
                     }
                 }),
@@ -49,18 +43,26 @@ impl Server {
         }
     }
 
-    pub async fn handle_conn(mut socket: TcpStream, project: &Project) -> NeroResult<()> {
+    pub async fn handle_conn(mut socket: TcpStream) -> NeroResult<()> {
         let head_bin = Self::read_req_head(&mut socket).await?;
         let head = HeadReq::parse_from_utf8(&head_bin).unwrap();
         let mut request = Request::init(socket, head).await?;
 
-        let (app, view) = match Self::find_pattern(&project.apps, &request) {
+        if request.head.is_acr() {
+            return Self::send_cors(&mut request).await;
+        }
+
+        let apps = Project::apps().await;
+        let (app, view) = match Self::find_pattern( apps.as_ref(), &request) {
             Some(pattern) => pattern,
             None => {
                 eprintln!("Not found patter for: {}", request.head.url);
-                return Self::not_found_patter(project, &mut request).await;
+                return Self::send_not_found(&mut request).await;
             }
         };
+
+        let app_name = app.name.clone();
+        drop(apps);
 
         let mut responder = match view.callback(&mut request).await {
             Ok(resp) => {
@@ -76,7 +78,7 @@ impl Server {
                     .map_err(|e| NeroError::new(NeroErrorKind::HandleErrorFailed, e))?;
                 eprintln!(
                     "{}::{} -> {error_info} :: {}",
-                    app.name(),
+                    app_name,
                     view.name(),
                     resp.head.status
                 );
@@ -88,13 +90,8 @@ impl Server {
         Self::send_response(&mut request.socket, &responder).await
     }
 
-    pub async fn not_found_patter(project: &Project, request: &mut Request) -> NeroResult<()> {
-        let app = project.get_not_found();
-        let view = app
-            .url_patters()
-            .find_pattern(NOT_FOUND_URL)
-            .unwrap()
-            .clone();
+    pub async fn send_not_found(request: &mut Request) -> NeroResult<()> {
+        let view = Project::not_found_view();
 
         let mut responder = match view.callback(request).await {
             Ok(resp) => resp,
@@ -108,18 +105,26 @@ impl Server {
         Self::send_response(&mut request.socket, &responder).await
     }
 
+    pub async fn send_cors(request: &mut Request) -> NeroResult<()> {
+        let view = Project::cors_view();
+
+        let mut responder = match view.callback(request).await {
+            Ok(resp) => resp,
+            Err(err) => {
+                eprintln!("View cors failed");
+                return Err(NeroError::new(NeroErrorKind::ViewFailed, err));
+            }
+        };
+
+        responder.complete(request);
+        Self::send_response(&mut request.socket, &responder).await
+    }
+
     pub fn find_pattern<'a>(apps: &'a [App], request: &Request) -> Option<(&'a App, Arc<Callback>)> {
         let mut pattern = None;
 
-        let search_url = request.clean_url().clone();
-        let mut search_url = search_url.as_str();
-
-        if request.head.is_acr() {
-            search_url = CORS_URL
-        }
-
         for app in apps {
-            if let Some(patt) = app.url_patters().find_pattern(search_url) {
+            if let Some(patt) = app.patterns.find_pattern(request.clean_url()) {
                 pattern = Some((app, patt.clone()))
             }
         }

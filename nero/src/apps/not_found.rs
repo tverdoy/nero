@@ -2,27 +2,15 @@ use async_trait::async_trait;
 
 use nero_util::http::Status;
 
-use crate::app::App;
 use crate::request::Request;
 use crate::responder::Responder;
-use crate::urlpatterns::UrlPatterns;
 use crate::view::View;
 
-pub const NOT_FOUND_URL: &str = "/not-found";
 
-pub struct NotFound;
-
-impl NotFound {
-    pub fn app() -> App {
-        let mut patterns = UrlPatterns::default();
-        patterns.add_one(NOT_FOUND_URL, Box::new(Self));
-
-        App::new("not found", patterns, Vec::new())
-    }
-}
+pub struct NotFoundView;
 
 #[async_trait]
-impl View for NotFound {
+impl View for NotFoundView {
     fn name(&self) -> &'static str {
         "Not found"
     }

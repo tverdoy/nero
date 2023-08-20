@@ -19,6 +19,7 @@ export const AppsActionCreators = {
     request: (token: string) => async (dispatch: AppDispatch) => {
         dispatch(AppsActionCreators.setIsLoading(true))
 
+
         try {
             const response = await axios.get<IApp[]>(BASE_ADDRESS + ApiUrls.APPS, {headers: {"Authorization": `Bearer ${token}`}})
             dispatch(AppsActionCreators.setApps(response.data))

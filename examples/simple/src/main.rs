@@ -15,11 +15,11 @@ async fn main() {
         secret_key: Vec::from("SECRET_KEY_FOR_ADMIN"),
     });
 
-    let file_static = FileStatic::build_app("/static/", "./static").unwrap();
-    let mut apps = vec![messenger::build_app(), file_static];
+    FileStatic::register("/static/", "./static").await.unwrap();
+    messenger::register().await;
+    AdminPanel::register().await;
 
-    let admin_app = AdminPanel::new(&apps).build_app();
-    apps.push(admin_app);
 
-    Project::new(apps).await.unwrap().run().await.unwrap();
+    Project::connect_to_db().await.unwrap();
+    Project::run().await.unwrap();
 }

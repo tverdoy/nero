@@ -1,3 +1,4 @@
+use lazy_static::lazy_static;
 use once_cell::sync::OnceCell;
 use surrealdb::engine::remote::ws::{Client, Ws};
 use surrealdb::opt::auth::Root;
@@ -6,34 +7,37 @@ use surrealdb::Surreal;
 use nero_util::error::{NeroError, NeroErrorKind, NeroResult};
 
 use crate::app::App;
-use crate::apps::cors::CORS;
-use crate::apps::not_found::NotFound;
+use crate::apps::cors::CorsView;
+use crate::apps::not_found::NotFoundView;
 use crate::server::Server;
 use crate::settings::Settings;
+use tokio::sync::{Mutex, MutexGuard};
+use crate::urlpatterns::Callback;
 
 pub static DB: Surreal<Client> = Surreal::init();
+pub static NOT_FOUND_VIEW: OnceCell<Callback> = OnceCell::new();
+pub static CORS_VIEW: OnceCell<Callback> = OnceCell::new();
 
-pub struct Project {
-    pub apps: Vec<App>,
-    pub not_found: OnceCell<App>,
+
+lazy_static! {
+    pub static ref APPS: Mutex<Vec<App>> = Mutex::new(Vec::new());
 }
 
+pub struct Project;
 impl Project {
-    pub async fn new(apps: Vec<App>) -> NeroResult<Self> {
-        let mut _self = Self {
-            apps,
-            not_found: OnceCell::new(),
-        };
+    pub async fn run() -> NeroResult<()> {
+        Server::setup(&Settings::server().addr)
+            .await?
+            .run()
+            .await
+    }
 
-        if Settings::db().connect && DB.health().await.is_err() {
-            Self::connect_to_db().await?;
-        }
+    pub async fn register_app(app: App) {
+        APPS.lock().await.push(app);
+    }
 
-        if Settings::cors().is_allow_cors {
-            _self.apps.push(CORS::app()?)
-        }
-
-        Ok(_self)
+    pub async fn apps<'a>() -> MutexGuard<'a, Vec<App>> {
+        APPS.lock().await
     }
 
     pub async fn connect_to_db() -> NeroResult<()> {
@@ -57,30 +61,24 @@ impl Project {
         Ok(())
     }
 
-    pub fn add_apps(&mut self, mut apps: Vec<App>) {
-        self.apps.append(&mut apps)
-    }
-
-    pub fn add_app(&mut self, app: App) {
-        self.apps.push(app)
-    }
-
-    pub async fn run(self) -> NeroResult<()> {
-        Server::setup(&Settings::server().addr)
-            .await?
-            .run(self)
-            .await
-    }
-
-    pub fn set_not_found(self, app: App) -> Self {
-        if self.not_found.set(app).is_err() {
+    pub fn set_not_found(callback: Callback) {
+        if NOT_FOUND_VIEW.set(callback).is_err() {
             panic!("Failed set not found")
         }
-
-        self
     }
 
-    pub fn get_not_found(&self) -> &App {
-        self.not_found.get_or_init(NotFound::app)
+    pub fn not_found_view() -> &'static Callback {
+        NOT_FOUND_VIEW.get_or_init(|| Box::new(NotFoundView))
+    }
+
+    pub fn set_cors_app(callback: Callback) {
+        if CORS_VIEW.set(callback).is_err() {
+            panic!("Failed set cors")
+        }
+    }
+
+    pub fn cors_view() -> &'static Callback {
+        CORS_VIEW.get_or_init(|| Box::new(CorsView))
     }
 }
+

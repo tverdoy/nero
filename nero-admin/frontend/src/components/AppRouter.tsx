@@ -17,7 +17,7 @@ const AppRouter: FC = () => {
                     <Sider/>
                     <Layout style={{width: "80vw"}} className={"p-3"}>
                         <Header/>
-                        <Content className={"overflow-auto py-14 px-6"}>
+                        <Content className={"overflow-auto pt-14 px-6"}>
                             <Routes>
                                 {privateRoutes.map(route =>
                                     <Route path={route.path} element={<route.element/>} key={route.path}/>

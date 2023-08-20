@@ -8,6 +8,7 @@ use nero_util::http::Status;
 
 use crate::app::App;
 use crate::error::{Error, ErrorKind};
+use crate::project::Project;
 use crate::request::Request;
 use crate::responder::Responder;
 use crate::urlpatterns::UrlPatterns;
@@ -19,6 +20,10 @@ pub struct FileStatic {
 }
 
 impl FileStatic {
+    pub async fn register<T: ToString, P: AsRef<Path>>(root_url: T, root_fs: P) -> NeroResult<()> {
+        Project::register_app(Self::build_app(root_url, root_fs)?).await;
+        Ok(())
+    }
     pub fn build_app<T: ToString, P: AsRef<Path>>(root_url: T, root_fs: P) -> NeroResult<App> {
         let root_url = root_url.to_string();
         let mut root_fs = root_fs.as_ref().to_path_buf();

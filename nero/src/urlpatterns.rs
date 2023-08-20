@@ -1,7 +1,6 @@
 use std::collections::HashMap;
 use std::sync::Arc;
 
-use crate::app::App;
 use crate::view::View;
 
 pub type Callback = Box<dyn View + Send + Sync>;
@@ -24,13 +23,5 @@ impl UrlPatterns {
 
     pub fn find_pattern<T: ToString>(&self, url: T) -> Option<&Arc<Callback>> {
         self.patterns.get(&url.to_string())
-    }
-
-    pub fn print_all_pattern(apps: &[App]) {
-        for app in apps {
-            for (url, _) in app.url_patters().patterns {
-                println!("{url}")
-            }
-        }
     }
 }

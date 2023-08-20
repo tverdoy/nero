@@ -10,7 +10,7 @@ use nero::view::View;
 
 use crate::models::admin_user::AdminUser;
 
-pub struct ViewGetSettings;
+pub struct GetSettingsView;
 
 #[derive(Serialize)]
 struct RespDataGet {
@@ -20,7 +20,7 @@ struct RespDataGet {
 }
 
 #[async_trait]
-impl View for ViewGetSettings {
+impl View for GetSettingsView {
     fn name(&self) -> &'static str {
         "Get settings"
     }

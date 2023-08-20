@@ -1,10 +1,13 @@
+use serde::Serialize;
 use crate::db::model::Model;
 use crate::urlpatterns::UrlPatterns;
 
+#[derive(Serialize)]
 pub struct App {
-    name: String,
-    patterns: UrlPatterns,
-    models: Vec<Model>,
+    pub name: String,
+    #[serde(skip)]
+    pub patterns: UrlPatterns,
+    pub models: Vec<Model>,
 }
 
 impl App {
@@ -14,17 +17,5 @@ impl App {
             patterns,
             models,
         }
-    }
-
-    pub fn url_patters(&self) -> UrlPatterns {
-        self.patterns.clone()
-    }
-
-    pub fn name(&self) -> &str {
-        &self.name
-    }
-
-    pub fn models(&self) -> &[Model] {
-        &self.models
     }
 }

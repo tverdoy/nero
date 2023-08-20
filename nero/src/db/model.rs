@@ -10,7 +10,9 @@ use crate::project::DB;
 
 pub type BoxManager = Box<dyn Manager + Send + Sync>;
 
+#[derive(Serialize)]
 pub struct Model {
+    #[serde(skip)]
     pub manager: BoxManager,
     pub scheme: Scheme,
 }

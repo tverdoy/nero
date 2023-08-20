@@ -1,32 +1,33 @@
 use async_trait::async_trait;
-use serde::Serialize;
-use nero::app::App;
+use serde::Deserialize;
 
 use nero::http::Status;
-use nero::project::Project;
 use nero::request::Request;
 use nero::responder::Responder;
 use nero::view::View;
 
 use crate::models::admin_user::AdminUser;
 
-pub struct GetAppsView;
+pub struct GetRecordView;
 
-#[derive(Serialize)]
-struct ResponseGetApps<'a> {
-    apps: &'a [App]
+#[derive(Deserialize, Debug)]
+struct GetRecordParams {
+    id: String,
+    app: String,
+    model: String
 }
 
 #[async_trait]
-impl View for GetAppsView {
+impl View for GetRecordView {
     fn name(&self) -> &'static str {
-        "get apps view"
+        "Get record"
     }
 
     async fn callback(&self, request: &mut Request) -> nero::error::Result<Responder> {
         AdminUser::check_auth(request).await?;
-        let apps = Project::apps().await;
+        let params: GetRecordParams = request.params_to_obj()?;
 
-        Responder::json::<&[App]>(Status::Ok, apps.as_ref())
+
+        Responder::text(Status::Ok, format!("{params:?}"))
     }
 }

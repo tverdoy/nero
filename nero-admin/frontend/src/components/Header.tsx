@@ -8,7 +8,7 @@ const Header: FC = () => {
     const {logout} = useActionsAuth()
 
     return (
-        <Layout.Header className={"rounded-2xl"}>
+        <Layout.Header className={"rounded-2xl"} style={{ maxHeight: "20vh" }}>
             <div className={"flex justify-between items-center"}>
                 <p className={"text-center text-white text-base"}>
                     {user.username}

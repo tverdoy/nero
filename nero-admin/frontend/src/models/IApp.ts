@@ -10,18 +10,27 @@ export interface IScheme {
 
 export interface IField {
     name: string,
-    type: FieldTypeEnum,
-    args: IFieldArg[]
+    tp: FieldTypeEnum,
+    is_option: boolean,
+    attrs: IAttributes,
+}
+
+export interface IAttributes {
+    max_length?: number,
+    default?: string
 }
 
 export enum FieldTypeEnum {
-    INT = "Int",
+    U8 = "u8",
+    U16 = "u16",
+    U32 = "u32",
+    U64 = "u64",
+    I8 = "i8",
+    I16 = "i16",
+    I32 = "i32",
+    I64 = "i64",
+    F32 = "f32",
+    F64 = "f64",
     STRING = "String",
-    BOOL = "Bool",
-    LINK_TO = "LinkTo"
-}
-
-export interface IFieldArg {
-    max_length?: number,
-    default?: string
+    THING = "Thing"
 }
