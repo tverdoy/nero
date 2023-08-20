@@ -11,13 +11,12 @@ use crate::apps::cors::CorsView;
 use crate::apps::not_found::NotFoundView;
 use crate::server::Server;
 use crate::settings::Settings;
-use tokio::sync::{Mutex, MutexGuard};
 use crate::urlpatterns::Callback;
+use tokio::sync::{Mutex, MutexGuard};
 
 pub static DB: Surreal<Client> = Surreal::init();
 pub static NOT_FOUND_VIEW: OnceCell<Callback> = OnceCell::new();
 pub static CORS_VIEW: OnceCell<Callback> = OnceCell::new();
-
 
 lazy_static! {
     pub static ref APPS: Mutex<Vec<App>> = Mutex::new(Vec::new());
@@ -26,10 +25,7 @@ lazy_static! {
 pub struct Project;
 impl Project {
     pub async fn run() -> NeroResult<()> {
-        Server::setup(&Settings::server().addr)
-            .await?
-            .run()
-            .await
+        Server::setup(&Settings::server().addr).await?.run().await
     }
 
     pub async fn register_app(app: App) {
@@ -81,4 +77,3 @@ impl Project {
         CORS_VIEW.get_or_init(|| Box::new(CorsView))
     }
 }
-

@@ -3,12 +3,12 @@ use nero::db::model::Model;
 use nero::urlpatterns::UrlPatterns;
 
 use crate::models::admin_user::AdminUser;
-use crate::views::settings::GetSettingsView;
-use nero::db::model::Manager;
-use nero::project::Project;
 use crate::views::apps::GetAppsView;
 use crate::views::login::LoginView;
 use crate::views::record::GetRecordView;
+use crate::views::settings::GetSettingsView;
+use nero::db::model::Manager;
+use nero::project::Project;
 
 mod interfaces;
 pub mod models;
@@ -30,10 +30,7 @@ impl AdminPanel {
         patterns.add(vec![
             ("/admin/login", Box::new(LoginView)),
             ("/admin/settings", Box::new(GetSettingsView)),
-            (
-                "/admin/apps",
-                Box::new(GetAppsView),
-            ),
+            ("/admin/apps", Box::new(GetAppsView)),
             ("/admin/record", Box::new(GetRecordView)),
         ]);
 

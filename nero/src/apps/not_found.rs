@@ -6,7 +6,6 @@ use crate::request::Request;
 use crate::responder::Responder;
 use crate::view::View;
 
-
 pub struct NotFoundView;
 
 #[async_trait]

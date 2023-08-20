@@ -25,7 +25,7 @@ impl AdminUser {
             let sub = verify_token(token, &Settings::admin_auth().secret_key)
                 .map_err(|e| Error::new(ErrorKind::Auth, e))?;
 
-            Ok(Self::get(sub.into()).await)
+            Ok(Self::get(sub.into()).await.unwrap())
         } else {
             Err(Error::new_simple(ErrorKind::TokenIsNone))
         }

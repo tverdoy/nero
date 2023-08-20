@@ -12,7 +12,7 @@ const Record = () => {
     const {token} = useTypedSelector(state => state.authReducer);
 
     useEffect(() => {
-        requestOne(token, recordId)
+        requestOne(token, appName || "", modelName || "", recordId || "")
     }, [])
 
 

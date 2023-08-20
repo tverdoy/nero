@@ -19,7 +19,6 @@ async fn main() {
     messenger::register().await;
     AdminPanel::register().await;
 
-
     Project::connect_to_db().await.unwrap();
     Project::run().await.unwrap();
 }

@@ -1,6 +1,6 @@
-use serde::Serialize;
 use crate::db::model::Model;
 use crate::urlpatterns::UrlPatterns;
+use serde::Serialize;
 
 #[derive(Serialize)]
 pub struct App {

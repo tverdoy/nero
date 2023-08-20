@@ -10,7 +10,7 @@ const Apps: FC = () => {
     const {token} = useTypedSelector(state => state.authReducer)
     const {request} = useActionsApps()
 
-    const findValidApps = () => apps ? apps.filter(app => app.schemes.length) : undefined
+    const findValidApps = () => apps ? apps.filter(app => app.models.length) : undefined
 
     const [validApps, validAppsSet] = useState(findValidApps());
 

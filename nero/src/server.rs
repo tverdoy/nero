@@ -53,7 +53,7 @@ impl Server {
         }
 
         let apps = Project::apps().await;
-        let (app, view) = match Self::find_pattern( apps.as_ref(), &request) {
+        let (app, view) = match Self::find_pattern(apps.as_ref(), &request) {
             Some(pattern) => pattern,
             None => {
                 eprintln!("Not found patter for: {}", request.head.url);
@@ -120,7 +120,10 @@ impl Server {
         Self::send_response(&mut request.socket, &responder).await
     }
 
-    pub fn find_pattern<'a>(apps: &'a [App], request: &Request) -> Option<(&'a App, Arc<Callback>)> {
+    pub fn find_pattern<'a>(
+        apps: &'a [App],
+        request: &Request,
+    ) -> Option<(&'a App, Arc<Callback>)> {
         let mut pattern = None;
 
         for app in apps {

@@ -1,6 +1,6 @@
 use async_trait::async_trait;
-use serde::Serialize;
 use nero::app::App;
+use serde::Serialize;
 
 use nero::http::Status;
 use nero::project::Project;
@@ -14,7 +14,7 @@ pub struct GetAppsView;
 
 #[derive(Serialize)]
 struct ResponseGetApps<'a> {
-    apps: &'a [App]
+    apps: &'a [App],
 }
 
 #[async_trait]

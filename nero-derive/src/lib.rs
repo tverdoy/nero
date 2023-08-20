@@ -53,7 +53,7 @@ fn new_impl(
                ::nero::db::model::format_table_name(stringify!(#name))
             }
 
-            async fn get(id: ::nero::db::model::Id) -> Self {
+            async fn get(id: ::nero::db::model::Id) -> ::nero::error::Result<Self> {
                 ::nero::db::model::SurrealDriver::get(Self::thing_from_id(id)).await
             }
 

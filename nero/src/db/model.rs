@@ -1,3 +1,4 @@
+use crate::error::*;
 use async_trait::async_trait;
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
@@ -49,7 +50,7 @@ pub trait Manager {
     where
         Self: Sized;
 
-    async fn get(id: Id) -> Self
+    async fn get(id: Id) -> Result<Self>
     where
         Self: Sized;
 
@@ -77,10 +78,13 @@ impl<Target> SurrealDriver<Target>
 where
     Target: Serialize + DeserializeOwned + Send + Sync,
 {
-    pub async fn get(id: Thing) -> Target {
-        let obj: Option<Target> = DB.select(id).await.unwrap();
+    pub async fn get(id: Thing) -> Result<Target> {
+        let obj: Option<Target> = DB
+            .select(id)
+            .await
+            .map_err(|e| Error::new(ErrorKind::ObjectGet, e))?;
 
-        obj.unwrap()
+        obj.ok_or(Error::new_simple(ErrorKind::ObjectNotExists))
     }
 
     pub async fn create(thing: Option<Thing>, table_name: String, obj: &Target) -> Id {

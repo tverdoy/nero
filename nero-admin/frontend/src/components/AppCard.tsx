@@ -10,10 +10,10 @@ type AppCardProps = {
 const AppCard = ({app}: AppCardProps) => {
     const navigate = useNavigate()
 
-    const items: MenuProps['items'] = app.schemes.map(scheme => {
+    const items: MenuProps['items'] = app.models.map(model => {
         return {
-            key: `${app.name}/${scheme.name}`,
-            label: scheme.name
+            key: `${app.name}/${model.scheme.name}`,
+            label: model.scheme.name
         }
     });
 

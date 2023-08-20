@@ -34,7 +34,12 @@ impl Request {
     }
 
     pub fn clean_url(&self) -> String {
-        self.head.url.rsplitn(2, '?').last().unwrap_or_default().to_string()
+        self.head
+            .url
+            .rsplitn(2, '?')
+            .last()
+            .unwrap_or_default()
+            .to_string()
     }
 
     pub fn body_to_obj<'a, T: de::Deserialize<'a>>(&'a self) -> Result<T> {

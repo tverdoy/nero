@@ -15,7 +15,7 @@ const Model = () => {
 
     const findModel = () => {
         const app = apps ? apps.find(a => a.name === appName) : undefined;
-        return app ? app.schemes.find(scheme => scheme.name === modelName) : undefined
+        return app ? app.models.find(model => model.scheme.name === modelName) : undefined
     }
 
     const [model, modelSet] = useState(findModel())
@@ -28,8 +28,8 @@ const Model = () => {
         modelSet(findModel())
     }, [apps])
 
-    const onClickRecord = (recordId) => {
-        navigate(RouteNames.RECORD.replace(':appName', appName).replace(':modelName', modelName).replace(':recordId', recordId))
+    const onClickRecord = (recordId: string) => {
+        navigate(RouteNames.RECORD.replace(':appName', appName || "").replace(':modelName', modelName || "").replace(':recordId', recordId))
     }
 
     return (

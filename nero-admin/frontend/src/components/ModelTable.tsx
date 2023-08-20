@@ -1,17 +1,17 @@
-import {IScheme} from "../models/IApp.ts";
+import {IModel} from "../models/IApp.ts";
 import {ColumnsType} from "antd/es/table";
 import {Table} from "antd";
 
 type ModelTableProps = {
-    model: IScheme,
-    onClickRecord: (recordId: string | number) => void;
+    model: IModel,
+    onClickRecord: (recordId: string) => void;
 }
 
 
 const ModelTable = ({model, onClickRecord}: ModelTableProps) => {
     let columns: ColumnsType<any> = [];
 
-    for (let field of model.fields) {
+    for (let field of model.scheme.fields) {
         columns.push({
             title: field.name,
             dataIndex: field.name,

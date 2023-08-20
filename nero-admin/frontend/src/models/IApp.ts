@@ -1,6 +1,9 @@
 export default interface IApp {
     name: string,
-    schemes: IScheme[]
+    models: IModel[]
+}
+export interface IModel {
+    scheme: IScheme
 }
 
 export interface IScheme {
