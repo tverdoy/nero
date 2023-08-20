@@ -1,9 +1,8 @@
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import {useParams} from "react-router-dom";
-import {useActionsApps, useActionsRecord} from "../hooks/useAction.ts";
+import {useActionsRecord} from "../hooks/useAction.ts";
 import {useTypedSelector} from "../hooks/useTypedSelector.ts";
 import RequestWrap from "../components/RequestWrap.tsx";
-import ModelTable from "../components/ModelTable.tsx";
 
 const Record = () => {
     const {appName, modelName, recordId} = useParams();

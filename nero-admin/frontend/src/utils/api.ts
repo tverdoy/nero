@@ -4,5 +4,6 @@ export enum ApiUrls {
     LOGIN = "/login",
     SETTINGS = "/settings",
     APPS = "/apps",
-    RECORD = "/record"
+    RECORD = "/record",
+    ALL_RECORD = "/all-record"
 }

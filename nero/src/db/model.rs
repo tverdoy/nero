@@ -87,6 +87,13 @@ where
         obj.ok_or(Error::new_simple(ErrorKind::ObjectNotExists))
     }
 
+    pub async fn all<T: ToString>(table: T) -> Result<Vec<Target>> {
+        DB
+            .select(table.to_string())
+            .await
+            .map_err(|e| Error::new(ErrorKind::ObjectGet, e))
+    }
+
     pub async fn create(thing: Option<Thing>, table_name: String, obj: &Target) -> Id {
         let record: Record = match thing {
             Some(thing) => DB.create(thing).content(obj).await.unwrap(),

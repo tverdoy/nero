@@ -1,4 +1,4 @@
-import {RecordActionEnum, SetRecordAction, SetErrorAction, SetIsLoadingAction,} from "./types";
+import {RecordActionEnum, SetRecordAction, SetErrorAction, SetIsLoadingAction, SetAllRecordAction,} from "./types";
 import {AppDispatch} from "../../index";
 import axios, {AxiosError} from "axios";
 import {ApiUrls, BASE_ADDRESS} from "../../../utils/api.ts";
@@ -11,6 +11,10 @@ export const RecordActionCreators = {
         type: RecordActionEnum.SET_RECORD,
         payload: record
     }),
+    setAllRecord: (records: any[]): SetAllRecordAction => ({
+        type: RecordActionEnum.SET_ALL_RECORD,
+        payload: records
+    }),
     setIsLoading: (isLoading: boolean): SetIsLoadingAction => ({
         type: RecordActionEnum.SET_IS_LOADING,
         payload: isLoading
@@ -22,6 +26,29 @@ export const RecordActionCreators = {
         try {
             const response = await axios.get<IApp[]>(BASE_ADDRESS + ApiUrls.RECORD, {params: { id: id, app: appName, model: modelName}, headers: {"Authorization": `Bearer ${token}`}})
             dispatch(RecordActionCreators.setRecord(response.data))
+        } catch (e) {
+            let error = {message: "Failed request record", kind: ErrorKindEnum.FRONTEND as string};
+
+            if (e instanceof AxiosError) {
+                if (e.response) {
+                    const neroError: INeroError = e.response.data
+                    error = {message: neroError.error, kind: neroError.kind}
+                } else {
+                    error = {message: e.message, kind: ErrorKindEnum.RESPONSE_EMPTY}
+                }
+            }
+
+            dispatch(RecordActionCreators.setError(error))
+        }
+
+        dispatch(RecordActionCreators.setIsLoading(false))
+    },
+    requestAll: (token: string, appName: string, modelName: string) => async (dispatch: AppDispatch) => {
+        dispatch(RecordActionCreators.setIsLoading(true))
+
+        try {
+            const response = await axios.get<IApp[]>(BASE_ADDRESS + ApiUrls.ALL_RECORD, {params: { app: appName, model: modelName}, headers: {"Authorization": `Bearer ${token}`}})
+            dispatch(RecordActionCreators.setAllRecord(response.data))
         } catch (e) {
             let error = {message: "Failed request record", kind: ErrorKindEnum.FRONTEND as string};
 

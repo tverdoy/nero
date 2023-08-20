@@ -1,14 +1,17 @@
 import {IModel} from "../models/IApp.ts";
 import {ColumnsType} from "antd/es/table";
 import {Table} from "antd";
+import record from "../pages/Record.tsx";
+import {formatThing} from "../utils";
 
 type ModelTableProps = {
     model: IModel,
+    records: any[],
     onClickRecord: (recordId: string) => void;
 }
 
 
-const ModelTable = ({model, onClickRecord}: ModelTableProps) => {
+const ModelTable = ({model, records, onClickRecord}: ModelTableProps) => {
     let columns: ColumnsType<any> = [];
 
     for (let field of model.scheme.fields) {
@@ -21,24 +24,17 @@ const ModelTable = ({model, onClickRecord}: ModelTableProps) => {
 
     if (columns.length > 0) {
         columns[0] = {
-            render: (text) => <a onClick={() => onClickRecord(text)}>{text}</a>,
+            render: (text) => {
+                let id = formatThing(text);
+                return <a onClick={() => onClickRecord(id)}>{id}</a>
+            },
             ...columns[0]
         }
     }
 
-    let testData = []
-    for (let i = 0; i < 30; i++) {
-        testData.push({
-            id: i,
-            username: `User ${i}`,
-            password: `P@ssw0rd`
-        })
-    }
-
-
 
     return (
-        <Table columns={columns} dataSource={testData} scroll={{ y: "60vh" }} pagination={{ pageSize: 20 }}/>
+        <Table columns={columns} dataSource={records} scroll={{ y: "60vh" }} pagination={{ pageSize: 20 }}/>
     );
 };
 

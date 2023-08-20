@@ -9,6 +9,7 @@ use crate::views::record::GetRecordView;
 use crate::views::settings::GetSettingsView;
 use nero::db::model::Manager;
 use nero::project::Project;
+use crate::views::all_record::GetAllRecordView;
 
 mod interfaces;
 pub mod models;
@@ -32,6 +33,8 @@ impl AdminPanel {
             ("/admin/settings", Box::new(GetSettingsView)),
             ("/admin/apps", Box::new(GetAppsView)),
             ("/admin/record", Box::new(GetRecordView)),
+            ("/admin/all-record", Box::new(GetAllRecordView)),
+
         ]);
 
         App::new(APP_NAME, patterns, admin_models)
